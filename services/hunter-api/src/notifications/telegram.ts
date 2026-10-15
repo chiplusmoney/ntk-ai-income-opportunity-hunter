@@ -5,19 +5,27 @@ interface Options { token: string; chatId: string; ownerUid: string; db: Firesto
 
 /** Administrative setup probe: getMe/getUpdates do not send messages. Only
  * private chat identifiers are returned; the token and message text stay private. */
-export async function inspectTelegramSetup(token: string) {
+export async function inspectTelegramSetup(token: string, fetchImpl: typeof fetch = fetch) {
   if (!/^\d+:[A-Za-z0-9_-]{30,}$/.test(token)) throw new Error('Telegram token is not configured');
   const call = async (method: string) => {
-    const r = await fetch(`https://api.telegram.org/bot${token}/${method}`, { method: 'POST', signal: AbortSignal.timeout(10_000) });
+    const r = await fetchImpl(`https://api.telegram.org/bot${token}/${method}`, {
+      method: 'POST', signal: AbortSignal.timeout(10_000),
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify(method === 'getUpdates' ? { allowed_updates: ['message'], timeout: 0, limit: 100 } : {})
+    });
     if (!r.ok) throw new Error('Telegram setup probe failed');
     const data = await r.json() as { ok: boolean; result: unknown };
     if (!data.ok) throw new Error('Telegram setup probe failed');
     return data.result;
   };
   const me = await call('getMe') as { username?: string };
+  const webhook = await call('getWebhookInfo') as { url?: string; pending_update_count?: number };
+  // Preserve an existing webhook. Never delete another consumer's delivery
+  // configuration merely to make setup easier.
+  if (webhook.url) return { botUsername: me.username, webhookConfigured: true, pendingUpdates: webhook.pending_update_count ?? null, privateChats: [] };
   const updates = await call('getUpdates') as { message?: { chat?: { id: number; type: string; username?: string } } }[];
   const chats = updates.map(u => u.message?.chat).filter(c => c?.type === 'private');
-  return { botUsername: me.username, privateChats: [...new Map(chats.map(c => [c!.id, { id: String(c!.id), username: c!.username ?? null }])).values()] };
+  return { botUsername: me.username, webhookConfigured: false, privateChats: [...new Map(chats.map(c => [c!.id, { id: String(c!.id), username: c!.username ?? null }])).values()] };
 }
 
 /** Single controlled delivery, with a server-only permanent attempt ledger.

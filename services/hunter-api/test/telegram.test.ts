@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import type { Firestore } from 'firebase-admin/firestore';
-import { sendControlledTelegramTest } from '../src/notifications/telegram.js';
+import { inspectTelegramSetup, sendControlledTelegramTest } from '../src/notifications/telegram.js';
 
 function setup() {
   const documents = new Map<string, unknown>();
@@ -13,6 +13,20 @@ function setup() {
   return { documents, fetchImpl, options: { token: `123456:${'testonly'.repeat(5)}`, chatId: '12345', ownerUid: 'owner', db, fetchImpl, now: () => new Date('2026-10-15T10:00:00Z') } };
 }
 describe('controlled Telegram transport', () => {
+  it('discovers private destinations without sending and explicitly requests message updates', async () => {
+    const { options } = setup();
+    const request = vi.fn().mockResolvedValueOnce(Response.json({ ok: true, result: { username: 'testbot' } })).mockResolvedValueOnce(Response.json({ ok: true, result: { url: '' } })).mockResolvedValueOnce(Response.json({ ok: true, result: [{ message: { chat: { id: 12345, type: 'private' } } }] }));
+    const result = await inspectTelegramSetup(options.token, request);
+    expect(result.privateChats).toEqual([{ id: '12345', username: null }]);
+    expect(request.mock.calls.every(c => !String(c[0]).includes('sendMessage'))).toBe(true);
+    expect(JSON.parse(request.mock.calls[2][1].body).allowed_updates).toEqual(['message']);
+  });
+  it('preserves an existing bot webhook', async () => {
+    const { options } = setup();
+    const request = vi.fn().mockResolvedValueOnce(Response.json({ ok: true, result: { username: 'testbot' } })).mockResolvedValueOnce(Response.json({ ok: true, result: { url: 'https://example.invalid/existing-consumer', pending_update_count: 1 } }));
+    expect((await inspectTelegramSetup(options.token, request)).webhookConfigured).toBe(true);
+    expect(request).toHaveBeenCalledTimes(2);
+  });
   it('dispatches once and persists only non-secret receipt fields', async () => {
     const { options, documents, fetchImpl } = setup();
     expect((await sendControlledTelegramTest(options)).status).toBe('delivered');

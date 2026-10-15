@@ -7,6 +7,7 @@ export interface Env {
 const INTERVAL_POLICY = 'per-source-min-interval' as const;
 const MAX_ATTEMPTS = 3;
 const BACKOFF_MS = [1000, 4000];
+class NonRetryableError extends Error {}
 
 function sleep(ms: number) {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -46,8 +47,9 @@ async function trigger(env: Env, reason: string, sourceIds: string[] = []): Prom
       if (response.ok) return response.text();
 
       lastError = `Hunter API returned ${response.status}`;
-      if (response.status >= 400 && response.status < 500) throw new Error(lastError);
+      if (response.status >= 400 && response.status < 500) throw new NonRetryableError(lastError);
     } catch (error) {
+      if (error instanceof NonRetryableError) throw error;
       lastError = error instanceof Error ? error.message : String(error);
     }
 
