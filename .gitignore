@@ -1,0 +1,29 @@
+# Dependencies and build output (never hand these off)
+node_modules/
+dist/
+build/
+# Scratch build used for the view-only browser render check (rebuildable in seconds)
+dist-browser-check/
+*.tsbuildinfo
+
+# Local environment: provider secrets and API keys live here, not in the repo
+.env
+.env.*
+!.env.example
+
+# Editor / OS noise
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Logs and caches
+*.log
+.cache/
+.vite/
+coverage/
+
+# Firebase emulator output (artifacts from `npm run verify:emulator`)
+.firebase/
+firebase-export*/
+firestore-debug.log

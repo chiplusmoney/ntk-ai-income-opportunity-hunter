@@ -1,0 +1,50 @@
+{
+  "total_count": 4260,
+  "incomplete_results": false,
+  "items": [
+    {
+      "number": 1891,
+      "title": "[Bounty] 📋 2 open bounties right now",
+      "html_url": "https://github.com/zhangjiayang6835-cyber/bounty-plaza/issues/1891",
+      "repository_url": "https://api.github.com/repos/zhangjiayang6835-cyber/bounty-plaza",
+      "state": "open",
+      "created_at": "2026-10-13T23:57:04Z",
+      "updated_at": "2026-10-14T00:04:10Z",
+      "comments": 3,
+      "labels": [
+        {
+          "name": "bounty"
+        },
+        {
+          "name": "real"
+        }
+      ],
+      "user": {
+        "login": "zhangjiayang6835-cyber"
+      },
+      "body": "### 赏金平台 / Platform\nGitHub\n\n### 原始链接 / Source URL\nhttps://github.com/habibdxb01/bounty-watcher/issues/5\n\n### 漏洞描述 / Description\n📋 2 open bounties right now\n\nBounties that were already open when the watcher started. From now on, each new one gets its own issue.\n\n- 🔴 **$150** · [📱 Epic: BAWES Universe Mobile App (Android + iOS)](https://github.com/BAWES-Universe/workadventure-universe/issues/1)\n- 🔴 **$50** · [BOUNTY: integrate AWS Comprehend as a utility to redact data](https://github.com/arakoodev/EdgeChains/issues/290)\n\ncc @habibdxb01\n<!-- algora:gh-4455330769 -->\n<!-- algora:gh-4166244335 -->\n<!-- algora:gh-4043764365 -->\n<!-- algora:gh-2873015698 -->\n<!-- algora:gh-2843240829 -->\n<!-- …[truncated for fixture]"
+    },
+    {
+      "number": 5,
+      "title": "📋 2 open bounties right now",
+      "html_url": "https://github.com/habibdxb01/bounty-watcher/issues/5",
+      "repository_url": "https://api.github.com/repos/habibdxb01/bounty-watcher",
+      "state": "open",
+      "created_at": "2026-10-13T21:40:05Z",
+      "updated_at": "2026-10-13T22:47:59Z",
+      "comments": 0,
+      "labels": [
+        {
+          "name": "bounty"
+        },
+        {
+          "name": "assessed"
+        }
+      ],
+      "user": {
+        "login": "github-actions[bot]"
+      },
+      "body": "Bounties that were already open when the watcher started. From now on, each new one gets its own issue.\n\n- 🔴 **$150** · [📱 Epic: BAWES Universe Mobile App (Android + iOS)](https://github.com/BAWES-Universe/workadventure-universe/issues/1)\n- 🔴 **$50** · [BOUNTY: integrate AWS Comprehend as a utility to redact data](https://github.com/arakoodev/EdgeChains/issues/290)\n\ncc @habibdxb01\n<!-- algora:gh-4455330769 -->\n<!-- algora:gh-4166244335 -->\n<!-- algora:gh-4043764365 -->\n<!-- algora:gh-2873015698 -->\n<!-- algora:gh-2843240829 -->\n<!-- algora:gh-2843218346 -->\n<!-- algora:gh-2567881942 -->\n<!-- algora:gh-2022440514 -->\n<!-- algora:gh-2018290060 -->\n<!-- algora:gh-2011168530 -->"
+    }
+  ]
+}

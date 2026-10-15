@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "strict": true,
+    "skipLibCheck": true,
+    "types": ["@cloudflare/workers-types"],
+    // Required: with `include: ["src"]` TypeScript needs to be told the common
+    // source directory, otherwise `tsc -p` fails with TS5011.
+    "rootDir": "src",
+    "outDir": "dist"
+  },
+  "include": ["src"]
+}

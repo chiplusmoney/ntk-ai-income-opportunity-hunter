@@ -1,0 +1,9 @@
+name = "ntk-income-hunter-scheduler"
+main = "src/index.ts"
+compatibility_date = "2026-10-01"
+
+[triggers]
+crons = ["*/30 * * * *"]
+
+[vars]
+DEFAULT_REGION_PRIORITY = "NG,GB,CA,US,GLOBAL"

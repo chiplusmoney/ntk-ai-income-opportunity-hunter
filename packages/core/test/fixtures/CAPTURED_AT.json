@@ -1,0 +1,13 @@
+{
+  "capturedAt": "2026-10-14T17:27:03.186Z",
+  "note": "Trimmed live captures. Regenerate with: node tools/capture-fixtures.mjs",
+  "files": [
+    "remotive.json",
+    "remoteok.json",
+    "arbeitnow.json",
+    "github-bounties.json",
+    "hn-freelancer.json",
+    "freelancer-rss.xml",
+    "devpost.json"
+  ]
+}

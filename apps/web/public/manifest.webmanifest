@@ -1,0 +1,13 @@
+{
+  "name": "NTK AI Income Opportunity Hunter",
+  "short_name": "NTK Hunter",
+  "description": "Find, verify, rank and track legitimate income opportunities.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#07111f",
+  "theme_color": "#07111f",
+  "orientation": "any",
+  "categories": ["business", "productivity", "finance"],
+  "icons": []
+}

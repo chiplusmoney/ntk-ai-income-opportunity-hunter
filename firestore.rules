@@ -1,0 +1,54 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() { return request.auth != null; }
+    function owns(uid) { return signedIn() && request.auth.uid == uid; }
+    function isAdmin() { return signedIn() && request.auth.token.admin == true; }
+
+    // Published opportunities are publicly readable, on purpose.
+    //
+    // Two reasons:
+    //  1. Remotive's own API notice states that "displaying our jobs in order to
+    //     collect signups/email addresses to show a listing constitutes a breach"
+    //     of their terms. Gating the listing behind an account is exactly that
+    //     pattern, so the listing itself is not gated.
+    //  2. It is the better product: browse first, sign in to save and apply.
+    //
+    // The client may never write here: records are produced by the Hunter API
+    // from captured evidence, and a client-side write could forge one.
+    match /opportunities/{opportunityId} {
+      allow read: if resource.data.visibility == 'published';
+      allow write: if isAdmin();
+    }
+
+    // Evidence stays behind a sign-in. It is the audit trail for a claim, not
+    // the claim itself, and it is only ever written by the server.
+    match /opportunityEvidence/{evidenceId} {
+      allow read: if signedIn();
+      allow write: if isAdmin();
+    }
+
+    // Source-run audit trail. Server-only: clients never read or write it.
+    // Top-level collection because `internal/sourceRuns/{id}` is not an
+    // addressable Firestore document path.
+    match /internalSourceRuns/{runId} {
+      allow read, write: if false;
+    }
+
+    match /users/{uid} {
+      allow read, create, update: if owns(uid);
+      allow delete: if owns(uid);
+
+      match /saved/{id} { allow read, write: if owns(uid); }
+      match /applications/{id} { allow read, write: if owns(uid); }
+      match /earnings/{id} { allow read, write: if owns(uid); }
+      // Notifications are created by the server only; the user may read, mark
+      // read and delete them.
+      match /notifications/{id} { allow read, update, delete: if owns(uid); allow create: if false; }
+      match /syncQueue/{id} { allow read, write: if owns(uid); }
+    }
+
+    // Any future internal collection belongs to the trusted backend only.
+    match /internal/{document=**} { allow read, write: if false; }
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "data": [
+    {
+      "slug": "product-owner-festanstellung-oder-freelance-munchen-remote-munich-113946",
+      "company_name": "KFS GROUP",
+      "title": "Product Owner (m/w/d) | Festanstellung oder Freelance | München / Remote",
+      "description": "<p><strong>Standort:</strong> München, remote innerhalb Deutschlands</p><p><strong>Art:</strong> Festanstellung in Vollzeit oder freiberufliche Zusammenarbeit, jeweils mit Perspektive auf eine langfristige Partnerschaft</p><p><strong>Warum diese Rolle</strong></p><p>Wir bauen Software, mit der echte Unternehmen arbeiten. Du wirst Teil eines kleinen, erfahrenen und schnellen Teams, in dem du als Product Owner die Produktvision und die Umsetzung von Anfang bis Ende verantwortest, statt ein Backlog abzuarbeiten, das jemand anderes vorgekaut hat. Du arbeitest eng mit erfahrenen Engineers zusammen, steuerst KI-gestützte Entwicklungsabläufe und bringst Features innerhalb weniger Wochen vom Konzept in die Produktion.</p><p>Diese Rolle ist für jemanden, der in Systemen, Nutzen für die Anwender und operativer Klarheit denkt, nicht nur in Jira-Status.</p><p><strong>Ehrlich gesagt: KI im Jahr 2026<…[truncated for fixture]",
+      "remote": true,
+      "url": "https://www.arbeitnow.com/jobs/companies/kfs-group/product-owner-festanstellung-oder-freelance-munchen-remote-munich-113946",
+      "tags": [
+        "Remote",
+        "Product Management"
+      ],
+      "job_types": [
+        "Unbefristeter arbeitsvertrag",
+        "berufserfahren"
+      ],
+      "location": "Munich",
+      "created_at": 1791991870
+    },
+    {
+      "slug": "prufungsassistent-stuttgart-95236",
+      "company_name": "MSW GmbH & Co. KG Wirtschaftsprüfungsgesellschaft Steuerberatungsgesellschaft",
+      "title": "Prüfungsassistent (m/w/d)",
+      "description": "<p><strong>Menschlich. Dynamisch. Flexibel. Karriere bei MSW in Stuttgart.</strong></p>\n<p>MSW ist eine mittelständische Wirtschaftsprüfungs- und Steuerberatungsgesellschaft mit Sitz in Stuttgart am Pragsattel. Mit rund 20 Mitarbeitenden sind wir groß genug für abwechslungsreiche Mandate und klare Entwicklungsperspektiven und gleichzeitig klein genug für ein persönliches, kollegiales Miteinander.</p>\n<p>Bei MSW gestalten wir unsere Arbeit bewusst anders: Wir legen Wert auf qualitativ hochwertige Beratung, langfristige Mandatsbeziehungen und eine individuelle Betreuung. Unsere Philosophie: „Der Erfolg unserer Mandanten ist auch unser eigener Erfolg.“ Wir verstehen uns als verlässlicher Partner und Coach, der jederzeit zur Seite steht, wenn Unterstützung benötigt wird. Diese Haltung spiegelt sich auch in unserer Teamkultur wider. So fragen sich neue Teammitglieder nach kurzer Zeit oft: „Wa…[truncated for fixture]",
+      "remote": false,
+      "url": "https://www.arbeitnow.com/jobs/companies/msw-gmbh-co-kg-wirtschaftsprufungsgesellschaft-steuerberatungsgesellschaft/prufungsassistent-stuttgart-95236",
+      "tags": [
+        "Auditor"
+      ],
+      "job_types": [
+        "Unbefristeter arbeitsvertrag"
+      ],
+      "location": "Stuttgart",
+      "created_at": 1791993646
+    }
+  ],
+  "links": {
+    "first": "https://www.arbeitnow.com/api/job-board-api?page=1",
+    "last": null,
+    "prev": null,
+    "next": "https://www.arbeitnow.com/api/job-board-api?page=2"
+  },
+  "meta": {
+    "current_page": 1,
+    "current_page_url": "https://www.arbeitnow.com/api/job-board-api?page=1",
+    "from": 1,
+    "path": "https://www.arbeitnow.com/api/job-board-api",
+    "per_page": 300,
+    "to": 300,
+    "terms": "This is a free public API for jobs, please do not abuse. I would appreciate linking back to the site. By using the API, you agree to the terms of service present on Arbeitnow.com",
+    "info": "Jobs are updated every hour and order by the `created_at` timestamp. Use `?page=` to paginate. Read more information here: https://www.arbeitnow.com/blog/job-board-api"
+  }
+}

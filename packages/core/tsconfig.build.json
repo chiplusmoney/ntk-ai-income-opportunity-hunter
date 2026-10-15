@@ -1,0 +1,16 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "outDir": "dist",
+    // Required: without it tsc reports TS5011 when test files are part of the
+    // program, because the common source directory is src but sources live in
+    // both src and test.
+    "rootDir": "src",
+    "types": []
+  },
+  "include": ["src"]
+}

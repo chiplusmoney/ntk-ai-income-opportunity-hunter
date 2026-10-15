@@ -1,0 +1,27 @@
+{
+  "name": "@ntk/hunter-api",
+  "private": true,
+  "version": "0.4.0",
+  "type": "module",
+  "description": "Hunter API: authenticated run orchestration, deterministic verification via @ntk/hunter-core, Firestore server writer and optional FlagshipRouter AI analysis.",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "start": "node dist/index.js",
+    "test": "vitest run",
+    "test:emulator": "node ../../tools/verify-firebase-emulator.mjs"
+  },
+  "dependencies": {
+    "@ntk/hunter-core": "*",
+    "express": "5.3.0",
+    "firebase-admin": "14.5.0"
+  },
+  "devDependencies": {
+    "@firebase/rules-unit-testing": "6.0.0",
+    "@types/express": "5.0.6",
+    "@types/node": "26.6.5",
+    "typescript": "7.0.2",
+    "vitest": "5.0.4"
+  }
+}
