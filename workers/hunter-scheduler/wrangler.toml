@@ -7,3 +7,4 @@ crons = ["*/30 * * * *"]
 
 [vars]
 DEFAULT_REGION_PRIORITY = "NG,GB,CA,US,GLOBAL"
+HUNTER_API_URL = "https://ntk-hunter-api.onrender.com"
