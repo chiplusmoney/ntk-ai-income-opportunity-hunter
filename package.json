@@ -1,19 +1,27 @@
 {
   "name": "ntk-ai-income-opportunity-hunter",
   "private": true,
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Autonomous, zero-capital-first income opportunity hunter: Cloudflare scheduler, Hunter API, deterministic core, Firestore and PWA.",
   "engines": {
     "node": ">=24.20.0 <25.0.0"
   },
-  "workspaces": ["packages/*", "services/*", "apps/*", "workers/*"],
+  "workspaces": [
+    "packages/*",
+    "services/*",
+    "apps/*",
+    "workers/*"
+  ],
   "scripts": {
     "dev": "npm --workspace apps/web run dev",
     "start:api": "npm --workspace services/hunter-api run start",
     "build": "npm --workspace packages/core run build && npm --workspace apps/web run build && npm --workspace workers/hunter-scheduler run build && npm --workspace services/hunter-api run build",
-    "test": "npm --workspace packages/core run test && npm --workspace apps/web run test && npm --workspace services/hunter-api run test",
+    "test": "npm --workspace packages/core run test && npm --workspace apps/web run test && npm --workspace services/hunter-api run test && npm --workspace workers/hunter-scheduler run test",
     "typecheck": "npm --workspace packages/core run build && npm --workspace packages/core run typecheck && npm --workspace apps/web run typecheck && npm --workspace workers/hunter-scheduler run typecheck && npm --workspace services/hunter-api run typecheck",
     "verify:live": "npm --workspace packages/core run test:live",
     "verify:emulator": "npm --workspace services/hunter-api run test:emulator"
+  },
+  "overrides": {
+    "@grpc/grpc-js": "^1.14.6"
   }
 }

@@ -65,16 +65,9 @@ export default {
   async fetch(request: Request, env: Env) {
     const url = new URL(request.url);
     if (url.pathname === '/health') return Response.json({ ok: true, service: 'hunter-scheduler' });
-    if (url.pathname === '/run' && request.method === 'POST') {
-      let sourceIds: string[] = [];
-      try {
-        const body = await request.json() as { sources?: string[] };
-        if (Array.isArray(body?.sources)) sourceIds = body.sources;
-      } catch {
-        // Body is optional on manual trigger.
-      }
-      return new Response(await trigger(env, 'manual', sourceIds));
-    }
+    // Production has no HTTP trigger. Administrative execution uses the
+    // provider's authenticated cron tooling; the scheduler credential never
+    // becomes a browser/manual credential.
     return new Response('Not found', { status: 404 });
   }
 };

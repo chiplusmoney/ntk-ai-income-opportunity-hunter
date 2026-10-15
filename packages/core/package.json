@@ -1,7 +1,7 @@
 {
   "name": "@ntk/hunter-core",
   "private": true,
-  "version": "0.4.0",
+  "version": "0.4.1",
   "type": "module",
   "description": "Deterministic, dependency-free Hunter domain core: schemas, source registry, evidence, eligibility, risk, dedup, scoring, persistence contract and AI safety.",
   "main": "./dist/index.js",
@@ -28,7 +28,9 @@
       "default": "./dist/ai/index.js"
     }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",

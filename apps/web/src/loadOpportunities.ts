@@ -40,7 +40,10 @@ export async function loadOpportunities(max = 50): Promise<LoadedOpportunities> 
 
   if (firebaseConfigured) {
     const { FirestoreOpportunityGateway } = await import('./repositories/firestoreOpportunityGateway');
-    gateway = new FirestoreOpportunityGateway();
+    const publicGateway = new FirestoreOpportunityGateway();
+    // The shared offline catalog must contain only public records. Evidence
+    // snapshots are read separately after sign-in and stay in component memory.
+    gateway = { listPublished: max => publicGateway.listPublished(max), getEvidence: async () => null };
   }
 
   const repository = new HybridOpportunityRepository({

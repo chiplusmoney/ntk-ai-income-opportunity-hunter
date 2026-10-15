@@ -1,6 +1,6 @@
 import { collection, doc, getDoc, getDocs, limit, orderBy, query, where } from 'firebase/firestore';
 import type { FirestoreEvidenceDoc, PublishedOpportunity } from '@ntk/hunter-core';
-import { firestore } from '../lib/firebase';
+import { auth, firestore } from '../lib/firebase';
 import { PUBLISHED_QUERY, type OpportunityGateway } from './opportunityRepository';
 
 /**
@@ -32,6 +32,7 @@ export class FirestoreOpportunityGateway implements OpportunityGateway {
 
   async getEvidence(opportunityId: string): Promise<FirestoreEvidenceDoc | null> {
     if (!firestore) throw new Error('Firebase is not configured');
+    if (!auth?.currentUser) return null;
     const snapshot = await getDoc(doc(firestore, 'opportunityEvidence', opportunityId));
     if (!snapshot.exists()) return null;
     return { id: snapshot.id, ...snapshot.data() } as FirestoreEvidenceDoc;

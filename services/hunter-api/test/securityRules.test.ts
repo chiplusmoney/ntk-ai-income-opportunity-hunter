@@ -8,7 +8,7 @@ import {
   initializeTestEnvironment,
   type RulesTestEnvironment
 } from '@firebase/rules-unit-testing';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { deleteDoc, doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
 
 /**
  * Behavioural verification of `firestore.rules` against the Firestore emulator.
@@ -185,6 +185,28 @@ describe.skipIf(!enabled)('firestore.rules behaviour', () => {
       })
     );
     await assertFails(getDoc(doc(asBob(), 'users', 'alice', 'syncQueue', 'job-1')));
+  });
+
+  it.each(['saved', 'applications', 'earnings', 'notifications'])('isolates all private %s operations from other users and anonymous callers', async name => {
+    const id = `isolation-${name}`;
+    await testEnv.withSecurityRulesDisabled(async context => {
+      await setDoc(doc(context.firestore(), 'users', 'alice', name, id), { read: false, title: 'Server test record' });
+    });
+    for (const db of [anon(), asBob()]) {
+      const ref = doc(db, 'users', 'alice', name, id);
+      await assertFails(getDoc(ref));
+      await assertFails(setDoc(ref, { read: true }, { merge: true }));
+      await assertFails(deleteDoc(ref));
+    }
+    await assertSucceeds(getDoc(doc(asAlice(), 'users', 'alice', name, id)));
+  });
+
+  it('allows notification mark-read and delete but rejects edits to delivery evidence', async () => {
+    const ref = doc(asAlice(), 'users', 'alice', 'notifications', 'server-alert');
+    await assertSucceeds(updateDoc(ref, { read: true }));
+    await assertFails(updateDoc(ref, { title: 'Forged delivery', status: 'delivered' }));
+    await assertFails(updateDoc(ref, { read: 'yes' }));
+    await assertSucceeds(deleteDoc(ref));
   });
 
   it('leaves the seeded documents intact after every denied attempt', async () => {

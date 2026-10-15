@@ -80,6 +80,7 @@ export class HybridOpportunityRepository {
     try {
       const records = await gateway.listPublished(max);
       if (records.length === 0) {
+        await this.safeCacheWrite([]);
         // An empty live result is a real answer; do not paper over it with cache.
         return { items: [], source: 'live', error: null };
       }

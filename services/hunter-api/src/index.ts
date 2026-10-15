@@ -8,6 +8,7 @@ import { FirestoreOpportunityWriter } from './firestore/writer.js';
 import { FirestoreRunStateStore, MemoryRunStateStore, type SourceRunStateStore } from './run/stateStore.js';
 import { RunService } from './run/runService.js';
 import type { DocumentStore } from './firestore/documentStore.js';
+import { inspectTelegramSetup, sendControlledTelegramTest } from './notifications/telegram.js';
 
 /**
  * Service bootstrap.
@@ -63,10 +64,16 @@ export function bootstrap(env: NodeJS.ProcessEnv = process.env) {
     runService,
     stateStore,
     deploymentScope: resolvedScope.scope,
-    readinessProbe: async () => ({
-      firestore: config.usingEmulator || Boolean(config.projectId),
-      detail: store instanceof MemoryDocumentStore ? 'in-memory store (no Firestore configured)' : 'firestore'
-    })
+    ...(env.TELEGRAM_BOT_TOKEN ? { inspectNotificationSetup: () => inspectTelegramSetup(env.TELEGRAM_BOT_TOKEN!) } : {}),
+    ...(store instanceof FirestoreDocumentStore && env.TELEGRAM_BOT_TOKEN && env.TELEGRAM_OWNER_CHAT_ID && env.NOTIFICATION_OWNER_UID ? {
+      sendNotificationTest: () => sendControlledTelegramTest({ token: env.TELEGRAM_BOT_TOKEN!, chatId: env.TELEGRAM_OWNER_CHAT_ID!, ownerUid: env.NOTIFICATION_OWNER_UID!, db: (store as FirestoreDocumentStore).database })
+    } : {}),
+    readinessProbe: async () => {
+      if (!(store instanceof FirestoreDocumentStore)) return { firestore: false, detail: 'Firestore not configured' };
+      // Verify the mounted credential and connectivity with a real server read.
+      await store.database.doc('internal/readiness').get();
+      return { firestore: true, detail: 'live server read succeeded' };
+    }
   });
 
   return { app, config, logger, runService, store, deploymentScope: resolvedScope };

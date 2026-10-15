@@ -1,3 +1,5 @@
+> SUPERSEDED PRE-REVIEW RECEIPT. Some claims below were not supported by live acceptance. Use `M5B_HARDENING_STATE.md` and the current verification receipts. This historical text is not a current completion claim.
+
 # PWA Acceptance Report — M5b
 
 Date: 2026-10-15  

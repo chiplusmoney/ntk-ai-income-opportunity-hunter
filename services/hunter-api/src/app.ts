@@ -33,6 +33,8 @@ export interface AppDeps {
   now?: () => Date;
   /** Optional analysis override for tests. */
   readinessProbe?: () => Promise<{ firestore: boolean; detail: string }>;
+  sendNotificationTest?: () => Promise<unknown>;
+  inspectNotificationSetup?: () => Promise<unknown>;
 }
 
 function parseRunRequest(body: unknown): RunRequest {
@@ -71,11 +73,11 @@ export function createApp(deps: AppDeps): Express {
         const probe = await deps.readinessProbe();
         firestore = { reachable: probe.firestore, detail: probe.detail };
       } catch (error) {
-        firestore = { reachable: false, detail: error instanceof Error ? error.message : 'probe failed' };
+        firestore = { reachable: false, detail: 'Firestore probe failed' };
       }
     }
 
-    const ready = problems.length === 0;
+    const ready = problems.length === 0 && firestore.reachable;
     response.status(ready ? 200 : 503).json({
       ok: ready,
       service: 'hunter-api',
@@ -115,6 +117,17 @@ export function createApp(deps: AppDeps): Express {
 
   app.post('/internal/hunt', requireSchedulerSecret(config, logger), trigger);
   app.post('/internal/scheduler/run', requireSchedulerSecret(config, logger), trigger);
+
+  app.post('/internal/notifications/test', requireSchedulerSecret(config, logger), async (_request, response) => {
+    if (!deps.sendNotificationTest) { response.status(503).json({ error: 'notification-not-configured' }); return; }
+    try { response.json(await deps.sendNotificationTest()); }
+    catch { response.status(503).json({ error: 'notification-delivery-unavailable' }); }
+  });
+  app.get('/internal/notifications/setup', requireSchedulerSecret(config, logger), async (_request, response) => {
+    if (!deps.inspectNotificationSetup) { response.status(503).json({ error: 'notification-not-configured' }); return; }
+    try { response.json(await deps.inspectNotificationSetup()); }
+    catch { response.status(503).json({ error: 'notification-setup-unavailable' }); }
+  });
 
   app.get('/internal/status', requireSchedulerSecret(config, logger), async (_request: Request, response: Response) => {
     const last = runService.lastSummary();

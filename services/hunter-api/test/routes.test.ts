@@ -28,7 +28,7 @@ afterEach(async () => {
   }
 });
 
-function build(params: { credentialed?: boolean } = {}) {
+function build(params: { credentialed?: boolean; firestoreReachable?: boolean } = {}) {
   const credentialed = params.credentialed ?? true;
   const config = loadConfig({
     FIREBASE_PROJECT_ID: 'demo-project',
@@ -47,7 +47,7 @@ function build(params: { credentialed?: boolean } = {}) {
     now: () => new Date('2026-10-14T12:00:00.000Z')
   });
 
-  const app = createApp({ config, logger: silentLogger, runService, stateStore });
+  const app = createApp({ config, logger: silentLogger, runService, stateStore, readinessProbe: async () => ({ firestore: params.firestoreReachable ?? true, detail: 'test probe' }) });
   return { app, config, store };
 }
 
@@ -61,6 +61,12 @@ async function listen(app: ReturnType<typeof build>['app']): Promise<string> {
 }
 
 describe('health and readiness', () => {
+  it('does not call a configured but unreachable Firestore instance ready', async () => {
+    const { app } = build({ firestoreReachable: false });
+    const base = await listen(app);
+    expect((await fetch(`${base}/ready`)).status).toBe(503);
+    expect((await fetch(`${base}/health`)).status).toBe(200);
+  });
   it('answers health without any configuration or credential', async () => {
     const { app } = build({ credentialed: false });
     const base = await listen(app);

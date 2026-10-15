@@ -14,7 +14,7 @@ import type { Opportunity } from './types';
  */
 
 const DB_NAME = 'ntk-income-hunter';
-const DB_VERSION = 2;
+const DB_VERSION = 3;
 const OPPORTUNITIES = 'opportunities';
 const EVIDENCE = 'evidence';
 
@@ -30,6 +30,13 @@ function db(): Promise<IDBPDatabase> {
       if (oldVersion < 2 && !database.objectStoreNames.contains(EVIDENCE)) {
         database.createObjectStore(EVIDENCE, { keyPath: 'id' });
       }
+      // v3 removes evidence summaries from the shared persistent cache.
+      // Authenticated evidence belongs only in the current account's memory.
+      if (database.objectStoreNames.contains(EVIDENCE)) database.deleteObjectStore(EVIDENCE);
+      if (oldVersion > 0 && oldVersion < 3) {
+        database.deleteObjectStore(OPPORTUNITIES);
+        database.createObjectStore(OPPORTUNITIES, { keyPath: 'id' });
+      }
     }
   });
   return handle;
@@ -41,9 +48,9 @@ export function resetOfflineCache(): void {
 }
 
 export async function cacheOpportunities(items: Opportunity[]): Promise<void> {
-  if (!items.length) return;
   const database = await db();
   const tx = database.transaction(OPPORTUNITIES, 'readwrite');
+  await tx.store.clear();
   await Promise.all(items.map(item => tx.store.put(item)));
   await tx.done;
 }
@@ -68,19 +75,19 @@ export interface CachedEvidenceSummary {
 }
 
 export async function cacheEvidenceSummary(summary: CachedEvidenceSummary): Promise<void> {
-  const database = await db();
-  await database.put(EVIDENCE, summary);
+  // Kept as a compatibility API; authenticated evidence is never persisted.
+  void summary;
 }
 
 export async function getCachedEvidenceSummary(id: string): Promise<CachedEvidenceSummary | undefined> {
-  const database = await db();
-  return (await database.get(EVIDENCE, id)) as CachedEvidenceSummary | undefined;
+  void id;
+  return undefined;
 }
 
 /** Remove every cached record. Used by settings/logout and by tests. */
 export async function clearOfflineCache(): Promise<void> {
   const database = await db();
-  const tx = database.transaction([OPPORTUNITIES, EVIDENCE], 'readwrite');
-  await Promise.all([tx.objectStore(OPPORTUNITIES).clear(), tx.objectStore(EVIDENCE).clear()]);
+  const tx = database.transaction(OPPORTUNITIES, 'readwrite');
+  await tx.store.clear();
   await tx.done;
 }
