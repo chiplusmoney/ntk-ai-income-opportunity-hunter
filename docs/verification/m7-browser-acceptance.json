@@ -1,0 +1,40 @@
+{
+  "version": "0.6.0",
+  "status": "PASS",
+  "at": "2026-10-16T08:19:41.952853+00:00",
+  "browser": "BrowserOS Neo / chiplusmoney",
+  "deploymentCommit": "9671964",
+  "checks": {
+    "dashboard": "PASS - 50 public records and actual $0",
+    "explore": "PASS - 43 current default-filter rows from 50 loaded; blocked/expired filters exclude others",
+    "proofBuilder": "PASS - genuine project proof retained, library 1",
+    "applications": "PASS - 1 Preparing and 1 Saved, no external application/outcome created",
+    "earnings": "PASS - $0.00 / 0 paid receipts",
+    "notificationCenter": "PASS - honest 0 unread empty state",
+    "avatar": "PASS - provider avatar, advanced dropdown, Escape returns focus, duplicate Profile nav 0, removed slogan absent",
+    "policyPersistence": "PASS - disabled daily digest persists after reload, Telegram false",
+    "mobile390x844": "PASS - 390px scroll width, no clipped controls, screenshot visually inspected",
+    "encodingFix": "PASS - corrected UTF-8 labels live, current index-C6gH5yEY.js",
+    "tablet820x1180": "PASS - document width 805 within 820; both source card tops 80.0625px, native measured source-health screenshot inspected",
+    "offlineHardReload": "PASS - 50 public listings, current bundle, offline catalog banner",
+    "privateOfflineReload": "PASS - unavailable banner, no false empty notification ledger",
+    "reconnect": "PASS - server notifications recovered, online avatar, no private-data error",
+    "serviceWorker": "PASS - only ntk-income-hunter-m7-v1; no cache purge",
+    "profileMenu": "PASS - real avatar plus My profile / Account security / Settings / Notifications / Export / Sign out; keyboard Escape restores focus",
+    "applicationDetail": "PASS - existing Preparing opportunity opens after source expansion, Personal Fit 20, uncertainty checklist and genuine proof selection available",
+    "liveSecurity": "PASS - owner operations 200 no-store, anonymous 401, other UID profile 403, internal cursor 403",
+    "productionDeployment": "PASS - final frontend index-jaddVy9t.js / index-mU3__Gtz.css",
+    "desktop1440x1000": "PASS - document width 1425 within 1440; native production yield screenshot inspected",
+    "mobileSourceHealth": "PASS - 390/390, nine source cards and zero overflowing controls",
+    "productionSourceHealth": "PASS - Jobicy/WWR live metrics, dated legacy counts and null unmeasured fields labelled",
+    "applicationAssistant": "PASS - real genuine proof selected, grounded source facts/user facts/suggestions separate, no invented skill or submission",
+    "sourceYield": "PASS - 100 fetched / 82 accepted / 18 rejected / 75 published, separate from earnings",
+    "sourceRateWorkflow": "DEFECT FOUND and corrected - qualification/test/production clocks initially separate; persistent test cache and production-receipt guard added; no further source probe"
+  },
+  "remaining": [],
+  "limitations": [
+    "No owner notifications delivered because opt-in remains disabled; populated notices and transport verified in emulator/mocks",
+    "Existing source M7 quality fields remain unmeasured until due",
+    "Main bundle warning >500kB; synthetic CPU benchmark is not mobile CPU certification"
+  ]
+}

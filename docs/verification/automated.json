@@ -125,6 +125,8 @@
       83,
       85,
       9
-    ]
+    ],
+    "finalEmulator": "m7-release-emulator.log: 64 PASS after enabled-source legacy scan guard",
+    "finalApiTypecheck": "PASS"
   }
 }

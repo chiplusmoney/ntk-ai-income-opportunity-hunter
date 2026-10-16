@@ -1,6 +1,6 @@
 # M7 implementation — v0.6.0
 
-Status: implementation and acceptance in progress. No final production/package verdict yet.
+Status: runtime acceptance VERIFIED. Final overall verdict is issued only after measured packaging; see M7_ACCEPTANCE.md and the archive-root package receipt.
 
 ## Architecture and migration
 

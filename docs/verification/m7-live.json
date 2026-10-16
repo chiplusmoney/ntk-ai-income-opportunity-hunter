@@ -1,0 +1,125 @@
+{
+  "version": "0.6.0",
+  "generatedAt": "2026-10-16T08:22:20.610228+00:00",
+  "status": "LIVE_GATES_VERIFIED_PACKAGE_PENDING",
+  "targetVerdict": "M7_OPPORTUNITY_COVERAGE_AND_SMART_ALERTS_VERIFIED",
+  "applicationApiRevision": "3250318dcadc5ae8607ee1d8b0ad79283584e107",
+  "webApplicationRevision": "3d3c717",
+  "mandatoryGates": {
+    "acceptedM6Preserved": true,
+    "qualifiedPublicSourceExpansion": true,
+    "scopeAndComplianceTests": true,
+    "durableIntervalAndProbeGuards": true,
+    "crossSourceDedupeAndEvidenceTests": true,
+    "sourceHealthLive": true,
+    "dailyYieldLive": true,
+    "notificationOptInAndPolicyPersistence": true,
+    "digestQuietHoursAndDedupeTests": true,
+    "priorTelegramEvidenceAndMockedNewDispatch": true,
+    "boundedResumableScheduling": true,
+    "uidIsolationAndOwnerOperations": true,
+    "cleanInstall": true,
+    "typecheck": true,
+    "unitTests": true,
+    "build": true,
+    "dependencyAudit": true,
+    "permittedLiveSourceVerification": true,
+    "emulatorSecurity": true,
+    "existingProductionDeployment": true,
+    "realScheduledSourceRun": true,
+    "canonicalCronAndPublicRun404": true,
+    "responsiveNeoAcceptance": true,
+    "offlineReconnect": true,
+    "sourceHistorySecretScan": true
+  },
+  "sourcesBefore": 4,
+  "sourcesAfter": 6,
+  "registryEntries": 9,
+  "restrictedOrProhibited": 3,
+  "productionRun": {
+    "runId": "run_2026-10-16T08:00:28.013Z",
+    "reason": "cron-30m",
+    "finishedAt": "2026-10-16T08:00:43.393Z",
+    "due": [
+      "jobicy",
+      "weworkremotely"
+    ],
+    "fetched": 100,
+    "accepted": 82,
+    "drafts": 7,
+    "rejected": 18,
+    "published": 75,
+    "duplicates": 0,
+    "known": 0,
+    "validatedWriterDocuments": 152,
+    "measuredIngestionWrites": 231,
+    "failedWrites": 0,
+    "invalidWrites": 0,
+    "aiAttempted": false
+  },
+  "currentSourceHealthReceipt": "m7-production-yield.json",
+  "plans": {
+    "firebase": "Spark verified",
+    "render": "Free verified",
+    "cloudflare": "existing canonical Workers Free; no billing change",
+    "ai": "unconfigured / paid disabled"
+  },
+  "urls": {
+    "app": "https://ntk-income-opportunity-hunter.web.app",
+    "ready": "https://ntk-hunter-api.onrender.com/ready",
+    "scheduler": "https://ntk-income-opportunity-hunter-scheduler.chiplusmoney.workers.dev/health"
+  },
+  "apiReady": {
+    "status": 200,
+    "liveFirestoreRead": true,
+    "scope": "public",
+    "paidAiAuthorized": false
+  },
+  "cron": {
+    "schedule": "*/30 * * * *",
+    "workerVersion": "add14e17-4051-4672-8275-34c7c4f0d000",
+    "publicRunStatus": 404,
+    "workerCodeChanged": false
+  },
+  "ownerState": {
+    "earningBasicsAnswered": 2,
+    "proofs": 1,
+    "applications": 2,
+    "saved": 1,
+    "preparing": 1,
+    "applied": 0,
+    "paidReceipts": 0,
+    "actualPaidUsd": 0,
+    "notificationOptIn": false,
+    "telegramOptIn": false,
+    "mode": "digest",
+    "newTelegramMessages": 0
+  },
+  "tests": {
+    "unitPassed": 615,
+    "vitestPassed": 611,
+    "nodeProbeCachePassed": 4,
+    "emulatorPassed": 64,
+    "permittedSourceCasesPassed": 8,
+    "auditVulnerabilities": 0,
+    "simultaneousCleanReceipt": "m7-clean-suite.json",
+    "followUpReceipt": "automated.json"
+  },
+  "assets": {
+    "javascript": "index-jaddVy9t.js",
+    "css": "index-mU3__Gtz.css",
+    "sourceHealth": "SourceHealth-WUUOu-lL.js",
+    "cache": "ntk-income-hunter-m7-v1"
+  },
+  "limitations": [
+    "Two additional grants qualified, fewer than the preferred 6\u201312.",
+    "New sources have one measured M7 production run; legacy source quality remains null until due.",
+    "No genuine mirror appeared in first M7 live batch; persistent dedupe/richer evidence is emulator-proven.",
+    "Disabled notification policy produced zero owner deliveries; populated notification/digest/transport paths are emulator/mock verified plus prior genuine Telegram evidence.",
+    "Owner minimal profile never guessed; whole-source fit/application/paid yields remain unmeasured.",
+    "Early separate development polling clocks caused overly close Jobicy requests; documented defect fixed by durable verification cache/production receipt guards. No additional probe after discovery.",
+    "Main frontend >500 kB; synthetic Node benchmark is not mobile CPU certification.",
+    "Unrelated historical Firebase CLI OAuth owner cleanup still required."
+  ],
+  "packageAcceptance": "Issued only after final archive CRC/secret checks; independent verifier reopens finished archive and compares source/reference bytes and preserved M6."
+}
