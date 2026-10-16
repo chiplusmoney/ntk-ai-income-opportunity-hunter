@@ -27,7 +27,7 @@ def main():
         raise RuntimeError('Private credential pattern scan failed; no package created')
     live = json.loads((WORKING / 'docs/verification/m6-live.json').read_text())
     automated = json.loads((WORKING / 'docs/verification/automated.json').read_text())
-    if automated['status'] != 'PASS' or live.get('verdict') != 'M6_PERSONALIZED_INTELLIGENCE_AND_EARNING_OPTIMIZATION_VERIFIED' or not all(live.get('mandatoryGates', {}).values()) or not live.get('mandatoryGates'):
+    if automated['status'] != 'PASS' or live.get('verdict') != 'M6_PERSONALIZED_INTELLIGENCE_AND_EARNING_OPTIMIZATION_VERIFIED' or not all(v is True for v in live.get('mandatoryGates', {}).values()) or not live.get('mandatoryGates'):
         raise RuntimeError('Mandatory M6 gates have not passed; accepted M5b handoff stays canonical')
     HANDOFF.mkdir(exist_ok=True)
     old_files = list(HANDOFF.iterdir())

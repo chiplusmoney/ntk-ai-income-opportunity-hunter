@@ -1,21 +1,21 @@
 {
-  "generatedAt": "2026-10-16T06:04:35.858Z",
+  "generatedAt": "2026-10-16T06:13:58.478Z",
   "node": "v24.20.0",
   "environment": "Local Node CPU benchmark; synthetic records only, no cloud I/O or mobile performance certification",
   "records": 5000,
   "warmSamplesMs": [
-    101.0618,
-    78.76259999999996,
-    84.72660000000002,
-    53.679899999999975,
-    59.454399999999964
+    102.7842,
+    88.05770000000001,
+    77.2378,
+    56.40750000000003,
+    56.772500000000036
   ],
-  "maxWarmMs": 101.0618,
+  "maxWarmMs": 102.7842,
   "assets": [
     {
-      "name": "firestoreOpportunityGateway-BkITlzTx.js",
+      "name": "firestoreOpportunityGateway-D36CyxG_.js",
       "bytes": 650,
-      "gzipBytes": 402
+      "gzipBytes": 401
     },
     {
       "name": "index-CR7mCIyc.css",
@@ -23,9 +23,9 @@
       "gzipBytes": 3902
     },
     {
-      "name": "index-CRo1kXYV.js",
-      "bytes": 939099,
-      "gzipBytes": 282928
+      "name": "index-CWjgUGVP.js",
+      "bytes": 940035,
+      "gzipBytes": 283167
     }
   ],
   "baselineMainBundle": {

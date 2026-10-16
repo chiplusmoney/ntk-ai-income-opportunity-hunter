@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-16T06:12:53.383Z",
+  "generatedAt": "2026-10-16T06:22:05.068085+00:00",
   "node": "v24.20.0",
   "status": "PASS",
   "results": [
@@ -82,9 +82,33 @@
       "durationMs": 2527
     }
   ],
-  "unitPassed": 561,
+  "unitPassed": 562,
   "unitFailed": 0,
   "sourceVerificationPassed": 8,
   "emulatorPassed": 43,
-  "productionAcceptance": "Recorded separately; these automated checks do not prove live acceptance."
+  "productionAcceptance": "Recorded separately; these automated checks do not prove live acceptance.",
+  "initialFullSuiteReceipt": "m6-clean-suite.json",
+  "latestAffectedChecks": {
+    "generatedAt": "2026-10-16T06:22:05.068085+00:00",
+    "reason": "Live-acceptance wording clarification and safe deterministic draft/proof-selection improvement",
+    "status": "PASS",
+    "commands": [
+      "npm run typecheck",
+      "npm test",
+      "npm run build"
+    ],
+    "unitCounts": {
+      "core": 389,
+      "web": 81,
+      "api": 83,
+      "scheduler": 9
+    },
+    "unitPassed": 562,
+    "failed": 0,
+    "dependencyChanges": false,
+    "cleanInstallBasis": "Prior successful npm ci in m6-clean-suite.json; package-lock unchanged",
+    "emulatorAndSourceBasis": "43 security/emulator and 8 permitted-source cases passed in the prior complete clean suite; no rules, API trust boundary, transport or ingestion change in this UI fix"
+  },
+  "unitCountBasis": "Latest complete npm test rerun after UI fix; initial full-suite JSON results retained below with their original timestamp",
+  "initialSuiteGeneratedAt": "2026-10-16T06:12:53.383Z"
 }

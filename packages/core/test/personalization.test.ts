@@ -53,6 +53,7 @@ describe('personal fit boundaries',() => {
 });
 describe('grounded application assistance and fallback',() => {
   it('keeps actual facts classified and missing qualifications absent',async () => { const d = await assistApplication('cover-note',opportunity(),profile(),[proof]); expect(d.mode).toBe('deterministic'); expect(d.facts.some(f => f.text.includes('certified'))).toBe(false); expect(d.facts.map(f => f.kind)).toContain('user fact'); });
+  it('offers a usable suggested cover note without inventing qualifications',async () => { const d = await assistApplication('cover-note',opportunity(),profile({ skills:[] }),[]); expect(d.opening).toContain('Hello, I am interested'); expect(d.opening).toContain('Developer'); expect(d.opening).not.toMatch(/certified|years of experience|guaranteed|eligible/); });
   it('rejects arbitrary AI qualifications before display',() => expect(validateGroundedSelection({ factIds:['invented:phd'],suggestions:['I am certified'] },applicationFacts(opportunity(),profile(),[])).ok).toBe(false));
   it('rejects extra free-form AI text even with valid citations',() => expect(validateGroundedSelection({ factIds:['source:title'],suggestions:[],text:'I have ten years experience' },applicationFacts(opportunity(),profile(),[])).ok).toBe(false));
   it('falls back after a provider error',async () => expect((await assistApplication('proposal',opportunity(),profile(),[],{ service:'FlagshipRouter',complete:async () => { throw Error('offline'); } })).mode).toBe('deterministic'));
