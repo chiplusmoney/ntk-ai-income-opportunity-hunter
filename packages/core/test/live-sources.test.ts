@@ -44,10 +44,14 @@ const TIMEOUT = 60_000;
 for (const line of describePlan(plan)) console.log(`[live-probe] ${line}`);
 
 /** fetch, with the compliance guard applied to every URL it is asked for. */
+// Reuse one permitted response per URL within this suite. Tests do not multiply polling passes.
+const probeCache = new Map<string, Promise<Response>>();
 const guardedFetch: typeof fetch = async (input, init) => {
   const url = typeof input === 'string' ? input : input instanceof URL ? input.toString() : input.url;
   assertProbeAllowed(url, plan);
-  return fetch(url, init);
+  let cached = probeCache.get(url);
+  if (!cached) { cached = fetch(url, { ...init,redirect:'error' });probeCache.set(url,cached); }
+  return (await cached).clone();
 };
 
 const ctx = {

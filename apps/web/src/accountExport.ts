@@ -17,7 +17,7 @@ export function createAccountExport(identity: { displayName: string | null; emai
     account: { displayName: identity.displayName, email: identity.email },
     profile: data.profile ? validateProfile(data.profile).profile : null,
     earningProfile: data.profile ? earningProfileFromLegacy(data.profile) : null,
-    notificationPolicy: { enabled:policy.enabled === true,rules:Array.isArray(policy.rules) ? policy.rules.filter(x => typeof x === 'string') : [],timezone:policy.timezone,quietStart:policy.quietStart,quietEnd:policy.quietEnd,cooldownHours:policy.cooldownHours,telegram:policy.telegram === true },
+    notificationPolicy: { enabled:policy.enabled === true,rules:Array.isArray(policy.rules) ? policy.rules.filter(x => typeof x === 'string') : [],timezone:policy.timezone,quietStart:policy.quietStart,quietEnd:policy.quietEnd,cooldownHours:policy.cooldownHours,telegram:policy.telegram === true,mode:policy.mode??'instant',minimumFit:policy.minimumFit??0,categories:policy.categories??[],countries:policy.countries??[],maxPerDay:policy.maxPerDay??3,digestHour:policy.digestHour??9,digestSize:policy.digestSize??5,inApp:policy.inApp!==false },
     recommendationLearning: data.profile?.recommendationLearning ? {
       enabled: (data.profile.recommendationLearning as { enabled?: boolean }).enabled === true,
       resetAt: (data.profile.recommendationLearning as { resetAt?: string }).resetAt ?? null

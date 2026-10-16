@@ -212,8 +212,10 @@ describe('registry integrity after the compliance review', () => {
     expect(SOURCE_REGISTRY.filter(servablePublic).map(s => s.id).sort()).toEqual([
       'arbeitnow',
       'github-bounties',
+      'jobicy',
       'remoteok',
-      'remotive'
+      'remotive',
+      'weworkremotely'
     ]);
   });
 
@@ -277,14 +279,17 @@ describe('registry integrity after the compliance review', () => {
       lastRunBySource: {},
       now: NOW,
       force: true,
-      scope: 'personal'
+      scope: 'personal',
+      maxSourcesPerRun: 7
     });
     expect(plan.due.map(s => s.id).sort()).toEqual([
       'arbeitnow',
       'github-bounties',
       'hn-freelancer',
+      'jobicy',
       'remoteok',
-      'remotive'
+      'remotive',
+      'weworkremotely'
     ]);
     // The two prohibited sources stay out even for a single person.
     expect(plan.due.some(s => s.id === 'freelancer-rss')).toBe(false);

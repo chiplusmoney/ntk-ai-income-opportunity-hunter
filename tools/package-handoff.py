@@ -8,7 +8,7 @@ WORKING = Path(__file__).resolve().parents[1]
 PROJECT = WORKING.parent
 HANDOFF = PROJECT / 'HANDOFF_TO_CHATGPT'
 ARCHIVE = PROJECT / 'ARCHIVE'
-FILENAME = 'NTK_AI_Income_Opportunity_Hunter_M6_FINAL_2026-10-16.zip'
+FILENAME = 'NTK_AI_Income_Opportunity_Hunter_M7_FINAL_2026-10-16.zip'
 spec = spec_from_file_location('secret_scan', WORKING / 'tools/secret-scan.py')
 scanner = module_from_spec(spec); spec.loader.exec_module(scanner)
 
@@ -25,10 +25,10 @@ def main():
     scan = scanner.source_scan()
     if scan['findings']:
         raise RuntimeError('Private credential pattern scan failed; no package created')
-    live = json.loads((WORKING / 'docs/verification/m6-live.json').read_text(encoding='utf-8'))
+    live = json.loads((WORKING / 'docs/verification/m7-live.json').read_text(encoding='utf-8'))
     automated = json.loads((WORKING / 'docs/verification/automated.json').read_text(encoding='utf-8'))
-    if automated['status'] != 'PASS' or live.get('targetVerdict') != 'M6_PERSONALIZED_INTELLIGENCE_AND_EARNING_OPTIMIZATION_VERIFIED' or live.get('status') != 'LIVE_GATES_VERIFIED_PACKAGE_PENDING' or not all(v is True for v in live.get('mandatoryGates', {}).values()) or not live.get('mandatoryGates'):
-        raise RuntimeError('Mandatory M6 gates have not passed; accepted M5b handoff stays canonical')
+    if automated['status'] != 'PASS' or live.get('targetVerdict') != 'M7_OPPORTUNITY_COVERAGE_AND_SMART_ALERTS_VERIFIED' or live.get('status') != 'LIVE_GATES_VERIFIED_PACKAGE_PENDING' or not all(v is True for v in live.get('mandatoryGates', {}).values()) or not live.get('mandatoryGates'):
+        raise RuntimeError('Mandatory M7 gates have not passed; accepted M6 handoff stays canonical')
     HANDOFF.mkdir(exist_ok=True)
     old_files = list(HANDOFF.iterdir())
     if any(not file.is_file() or file.resolve().parent != HANDOFF.resolve() for file in old_files):
@@ -59,17 +59,17 @@ def main():
     source_commit = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=WORKING).decode().strip()
     final_verdict = live['targetVerdict']
     package_receipt = {
-        'version': '0.5.0', 'verdict': final_verdict, 'sourceCommit': source_commit,
+        'version': '0.6.0', 'verdict': final_verdict, 'sourceCommit': source_commit,
         'liveGates': live['mandatoryGates'], 'sourceArchiveCrc': 'PASS',
         'sourceAndHistorySecretScan': 'PASS', 'sourceAndReferenceFiles': file_count,
         'finalArchiveFileCount': file_count + 1,
         'checksumLocation': 'The SHA-256 sidecar and independently recomputed outer package-verification.json describe the finished ZIP; a ZIP cannot contain its own checksum.'
     }
     with zipfile.ZipFile(path, 'a', compression=zipfile.ZIP_DEFLATED, compresslevel=9) as archive:
-        archive.writestr('M6_PACKAGE_ACCEPTANCE.json', json.dumps(package_receipt, indent=2) + '\n')
+        archive.writestr('M7_PACKAGE_ACCEPTANCE.json', json.dumps(package_receipt, indent=2) + '\n')
     with zipfile.ZipFile(path) as archive:
         if archive.testzip():
-            raise RuntimeError('Final M6 archive CRC failed')
+            raise RuntimeError('Final M7 archive CRC failed')
         entries = archive.infolist()
         entry_count = len(entries)
         file_count = sum(not entry.is_dir() for entry in entries)
@@ -79,7 +79,7 @@ def main():
         raise RuntimeError('Final ZIP secret scan failed')
     checksum = digest(path)
     if old_files:
-        destination = ARCHIVE / ('M5b-accepted-before-M6-' + datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S%fZ'))
+        destination = ARCHIVE / ('M6-accepted-before-M7-' + datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S%fZ'))
         destination.mkdir(parents=True)
         for file in old_files:
             # Move individual files only, with both resolved boundaries checked.
@@ -106,10 +106,10 @@ def main():
         'measurementMethod': 'Final ZIP reopened, entries enumerated, full CRC checked and SHA-256 recomputed after sidecar write'
     }
     (HANDOFF / 'package-verification.json').write_text(json.dumps(record, indent=2) + '\n')
-    (HANDOFF / 'workspace-state.json').write_text(json.dumps({'version':'0.5.0','gitCommit':record['gitCommit'],'verdict':live['verdict'],'canonicalPackage':FILENAME,'M6':'VERIFIED','rollbackSourceBranch':'m6-baseline-0.4.1'},indent=2)+'\n')
+    (HANDOFF / 'workspace-state.json').write_text(json.dumps({'version':'0.6.0','gitCommit':record['gitCommit'],'verdict':live['verdict'],'canonicalPackage':FILENAME,'M7':'VERIFIED','rollbackSourceBranch':'m7-baseline-0.5.0'},indent=2)+'\n')
     facts = f"\n\nOverall verdict: `{live['verdict']}`.\n\n## Final archive measurements\n\nFilename: `{FILENAME}`  \nSource commit: `{record['gitCommit']}`  \nBytes: {record['sizeBytes']}  \nEntries: {entry_count}; files: {file_count}; directory entries: {entry_count - file_count}  \nSHA-256: `{checksum}`  \nIndependent recomputation matches sidecar: {record['recomputedChecksumMatch']}.\n"
-    handoff = (WORKING / 'docs/M6_HANDOFF_STATE.md').read_text(encoding='utf-8')
-    (HANDOFF / 'M6_HANDOFF_STATE.md').write_text(handoff + facts, encoding='utf-8')
+    handoff = (WORKING / 'docs/M7_HANDOFF_STATE.md').read_text(encoding='utf-8')
+    (HANDOFF / 'M7_HANDOFF_STATE.md').write_text(handoff + facts, encoding='utf-8')
     print(json.dumps({k: record[k] for k in ['filename','sizeBytes','archiveEntryCount','archiveFileCount','sha256','recomputedChecksumMatch','archiveIntegrity']},indent=2))
 
 if __name__ == '__main__':

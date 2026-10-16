@@ -112,6 +112,7 @@ export interface RunServiceDeps {
   aiCandidates?: readonly ModelCapability[];
   routerPolicy?: RouterPolicy;
   afterRun?: () => Promise<unknown>;
+  guard?: {acquire(now:Date):Promise<boolean>;release():Promise<void>;reserve(sources:readonly SourceDefinition[],now:Date):Promise<string[]>};
 }
 
 export type RunOutcome =
@@ -168,6 +169,7 @@ export class RunService {
 
     const now = this.deps.now ? this.deps.now() : new Date();
     const runId = `run_${now.toISOString()}`;
+    if(this.deps.guard && !await this.deps.guard.acquire(now))return {status:'busy',activeRunId:'persistent-lease',message:'Another instance has reserved this run.'};
     const promise = this.execute(request, now, runId);
 
     this.inFlight = { runId, promise };
@@ -177,6 +179,7 @@ export class RunService {
       return { status: 'completed', summary };
     } finally {
       this.inFlight = null;
+      if(this.deps.guard)await this.deps.guard.release();
     }
   }
 
@@ -186,6 +189,7 @@ export class RunService {
     const startedMs = now.getTime();
 
     const plan = await this.plan(request, now);
+    if(this.deps.guard){const reserved=new Set(await this.deps.guard.reserve(plan.due,now));plan.due=plan.due.filter(s=>reserved.has(s.id));}
     const dueIds = new Set(plan.due.map(source => source.id));
     const adaptersToRun = this.adapters.filter(adapter => dueIds.has(adapter.sourceId));
     const sourcesById = new Map(this.sources.map(source => [source.id, source]));

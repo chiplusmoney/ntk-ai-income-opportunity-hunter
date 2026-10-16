@@ -26,9 +26,10 @@ export interface RssChannel {
 }
 
 function decodeEntities(value: string): string {
+  const point=(v:number)=>Number.isInteger(v)&&v>=0&&v<=0x10ffff?String.fromCodePoint(v):'�';
   return value
-    .replace(/&#x([0-9a-f]+);/gi, (_, hex: string) => String.fromCodePoint(Number.parseInt(hex, 16)))
-    .replace(/&#(\d+);/g, (_, dec: string) => String.fromCodePoint(Number.parseInt(dec, 10)))
+    .replace(/&#x([0-9a-f]+);/gi, (_, hex: string) => point(Number.parseInt(hex, 16)))
+    .replace(/&#(\d+);/g, (_, dec: string) => point(Number.parseInt(dec, 10)))
     .replace(/&lt;/gi, '<')
     .replace(/&gt;/gi, '>')
     .replace(/&quot;/gi, '"')

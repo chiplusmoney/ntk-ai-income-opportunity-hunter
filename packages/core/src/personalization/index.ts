@@ -4,3 +4,4 @@ export * from './fit.js';
 export * from './assistant.js';
 export * from './notifications.js';
 export * from './optimizer.js';
+export * from './smartAlerts.js';

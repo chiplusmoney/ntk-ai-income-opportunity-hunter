@@ -1,0 +1,28 @@
+import { useState, type FormEvent } from 'react';
+import { CATEGORY_POLICY, DEFAULT_PERSONAL_NOTIFICATION_POLICY, PERSONAL_NOTIFICATION_RULES, readNotificationPolicy, type PersonalNotificationPolicy } from '@ntk/hunter-core';
+import { saveProfile, useUserData } from './repositories/userData';
+export function NotificationControls() {
+  const {profile}=useUserData();
+  const [policy,setPolicy]=useState<PersonalNotificationPolicy>(()=>readNotificationPolicy(profile?.m6Notifications)??{...DEFAULT_PERSONAL_NOTIFICATION_POLICY,mode:'instant',minimumFit:0,categories:[],countries:[],maxPerDay:3,digestHour:9,digestSize:5,inApp:true});
+  const [busy,setBusy]=useState(false),[message,setMessage]=useState('');
+  const [countryText,setCountryText]=useState(policy.countries?.join(', ')??'');
+  async function save(e:FormEvent){e.preventDefault();setBusy(true);try{const p=readNotificationPolicy({...policy,countries:[...new Set(countryText.toUpperCase().split(',').map(x=>x.trim()).filter(Boolean))]});if(!p)throw new Error('Review notification ranges, rules and timezone.');if(p.enabled&&!p.inApp&&!p.telegram)throw new Error('Select at least one notification channel.');await saveProfile({m6Notifications:p});setMessage('Notification policy saved. No test message sent. Disabled policies deliver nothing.');}catch(e){setMessage(e instanceof Error?e.message:'Save failed');}finally{setBusy(false);}}
+  const set=(patch:Partial<PersonalNotificationPolicy>)=>setPolicy(p=>({...p,...patch}));
+  return <form className="profile-card account-form" onSubmit={save}><h2>Smart alerts &amp; daily digest</h2><p>Opt in to useful source discoveries and real application reminders. Missing profile facts remain unknown. At most three deliveries a day, at least six hours apart. “Instant” means the next eligible server pass, following the 30-minute heartbeat and provider polling intervals.</p>
+    <label className="check-label"><input type="checkbox" checked={policy.enabled} onChange={e=>set({enabled:e.target.checked})}/>Enable personalized notifications</label>
+    <label>Delivery mode<select value={policy.mode??'instant'} onChange={e=>set({mode:e.target.value as 'instant'|'digest'})}><option value="instant">Instant alerts (bounded)</option><option value="digest">Daily digest</option></select></label>
+    {PERSONAL_NOTIFICATION_RULES.map(rule=><label key={rule} className="check-label"><input type="checkbox" checked={policy.rules.includes(rule)} onChange={e=>set({rules:e.target.checked?[...policy.rules,rule]:policy.rules.filter(r=>r!==rule)})}/>{rule.replaceAll('-',' ')}</label>)}
+    <label>Minimum Personal Fit (0–100)<input type="number" min={0} max={100} required value={policy.minimumFit??0} onChange={e=>set({minimumFit:Number(e.target.value)})}/></label><p>Strong-fit alerts still require at least 70 and a listed location match. Direct-pay alerts require at least 50. Other discovery rules obey your selected minimum. Application reminders do not require a fit score.</p>
+    <fieldset><legend>Discovery categories (none selected = all)</legend>{CATEGORY_POLICY.map(c=><label key={c.category} className="check-label"><input type="checkbox" checked={policy.categories?.includes(c.category)??false} onChange={e=>set({categories:e.target.checked?[...(policy.categories??[]),c.category]:(policy.categories??[]).filter(x=>x!==c.category)})}/>{c.category}</label>)}</fieldset>
+    <label>Country filters (comma-separated codes, e.g. NG, GB, CA, US; blank = all)<input maxLength={100} value={countryText} onChange={e=>setCountryText(e.target.value)}/></label><p>Global listings can match country filters. Unknown country eligibility is not treated as global.</p>
+    <label>Quiet-hours timezone<input value={policy.timezone} required onChange={e=>set({timezone:e.target.value})}/></label>
+    <label>Quiet hours start (0–23)<input type="number" required min={0} max={23} value={policy.quietStart} onChange={e=>set({quietStart:Number(e.target.value)})}/></label>
+    <label>Quiet hours end (0–23)<input type="number" required min={0} max={23} value={policy.quietEnd} onChange={e=>set({quietEnd:Number(e.target.value)})}/></label><p>Equal start and end disables quiet hours. Digests wait until quiet hours finish.</p>
+    <label>Maximum deliveries per local day<input type="number" required min={1} max={3} value={policy.maxPerDay??3} onChange={e=>set({maxPerDay:Number(e.target.value)})}/></label>
+    <label>Digest hour in your timezone (0–23)<input type="number" required min={0} max={23} value={policy.digestHour??9} onChange={e=>set({digestHour:Number(e.target.value)})}/></label>
+    <label>Maximum items per digest (1–10)<input type="number" required min={1} max={10} value={policy.digestSize??5} onChange={e=>set({digestSize:Number(e.target.value)})}/></label><p>A digest covers the bounded recent catalog since the prior digest (first digest: last 24 hours), plus due reminders. Telegram contains whole entries within its safe message limit; the in-app digest can show more.</p>
+    <label className="check-label"><input type="checkbox" checked={policy.inApp!==false} onChange={e=>set({inApp:e.target.checked})}/>In-app notification center</label>
+    <label className="check-label"><input type="checkbox" checked={policy.telegram} onChange={e=>set({telegram:e.target.checked})}/>Also deliver to my connected Telegram (configured owner account only)</label><p>Telegram credentials and destination stay on the server. Other accounts can use the in-app channel.</p>
+    <button className="primary" disabled={busy}>{busy?'Saving…':'Save notification policy'}</button><p role="status">{message}</p>
+  </form>;
+}

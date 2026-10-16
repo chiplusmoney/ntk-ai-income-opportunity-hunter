@@ -4,7 +4,7 @@ import { servableAdapters, dormantAdapters, type SourceAdapter } from '../source
 import { assessEligibility, DEFAULT_ELIGIBILITY_PREFERENCES, type EligibilityPreferences } from './eligibility.js';
 import { assessRisk } from './risk.js';
 import { assessZeroCapital } from './zeroCapital.js';
-import { dedupeCandidate, preferCanonical } from './dedupe.js';
+import { dedupeCandidate, preferCanonical, ListingIndex } from './dedupe.js';
 import { scoreCandidate, DEFAULT_WEIGHTS, type ScoringWeights } from './scoring.js';
 import type {
   CapitalStatus,
@@ -296,6 +296,7 @@ export async function runHunt(input: HuntRunInput): Promise<HuntRunResult> {
   const rejections: RejectionRecord[] = [];
   const sourceRuns: SourceRunRecord[] = [];
   const accepted: OpportunityCandidate[] = [...(input.existing ?? [])];
+  const identityIndex = new ListingIndex(accepted);
 
   let fetched = 0;
   let unknownFields = 0;
@@ -379,7 +380,7 @@ export async function runHunt(input: HuntRunInput): Promise<HuntRunResult> {
       const { candidate: processedCandidate, rejection } = processCandidate({
         candidate,
         source,
-        existing: accepted,
+        existing: identityIndex.neighbors(candidate),
         prefs,
         weights,
         userSkills,
@@ -400,6 +401,7 @@ export async function runHunt(input: HuntRunInput): Promise<HuntRunResult> {
         drafts.push(processedCandidate);
       }
       accepted.push(processedCandidate);
+      identityIndex.add(processedCandidate);
       sourceAccepted += 1;
     }
 

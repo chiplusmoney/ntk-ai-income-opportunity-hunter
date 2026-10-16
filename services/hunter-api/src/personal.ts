@@ -2,6 +2,7 @@ import { Router, type Request, type Response } from 'express';
 import type { Firestore } from 'firebase-admin/firestore';
 import { getAuth } from 'firebase-admin/auth';
 import { applyTransition, type ApplicationRecord, type TransitionRequest, type ProofRecord } from '@ntk/hunter-core';
+import { readOperations } from './operations.js';
 
 const ORIGINS = new Set(['https://ntk-income-opportunity-hunter.web.app', 'https://ntk-income-opportunity-hunter.firebaseapp.com', 'http://localhost:5173']);
 export class PersonalActionError extends Error { constructor(public status: number, message: string) { super(message); } }
@@ -48,7 +49,7 @@ export async function importOutcomeProof(db: Firestore, uid: string, id: string,
   });
 }
 
-export function createPersonalRouter(db: Firestore, verify = (token: string) => getAuth().verifyIdToken(token,true)) {
+export function createPersonalRouter(db: Firestore, verify = (token: string) => getAuth().verifyIdToken(token,true), ownerUid: string | undefined = undefined) {
   const router = Router();
   const rates = new Map<string,{ start: number; count: number }>();
   router.use(async (req, res, next) => {
@@ -56,7 +57,7 @@ export function createPersonalRouter(db: Firestore, verify = (token: string) => 
     if (origin && !ORIGINS.has(origin)) { res.status(403).json({ error: 'Origin not allowed' }); return; }
     if (origin) { res.set('Access-Control-Allow-Origin',origin); res.vary('Origin'); }
     res.set('Cache-Control','no-store');
-    if (req.method === 'OPTIONS') { res.set('Access-Control-Allow-Headers','Authorization, Content-Type'); res.set('Access-Control-Allow-Methods','POST, OPTIONS'); res.status(204).end(); return; }
+    if (req.method === 'OPTIONS') { res.set('Access-Control-Allow-Headers','Authorization, Content-Type'); res.set('Access-Control-Allow-Methods','GET, POST, OPTIONS'); res.status(204).end(); return; }
     const match = /^Bearer ([^\s]+)$/.exec(req.get('authorization') ?? '');
     if (!match) { res.status(401).json({ error: 'Sign in to continue' }); return; }
     try {
@@ -73,6 +74,10 @@ export function createPersonalRouter(db: Firestore, verify = (token: string) => 
     try { res.json(await action(res.locals.uid, String(req.params.id),req.body)); }
     catch (err) { res.status(err instanceof PersonalActionError ? err.status : 503).json({ error: err instanceof PersonalActionError ? err.message : 'Private action unavailable. Your previous record is preserved.' }); }
   };
+  router.get('/operations',async (_req,res)=>{
+    if(!ownerUid||res.locals.uid!==ownerUid){res.status(403).json({error:'Source operations are available to the configured owner only'});return;}
+    try{res.json(await readOperations(db));}catch{res.status(503).json({error:'Source operations unavailable; no zero totals are assumed'});}
+  });
   router.post('/applications/:id/transition',handle((uid,id,body) => recordApplicationTransition(db,uid,id,body)));
   router.post('/proofs/import-outcome/:id',handle((uid,id) => importOutcomeProof(db,uid,id)));
   router.post('/applications/:id/metadata',handle(async (uid,id,body) => {

@@ -1,7 +1,7 @@
 import type { ApplicationRecord } from '@ntk/hunter-core';
 
 export interface EarningRecord { id: string; applicationId: string; paidUsd: number; paidAt: string; method: string | null }
-export interface PrivateNotification { id: string; title: string; body: string; read: boolean; createdAt: string; channel: string; status: string }
+export interface PrivateNotification { id: string; title: string; body: string; read: boolean; createdAt: string; channel: string; status: string; opportunityId?:string; mode?:string; items?:import('@ntk/hunter-core').AlertDetail[] }
 
 /** Never infer receipts from advertised rewards or application payment fields. */
 export function outcomeSummary(applications: ApplicationRecord[], earnings: EarningRecord[]) {

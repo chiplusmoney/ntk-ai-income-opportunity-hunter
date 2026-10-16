@@ -27,8 +27,10 @@ describe('live probe plan — public scope (the default)', () => {
     expect(plan.probe.map(source => source.id)).toEqual([
       'arbeitnow',
       'github-bounties',
+      'jobicy',
       'remoteok',
-      'remotive'
+      'remotive',
+      'weworkremotely'
     ]);
   });
 
@@ -63,10 +65,12 @@ describe('live probe plan — public scope (the default)', () => {
   it('allows exactly the hosts of the probed sources', () => {
     expect(plan.allowedHosts).toEqual([
       'api.github.com',
+      'jobicy.com',
       // 'remoteok.com' sorts before 'remotive.com' ('e' < 'i' at the sixth
       // character), which is why this list is not in registry order.
       'remoteok.com',
       'remotive.com',
+      'weworkremotely.com',
       'www.arbeitnow.com'
     ]);
   });

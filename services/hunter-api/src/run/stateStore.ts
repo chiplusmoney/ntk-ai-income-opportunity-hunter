@@ -1,4 +1,5 @@
 import type { Firestore } from 'firebase-admin/firestore';
+import { SOURCE_REGISTRY } from '@ntk/hunter-core';
 
 /**
  * Source run state.
@@ -33,12 +34,10 @@ export class MemoryRunStateStore implements SourceRunStateStore {
 }
 
 /**
- * Read the most recent run documents back from Firestore.
- *
- * A bounded query (most recent N documents, ordered descending) is enough: the
- * only question asked is "when did this source last run", and the newest
- * document per source is always in the window as long as the window is larger
- * than the number of sources.
+ * Durable source reservations are the M7 authority. A bounded historical window
+ * bootstraps M6 sources once; after all enabled sources have reservations no
+ * historical scan is needed. This also avoids a high-volume source aging a
+ * low-frequency source's scheduling state out of the window.
  */
 export class FirestoreRunStateStore implements SourceRunStateStore {
   constructor(
@@ -51,13 +50,17 @@ export class FirestoreRunStateStore implements SourceRunStateStore {
   }
 
   async lastRunBySource(): Promise<Record<string, string | null>> {
+    const reservations=await this.db.getAll(...SOURCE_REGISTRY.map(s=>this.db.doc(`internal/sourceSchedule/sources/${s.id}`)));
+    const reserved:Record<string,string|null>={};
+    for(const d of reservations)if(typeof d.data()?.lastAttemptAt==='string')reserved[d.id]=d.data()!.lastAttemptAt;
+    if(SOURCE_REGISTRY.filter(s=>s.enabled&&s.publicDeploymentAllowed).every(s=>reserved[s.id]))return reserved;
     const snapshot = await this.db
       .collection('internalSourceRuns')
       .orderBy('startedAt', 'desc')
       .limit(this.windowSize)
       .get();
 
-    const latest: Record<string, string | null> = {};
+    const latest: Record<string, string | null> = {...reserved};
     for (const document of snapshot.docs) {
       const data = document.data() as { sourceId?: string; startedAt?: string };
       const sourceId = typeof data.sourceId === 'string' ? data.sourceId : null;

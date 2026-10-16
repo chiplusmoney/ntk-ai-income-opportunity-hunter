@@ -40,14 +40,25 @@ def source_scan(include_history=True):
     blobs = 0
     if include_history:
         objects = subprocess.check_output(['git', 'rev-list', '--objects', '--all'], cwd=ROOT).splitlines()
-        for line in objects:
-            oid = line.split(b' ', 1)[0].decode('ascii')
-            kind = subprocess.check_output(['git', 'cat-file', '-t', oid], cwd=ROOT).strip()
-            if kind != b'blob':
-                continue
-            data = subprocess.check_output(['git', 'cat-file', 'blob', oid], cwd=ROOT)
-            name = line.split(b' ', 1)[1].decode(errors='replace') if b' ' in line else ''
-            findings.extend(scan_bytes('git-blob:' + oid + '/' + name, data))
+        names = {line.split(b' ', 1)[0]: line.split(b' ', 1)[1].decode(errors='replace') if b' ' in line else '' for line in objects}
+        queries = b'\n'.join(names) + b'\n'
+        descriptions = subprocess.check_output(['git','cat-file','--batch-check'],input=queries,cwd=ROOT).splitlines()
+        blob_ids = [line.split()[0] for line in descriptions if line.split()[1] == b'blob']
+        # Batch plumbing avoids hundreds of antivirus-delayed Windows process
+        # launches while scanning the exact same complete reachable blob set.
+        packed = subprocess.check_output(['git','cat-file','--batch'],input=b'\n'.join(blob_ids)+b'\n',cwd=ROOT)
+        offset = 0
+        for expected_id in blob_ids:
+            end = packed.index(b'\n',offset)
+            oid, kind, size = packed[offset:end].split()
+            if oid != expected_id or kind != b'blob':
+                raise RuntimeError('Unexpected Git batch response')
+            start = end + 1
+            data = packed[start:start+int(size)]
+            if len(data) != int(size):
+                raise RuntimeError('Truncated Git batch response')
+            offset = start + int(size) + 1
+            findings.extend(scan_bytes('git-blob:' + oid.decode('ascii') + '/' + names[oid],data))
             blobs += 1
     return {'scannedCurrentFilesAndBundles': scanned, 'scannedHistoryBlobs': blobs, 'findings': findings, 'privateCredentialPatternFindingCount': len(findings), 'publicFirebaseWebConfiguration': 'permitted; not a server credential', 'scope': 'tracked and new source, documentation, production frontend bundle, all reachable Git history'}
 

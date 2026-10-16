@@ -54,9 +54,14 @@ export async function getText(url: string, ctx: HttpContext): Promise<HttpResult
   const timer = setTimeout(() => controller.abort(), timeoutMs);
 
   try {
-    const response = await ctx.fetchImpl(url, {
+    const origin = new URL(url);
+    if (origin.protocol !== 'https:' || origin.username || origin.password) throw new Error('Source URL must be public HTTPS without credentials');
+    let target = url;
+    let response: Response;
+    for (let redirect = 0; ; redirect++) {
+    response = await ctx.fetchImpl(target, {
       method: 'GET',
-      redirect: 'follow',
+      redirect: 'manual',
       signal: controller.signal,
       headers: {
         accept: 'application/json, application/xml, text/xml, text/html;q=0.8, */*;q=0.5',
@@ -65,19 +70,27 @@ export async function getText(url: string, ctx: HttpContext): Promise<HttpResult
       }
     });
 
+    if (![301,302,303,307,308].includes(response.status)) break;
+    const next = new URL(response.headers.get('location') ?? '', target);
+    await response.body?.cancel();
+    if (redirect >= 2 || next.protocol !== 'https:' || next.hostname !== origin.hostname || next.username || next.password) throw new Error('Source redirect outside the registered HTTPS host refused');
+    target = next.href;
+    }
     const contentType = response.headers.get('content-type');
-    const raw = await response.text();
-    const truncated = raw.length > maxBytes;
-    const bodyText = truncated ? raw.slice(0, maxBytes) : raw;
+    const chunks: Uint8Array[] = [];let received=0;let truncated=false;
+    if (Number(response.headers.get('content-length') ?? 0)>maxBytes) { await response.body?.cancel();truncated=true; }
+    else if(response.body){const reader=response.body.getReader();try{for(;;){const {done,value}=await reader.read();if(done)break;received+=value.byteLength;if(received>maxBytes){truncated=true;await reader.cancel();break;}chunks.push(value);}}finally{reader.releaseLock();}}
+    const all=new Uint8Array(chunks.reduce((n,c)=>n+c.byteLength,0));let offset=0;for(const c of chunks){all.set(c,offset);offset+=c.byteLength;}
+    const bodyText = new TextDecoder().decode(all);
 
     return {
-      ok: response.ok,
+      ok: response.ok && !truncated,
       status: response.status,
       contentType,
       bodyText,
       // Byte length of what we received, not the character count.
       bytes: new TextEncoder().encode(bodyText).length,
-      error: response.ok ? null : `HTTP ${response.status} ${response.statusText}`.trim(),
+      error: truncated ? 'Source response exceeded byte limit' : response.ok ? null : `HTTP ${response.status} ${response.statusText}`.trim(),
       durationMs: Date.now() - startedAt,
       truncated
     };

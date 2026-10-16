@@ -8,6 +8,7 @@ export {
   isHiddenByDefault,
   getSource,
   isServable,
+  sourceScopeProblem,
   enabledSources,
   disabledSources,
   isDueForCrawl
@@ -49,6 +50,8 @@ export {
   devpostAdapter,
   hnFreelancerAdapter,
   freelancerRssAdapter,
+  jobicyAdapter,
+  weWorkRemotelyAdapter,
   makeCandidate,
   snapshotOf,
   emptyResult,
@@ -59,3 +62,5 @@ export {
 } from './adapters/index.js';
 export type { SourceAdapter, AdapterContext, RssItem, RssChannel } from './adapters/index.js';
 export type { CandidateSpec, EstablishedField } from './adapters/shared.js';
+export * from './qualification.js';
+export * from './intelligence.js';

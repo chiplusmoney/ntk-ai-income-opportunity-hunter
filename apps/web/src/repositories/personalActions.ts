@@ -19,6 +19,14 @@ export async function personalApi(path: string,body: unknown) {
   if (auth?.currentUser?.uid !== uid) throw new Error('Your account changed. Reload your current records.');
   return data;
 }
+export async function readSourceOperations() {
+  const {uid}=accountIdentity();const token=await auth!.currentUser!.getIdToken();
+  if(auth?.currentUser?.uid!==uid)throw new Error('Your account changed');
+  const response=await fetch('https://ntk-hunter-api.onrender.com/v1/operations',{headers:{authorization:`Bearer ${token}`},cache:'no-store',signal:AbortSignal.timeout(60000)});
+  const data=await response.json();
+  if(auth?.currentUser?.uid!==uid)throw new Error('Your account changed');
+  if(!response.ok)throw new Error(typeof data.error==='string'?data.error:'Source operations unavailable');return data;
+}
 export async function saveEarningProfile(profile: EarningProfile,baseUpdatedAt: string | null, queue = true) {
   const { uid, db } = accountIdentity(false);
   const checked = validateEarningProfile(profile); if (!checked.ok) throw new Error(checked.problems.join('. '));

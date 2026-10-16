@@ -1,7 +1,7 @@
 {
   "name": "ntk-ai-income-opportunity-hunter",
   "private": true,
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Autonomous, zero-capital-first income opportunity hunter: Cloudflare scheduler, Hunter API, deterministic core, Firestore and PWA.",
   "engines": {
     "node": ">=24.20.0 <25.0.0"
@@ -21,7 +21,8 @@
     "verify:live": "npm --workspace packages/core run test:live",
     "verify:emulator": "npm --workspace services/hunter-api run test:emulator",
     "verify:m5b": "node tools/verify-m5b.mjs",
-    "verify:m6": "node tools/verify-m5b.mjs"
+    "verify:m6": "node tools/verify-m5b.mjs",
+    "verify:m7": "node tools/verify-m5b.mjs"
   },
   "overrides": {
     "@grpc/grpc-js": "^1.14.6"

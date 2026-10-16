@@ -48,6 +48,16 @@ export function isHiddenByDefault(category: OpportunityCategory): boolean {
  */
 export const SOURCE_REGISTRY: readonly SourceDefinition[] = [
   {
+    id:'jobicy',name:'Jobicy',kind:'jobs-api',access:'public-api',homepage:'https://jobicy.com',endpoint:'https://jobicy.com/api/v2/remote-jobs?count=50',attribution:'Jobicy',
+    permittedUse:'API-specific Fair Use explicitly permits own websites, job boards and discovery products, caching and summaries. Preserve Jobicy as source and the canonical Jobicy URL. See qualification record for reviewed general terms and fair-use references.',
+    termsSource:'provider-documentation',termsReviewed:true,verifiedAt:'2026-10-16',requiresLinkBack:true,minIntervalMinutes:360,adapterImplemented:true,enabled:true,publicDeploymentAllowed:true,reliability:78,directPayExpected:'unknown',marketHints:['Global','US','GB','CA'],notes:'One public page; no paid direct application URL service. Unknown fields stay unknown.'
+  },
+  {
+    id:'weworkremotely',name:'We Work Remotely',kind:'rss',access:'public-rss',homepage:'https://weworkremotely.com',endpoint:'https://weworkremotely.com/remote-jobs.rss',attribution:'We Work Remotely',
+    permittedUse:'Official Public RSS Feed page expressly invites anyone to fill a remote job feed using its openings, provided links are attributed back to We Work Remotely. RSS only; no site scraping, images or profile retrieval.',
+    termsSource:'provider-documentation',termsReviewed:true,verifiedAt:'2026-10-16',requiresLinkBack:true,minIntervalMinutes:360,adapterImplemented:true,enabled:true,publicDeploymentAllowed:true,reliability:80,directPayExpected:'unknown',marketHints:['Global','US','GB','CA'],notes:'Conservative six-hour floor, 50 rows maximum. Region is eligibility, headquarters is not.'
+  },
+  {
     id: 'remotive',
     name: 'Remotive',
     kind: 'jobs-api',

@@ -1,4 +1,4 @@
-const CACHE = 'ntk-income-hunter-m6-v2';
+const CACHE = 'ntk-income-hunter-m7-v1';
 const SHELL = ['/', '/manifest.webmanifest'];
 self.addEventListener('install', event => {
   event.waitUntil((async () => {

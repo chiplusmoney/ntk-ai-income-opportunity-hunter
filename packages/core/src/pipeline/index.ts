@@ -17,6 +17,8 @@ export { assessRisk, RISK_RULES } from './risk.js';
 export type { RiskInput } from './risk.js';
 export { dedupeCandidate, fingerprintOf, normalizedKeyOf, normalizeProvider, normalizeText, preferCanonical, similarityBetween, tokenize } from './dedupe.js';
 export type { DedupeOptions } from './dedupe.js';
+export { canonicalListingUrl, sameListing, ListingIndex } from './dedupe.js';
+export type { ListingIdentity } from './dedupe.js';
 export {
   scoreCandidate,
   confidenceOf,

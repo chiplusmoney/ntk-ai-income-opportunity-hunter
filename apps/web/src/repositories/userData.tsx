@@ -88,8 +88,8 @@ export async function transitionApplication(id: string, request: TransitionReque
 export async function saveProfile(profile: Record<string, unknown>) {
   const { uid, db } = identity(); await setDoc(doc(db, 'users', uid), profile, { merge: true });
 }
-export async function markNotificationRead(id: string) {
-  const { uid, db } = identity(); await updateDoc(doc(db, 'users', uid, 'notifications', id), { read: true });
+export async function markNotificationRead(id: string, read = true) {
+  const { uid, db } = identity(); await updateDoc(doc(db, 'users', uid, 'notifications', id), { read });
 }
 export async function deleteNotification(id: string) {
   const { uid, db } = identity(); await deleteDoc(doc(db, 'users', uid, 'notifications', id));

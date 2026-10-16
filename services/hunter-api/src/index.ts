@@ -11,6 +11,8 @@ import type { DocumentStore } from './firestore/documentStore.js';
 import { inspectTelegramSetup, sendControlledTelegramTest } from './notifications/telegram.js';
 import { createPersonalRouter } from './personal.js';
 import { dispatchPersonalNotices } from './notifications/personalized.js';
+import { IntelligenceWriter } from './firestore/intelligenceWriter.js';
+import { PersistentRunGuard } from './run/guard.js';
 
 /**
  * Service bootstrap.
@@ -46,7 +48,8 @@ export function bootstrap(env: NodeJS.ProcessEnv = process.env) {
     stateStore = new MemoryRunStateStore();
   }
 
-  const writer = new FirestoreOpportunityWriter(store);
+  const baseWriter = new FirestoreOpportunityWriter(store);
+  const writer = store instanceof FirestoreDocumentStore ? new IntelligenceWriter(store.database,baseWriter) : baseWriter;
   const resolvedScope = resolveDeploymentScope(env.HUNT_DEPLOYMENT_SCOPE);
   logger.info('Deployment scope resolved', { scope: resolvedScope.scope, source: resolvedScope.source });
 
@@ -58,6 +61,7 @@ export function bootstrap(env: NodeJS.ProcessEnv = process.env) {
     writer,
     stateStore,
     deploymentScope: resolvedScope.scope,
+    ...(store instanceof FirestoreDocumentStore ? {guard:new PersistentRunGuard(store.database)} : {}),
     ...(store instanceof FirestoreDocumentStore ? { afterRun: () => dispatchPersonalNotices((store as FirestoreDocumentStore).database, env) } : {})
   });
 
@@ -67,7 +71,7 @@ export function bootstrap(env: NodeJS.ProcessEnv = process.env) {
     runService,
     stateStore,
     deploymentScope: resolvedScope.scope,
-    ...(store instanceof FirestoreDocumentStore ? { personalRouter: createPersonalRouter(store.database) } : {}),
+    ...(store instanceof FirestoreDocumentStore ? { personalRouter: createPersonalRouter(store.database,undefined,env.NOTIFICATION_OWNER_UID) } : {}),
     ...(env.TELEGRAM_BOT_TOKEN ? { inspectNotificationSetup: () => inspectTelegramSetup(env.TELEGRAM_BOT_TOKEN!) } : {}),
     ...(store instanceof FirestoreDocumentStore && env.TELEGRAM_BOT_TOKEN && env.TELEGRAM_OWNER_CHAT_ID && env.NOTIFICATION_OWNER_UID ? {
       sendNotificationTest: () => sendControlledTelegramTest({ token: env.TELEGRAM_BOT_TOKEN!, chatId: env.TELEGRAM_OWNER_CHAT_ID!, ownerUid: env.NOTIFICATION_OWNER_UID!, db: (store as FirestoreDocumentStore).database })

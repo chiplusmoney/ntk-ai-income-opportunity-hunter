@@ -12,6 +12,8 @@ async function setup(verify = vi.fn(async () => ({ uid:'alice' }))) {
   return { base,db,verify };
 }
 describe('personal API trusted identity boundary',() => {
+  it('keeps operations private from anonymous callers',async()=>{const {base}=await setup();expect((await fetch(`${base}/v1/operations`)).status).toBe(401);});
+  it('fails closed for a valid user when no operations owner is configured',async()=>{const {base,db}=await setup();expect((await fetch(`${base}/v1/operations`,{headers:{authorization:'Bearer test-only'}})).status).toBe(403);expect(db.runTransaction).not.toHaveBeenCalled();});
   it('requires an ID token before touching private state',async () => { const { base,db } = await setup(); expect((await fetch(`${base}/v1/applications/real:1/transition`,{ method:'POST' })).status).toBe(401); expect(db.runTransaction).not.toHaveBeenCalled(); });
   it('rejects an invalid or revoked token',async () => { const { base } = await setup(vi.fn(async () => { throw Error('invalid'); })); expect((await fetch(`${base}/v1/applications/1/transition`,{ method:'POST',headers:{ authorization:'Bearer test-only-id-token' } })).status).toBe(401); });
   it('refuses an unapproved browser origin',async () => { const { base,verify } = await setup(); const r = await fetch(`${base}/v1/applications/1/transition`,{ method:'POST',headers:{ origin:'https://malicious.invalid',authorization:'Bearer test-only-id-token' } }); expect(r.status).toBe(403); expect(verify).not.toHaveBeenCalled(); });

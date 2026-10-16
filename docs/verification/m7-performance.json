@@ -1,0 +1,108 @@
+{
+  "at": "2026-10-16T07:43:47.509Z",
+  "node": "v24.20.0",
+  "scope": "Synthetic local Node CPU measurements, not mobile browser certification or real opportunity/earnings data",
+  "clientCatalogCap": 50,
+  "notificationServerCatalogCap": 150,
+  "results": [
+    {
+      "size": 1000,
+      "samplesMs": [
+        {
+          "dedupe": 4.451099999999997,
+          "ranking": 1.439899999999966,
+          "personalFit": 13.565499999999986,
+          "healthAggregation": 1.5109999999999673,
+          "notificationSelection": 2.400199999999984
+        },
+        {
+          "dedupe": 8.208399999999983,
+          "ranking": 0.9110000000000014,
+          "personalFit": 19.35809999999998,
+          "healthAggregation": 0.5036000000000058,
+          "notificationSelection": 2.0312000000000126
+        },
+        {
+          "dedupe": 6.795999999999992,
+          "ranking": 0.6562000000000126,
+          "personalFit": 13.694499999999948,
+          "healthAggregation": 0.4218000000000188,
+          "notificationSelection": 1.3555000000000064
+        }
+      ],
+      "worstWarmMs": {
+        "dedupe": 8.208399999999983,
+        "ranking": 1.439899999999966,
+        "personalFit": 19.35809999999998,
+        "healthAggregation": 1.5109999999999673,
+        "notificationSelection": 2.400199999999984
+      }
+    },
+    {
+      "size": 5000,
+      "samplesMs": [
+        {
+          "dedupe": 49.332899999999995,
+          "ranking": 6.004000000000019,
+          "personalFit": 83.99260000000004,
+          "healthAggregation": 5.092200000000048,
+          "notificationSelection": 5.320999999999913
+        },
+        {
+          "dedupe": 33.192699999999945,
+          "ranking": 4.405599999999936,
+          "personalFit": 63.623699999999985,
+          "healthAggregation": 3.973199999999906,
+          "notificationSelection": 10.219600000000014
+        },
+        {
+          "dedupe": 31.256700000000023,
+          "ranking": 4.465400000000045,
+          "personalFit": 48.39080000000001,
+          "healthAggregation": 2.635099999999966,
+          "notificationSelection": 5.947700000000054
+        }
+      ],
+      "worstWarmMs": {
+        "dedupe": 49.332899999999995,
+        "ranking": 6.004000000000019,
+        "personalFit": 83.99260000000004,
+        "healthAggregation": 5.092200000000048,
+        "notificationSelection": 10.219600000000014
+      }
+    },
+    {
+      "size": 10000,
+      "samplesMs": [
+        {
+          "dedupe": 102.92050000000017,
+          "ranking": 12.726799999999912,
+          "personalFit": 128.25800000000004,
+          "healthAggregation": 8.701299999999947,
+          "notificationSelection": 16.624199999999973
+        },
+        {
+          "dedupe": 79.33069999999998,
+          "ranking": 11.698900000000094,
+          "personalFit": 80.47270000000003,
+          "healthAggregation": 7.940499999999929,
+          "notificationSelection": 8.583499999999958
+        },
+        {
+          "dedupe": 87.79500000000007,
+          "ranking": 15.34030000000007,
+          "personalFit": 92.60919999999987,
+          "healthAggregation": 4.722999999999956,
+          "notificationSelection": 8.166900000000169
+        }
+      ],
+      "worstWarmMs": {
+        "dedupe": 102.92050000000017,
+        "ranking": 15.34030000000007,
+        "personalFit": 128.25800000000004,
+        "healthAggregation": 8.701299999999947,
+        "notificationSelection": 16.624199999999973
+      }
+    }
+  ]
+}

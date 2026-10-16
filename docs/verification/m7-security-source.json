@@ -1,0 +1,8 @@
+{
+  "scannedCurrentFilesAndBundles": 268,
+  "scannedHistoryBlobs": 362,
+  "findings": [],
+  "privateCredentialPatternFindingCount": 0,
+  "publicFirebaseWebConfiguration": "permitted; not a server credential",
+  "scope": "tracked and new source, documentation, production frontend bundle, all reachable Git history"
+}

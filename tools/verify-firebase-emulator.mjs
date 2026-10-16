@@ -92,7 +92,7 @@ const projectId = 'demo-ntk-hunter';
 //
 // The two suites share one emulator, so they must not run in parallel: the
 // rules suite swaps the emulator's loaded rules and clears data when it finishes.
-const inner = 'npx vitest run --no-file-parallelism test/emulator.test.ts test/securityRules.test.ts test/userLedgerEmulator.test.ts test/personalizedEmulator.test.ts';
+const inner = 'npx vitest run --no-file-parallelism test/emulator.test.ts test/securityRules.test.ts test/userLedgerEmulator.test.ts test/personalizedEmulator.test.ts test/m7Emulator.test.ts';
 
 console.log(`Starting the Firestore emulator (project ${projectId}) and running the integration test.`);
 console.log('No live Firebase project and no credentials are used.');

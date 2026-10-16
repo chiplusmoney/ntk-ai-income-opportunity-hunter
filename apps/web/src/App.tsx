@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { lazy, Suspense, useEffect, useMemo, useState } from 'react';
 import { BrowserRouter, NavLink, Route, Routes, useParams, useSearchParams } from 'react-router-dom';
 import { Bell, Bookmark, Bot, BriefcaseBusiness, ChartNoAxesCombined, CircleDollarSign, CloudOff, Filter, Home, Menu, Search, ShieldCheck, Settings as SettingsIcon } from 'lucide-react';
 import { capitalStatusLabel, RECOMMENDATION_VIEWS, selectRecommendations, type RecommendationView } from '@ntk/hunter-core';
@@ -16,6 +16,7 @@ import { EarningProfileSettings } from './EarningProfile';
 import { ProofBuilder } from './ProofBuilder';
 import { ApplicationAssistant } from './ApplicationAssistant';
 import { queuePrivateAction } from './repositories/privateQueue';
+const SourceHealth = lazy(()=>import('./SourceHealth'));
 
 function money(o: Opportunity) {
   // The mapper already built an honest display string, including
@@ -30,6 +31,7 @@ function AppShell() {
   const [mobileMenu, setMobileMenu] = useState(false);
   const [loadError, setLoadError] = useState<string | null>(null);
   const isDemo = items.length > 0 && items.every(row => row.demoSeed === true);
+  const accountData=useUserData();const unread=accountData.loading||accountData.error?0:accountData.notifications.filter(n=>!n.read).length;
 
   useEffect(() => {
     const on = () => setOnline(true);
@@ -74,6 +76,7 @@ function AppShell() {
           <NavLink to="/opportunities" onClick={() => setMobileMenu(false)}><Search size={18}/> Opportunities</NavLink>
           <NavLink to="/applications" onClick={() => setMobileMenu(false)}><BriefcaseBusiness size={18}/> Applications</NavLink>
           <NavLink to="/proof" onClick={() => setMobileMenu(false)}><ShieldCheck size={18}/> Proof Builder</NavLink>
+          <NavLink to="/sources" onClick={() => setMobileMenu(false)}><ChartNoAxesCombined size={18}/> Source Health</NavLink>
           <NavLink to="/earnings" onClick={() => setMobileMenu(false)}><CircleDollarSign size={18}/> Earnings</NavLink>
           <NavLink to="/ai" onClick={() => setMobileMenu(false)}><Bot size={18}/> AI Assistant</NavLink>
           <NavLink to="/offline" onClick={() => setMobileMenu(false)}><CloudOff size={18}/> Offline</NavLink>
@@ -84,7 +87,7 @@ function AppShell() {
         <header className="topbar">
           <button aria-label="Toggle navigation" aria-expanded={mobileMenu} className="icon-btn mobile-only" onClick={() => setMobileMenu(v => !v)}><Menu size={21}/></button>
           <div className={`connection ${online ? 'online' : 'offline'}`}>{!online ? 'Offline · cached catalog' : live ? 'Catalog synchronized' : 'Connecting to catalog…'}</div>
-          <div className="top-actions"><NavLink className="icon-btn" to="/notifications" aria-label="Notifications"><Bell size={19}/></NavLink><AccountMenu /></div>
+          <div className="top-actions"><NavLink className="icon-btn notification-bell" to="/notifications" aria-label={unread?`Notifications, ${unread} unread`:'Notifications'}><Bell size={19}/>{unread>0&&<span className="unread-badge">{unread>99?'99+':unread}</span>}</NavLink><AccountMenu /></div>
         </header>
         {loadError && <p role="alert" className="catalog-error">The live catalog could not refresh. Showing any available public cache.</p>}
         <Routes>
@@ -98,6 +101,7 @@ function AppShell() {
           <Route path="/profile" element={<Profile/>} />
           <Route path="/settings" element={<EarningProfileSettings/>} />
           <Route path="/proof" element={<ProofBuilder/>} />
+          <Route path="/sources" element={<Suspense fallback={<p className="page">Loading source health…</p>}><SourceHealth items={items}/></Suspense>} />
           <Route path="/notifications" element={<Notifications/>} />
         </Routes>
         <nav className="bottom-nav">

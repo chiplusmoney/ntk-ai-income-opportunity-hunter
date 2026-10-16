@@ -245,6 +245,10 @@ describe.skipIf(!enabled)('firestore.rules behaviour', () => {
     await assertFails(updateDoc(ref, { read: 'yes' }));
     await assertSucceeds(deleteDoc(ref));
   });
+  it.each(['internal/sourceHealth/sources/jobicy','internal/yield/days/2026-10-16','internal/dedupe/keys/test','internal/ingestionQueue/records/test','internal/personalNotifications/users/alice/attempts/test','internal/notificationCursor','internal/schedulerLease'])('keeps M7 operational/attempt state server-only: %s',async path=>{
+    await assertFails(getDoc(doc(asAlice(),path)));await assertFails(setDoc(doc(asAlice(),path),{forged:true}));
+    await assertFails(getDoc(doc(asBob(),path)));
+  });
 
   it('leaves the seeded documents intact after every denied attempt', async () => {
     // Read back with rules bypassed: this is a check on what the DENIED writes

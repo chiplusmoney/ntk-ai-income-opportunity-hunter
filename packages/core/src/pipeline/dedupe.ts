@@ -64,6 +64,42 @@ function jaccard(a: Set<string>, b: Set<string>): number {
   return union === 0 ? 0 : intersection / union;
 }
 
+/** Tracking parameters are irrelevant; job IDs, requisition IDs and paths are not. */
+export function canonicalListingUrl(value: string): string | null {
+  try {
+    const u = new URL(value);
+    if (!['https:','http:'].includes(u.protocol) || u.username || u.password) return null;
+    u.hash = '';
+    for (const key of [...u.searchParams.keys()]) if (/^utm_|^(ref|source|fbclid|gclid)$/i.test(key)) u.searchParams.delete(key);
+    u.searchParams.sort();
+    u.pathname = u.pathname.replace(/\/$/,'') || '/';
+    return u.toString();
+  } catch { return null; }
+}
+
+export interface ListingIdentity { sourceId:string; sourceItemId:string; sourceUrl:string; title:string; provider:string; description:string; countries:string[]; publishedAt:string|null }
+/** False merging is worse than a duplicate. Same title alone never proves a repost. */
+export function sameListing(a: ListingIdentity,b: ListingIdentity): boolean {
+  if (a.sourceId === b.sourceId) return a.sourceItemId === b.sourceItemId;
+  if (!normalizeProvider(a.provider) || normalizeProvider(a.provider) !== normalizeProvider(b.provider)) return false;
+  if (normalizeText(a.title) !== normalizeText(b.title)) return false;
+  const ua = canonicalListingUrl(a.sourceUrl), ub = canonicalListingUrl(b.sourceUrl);
+  if (ua && ua === ub) return true;
+  if (a.countries.length && b.countries.length && [...a.countries].sort().join(',') !== [...b.countries].sort().join(',')) return false;
+  if (a.publishedAt && b.publishedAt && Math.abs(Date.parse(a.publishedAt)-Date.parse(b.publishedAt)) > 7*86400000) return false;
+  const ta = new Set(tokenize(a.description.slice(0,1600))), tb = new Set(tokenize(b.description.slice(0,1600)));
+  return ta.size >= 10 && tb.size >= 10 && jaccard(ta,tb) >= 0.95;
+}
+
+/** Provider buckets avoid scanning the whole expanded catalog for every item. */
+export class ListingIndex<T extends ListingIdentity> {
+  private byProvider = new Map<string,T[]>();
+  private bySource = new Map<string,T>();
+  constructor(rows: readonly T[] = []) { rows.forEach(r=>this.add(r)); }
+  add(row:T) { const key=normalizeProvider(row.provider); const bucket=this.byProvider.get(key) ?? [];bucket.push(row);this.byProvider.set(key,bucket);this.bySource.set(`${row.sourceId}:${row.sourceItemId}`,row); }
+  neighbors(row:T): T[] { const exact=this.bySource.get(`${row.sourceId}:${row.sourceItemId}`);return exact ? [exact,...(this.byProvider.get(normalizeProvider(row.provider)) ?? []).filter(x=>x!==exact)] : this.byProvider.get(normalizeProvider(row.provider)) ?? []; }
+}
+
 export interface DedupeOptions {
   /** Similarity at or above this is an exact duplicate (after provider check). */
   duplicateThreshold?: number;
@@ -111,7 +147,7 @@ export function dedupeCandidate(
   }
 
   // Pass 2: identical provider + title, even across sources.
-  const exact = existing.find(e => fingerprintOf(e.provider, e.title) === fingerprint);
+  const exact = existing.find(e => fingerprintOf(e.provider, e.title) === fingerprint && sameListing(candidate,e));
   if (exact) {
     return {
       verdict: 'duplicate',
@@ -130,7 +166,7 @@ export function dedupeCandidate(
     if (!best || score > best.score) best = { item: e, score };
   }
 
-  if (best && best.score >= duplicateThreshold) {
+  if (best && best.score >= duplicateThreshold && sameListing(candidate,best.item)) {
     return {
       verdict: 'duplicate',
       fingerprint,

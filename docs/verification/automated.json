@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-16T06:32:59.725323+00:00",
+  "generatedAt": "2026-10-16T07:43:03.288Z",
   "node": "v24.20.0",
   "status": "PASS",
   "results": [
@@ -7,49 +7,49 @@
       "label": "clean-install",
       "command": "npm ci",
       "exitCode": 0,
-      "durationMs": 163587
+      "durationMs": 164805
     },
     {
       "label": "typecheck",
       "command": "npm run typecheck",
       "exitCode": 0,
-      "durationMs": 12722
+      "durationMs": 46526
     },
     {
       "label": "unit-core",
-      "command": "npm --workspace packages/core run test -- --reporter=json --outputFile=C:\\Users\\NTK\\AppData\\Local\\Temp\\ntk-hunter-checks-ErIbUE\\core.json",
+      "command": "npm --workspace packages/core run test -- --reporter=json --outputFile=C:\\Users\\NTK\\AppData\\Local\\Temp\\ntk-hunter-checks-W0wogA\\core.json",
       "exitCode": 0,
-      "durationMs": 7723,
-      "passed": 388,
+      "durationMs": 47705,
+      "passed": 434,
       "failed": 0,
       "skipped": 8,
-      "total": 396
+      "total": 442
     },
     {
       "label": "unit-web",
-      "command": "npm --workspace apps/web run test -- --reporter=json --outputFile=C:\\Users\\NTK\\AppData\\Local\\Temp\\ntk-hunter-checks-ErIbUE\\web.json",
+      "command": "npm --workspace apps/web run test -- --reporter=json --outputFile=C:\\Users\\NTK\\AppData\\Local\\Temp\\ntk-hunter-checks-W0wogA\\web.json",
       "exitCode": 0,
-      "durationMs": 6056,
-      "passed": 81,
+      "durationMs": 28538,
+      "passed": 83,
       "failed": 0,
       "skipped": 0,
-      "total": 81
+      "total": 83
     },
     {
       "label": "unit-api",
-      "command": "npm --workspace services/hunter-api run test -- --reporter=json --outputFile=C:\\Users\\NTK\\AppData\\Local\\Temp\\ntk-hunter-checks-ErIbUE\\api.json",
+      "command": "npm --workspace services/hunter-api run test -- --reporter=json --outputFile=C:\\Users\\NTK\\AppData\\Local\\Temp\\ntk-hunter-checks-W0wogA\\api.json",
       "exitCode": 0,
-      "durationMs": 10927,
-      "passed": 83,
+      "durationMs": 27449,
+      "passed": 85,
       "failed": 0,
-      "skipped": 43,
-      "total": 126
+      "skipped": 56,
+      "total": 141
     },
     {
       "label": "unit-scheduler",
-      "command": "npm --workspace workers/hunter-scheduler run test -- --reporter=json --outputFile=C:\\Users\\NTK\\AppData\\Local\\Temp\\ntk-hunter-checks-ErIbUE\\scheduler.json",
+      "command": "npm --workspace workers/hunter-scheduler run test -- --reporter=json --outputFile=C:\\Users\\NTK\\AppData\\Local\\Temp\\ntk-hunter-checks-W0wogA\\scheduler.json",
       "exitCode": 0,
-      "durationMs": 2166,
+      "durationMs": 5957,
       "passed": 9,
       "failed": 0,
       "skipped": 0,
@@ -59,73 +59,53 @@
       "label": "build",
       "command": "npm run build",
       "exitCode": 0,
-      "durationMs": 11614
+      "durationMs": 19446
     },
     {
       "label": "permitted-source-verification",
       "command": "npm run verify:live",
       "exitCode": 0,
-      "durationMs": 13783,
+      "durationMs": 14031,
       "verifiedTests": 8
     },
     {
       "label": "emulator-and-security-rules",
       "command": "npm run verify:emulator",
       "exitCode": 0,
-      "durationMs": 45041,
-      "verifiedTests": 43
+      "durationMs": 73929,
+      "verifiedTests": 56
     },
     {
       "label": "dependency-audit",
       "command": "npm audit --audit-level=high",
       "exitCode": 0,
-      "durationMs": 2527
+      "durationMs": 2705
     }
   ],
-  "unitPassed": 564,
+  "unitPassed": 611,
   "unitFailed": 0,
   "sourceVerificationPassed": 8,
-  "emulatorPassed": 43,
+  "emulatorPassed": 63,
   "productionAcceptance": "Recorded separately; these automated checks do not prove live acceptance.",
-  "initialFullSuiteReceipt": "m6-clean-suite.json",
-  "latestAffectedChecks": {
-    "generatedAt": "2026-10-16T06:22:05.068085+00:00",
-    "reason": "Live-acceptance wording clarification and safe deterministic draft/proof-selection improvement",
-    "status": "PASS",
-    "commands": [
-      "npm run typecheck",
-      "npm test",
-      "npm run build"
-    ],
+  "followUp": {
+    "generatedAt": "2026-10-16T07:47:32.483068+00:00",
+    "reason": "Final source-index bound/canonical counter fix, two-user quota guard, internal security rules cases and UI operational dimensions",
+    "typecheck": "PASS",
+    "unitPassed": 611,
     "unitCounts": {
-      "core": 389,
-      "web": 81,
-      "api": 83,
-      "scheduler": 9
-    },
-    "unitPassed": 562,
-    "failed": 0,
-    "dependencyChanges": false,
-    "cleanInstallBasis": "Prior successful npm ci in m6-clean-suite.json; package-lock unchanged",
-    "emulatorAndSourceBasis": "43 security/emulator and 8 permitted-source cases passed in the prior complete clean suite; no rules, API trust boundary, transport or ingestion change in this UI fix"
-  },
-  "unitCountBasis": "Latest complete npm test rerun after UI fix; initial full-suite JSON results retained below with their original timestamp",
-  "initialSuiteGeneratedAt": "2026-10-16T06:12:53.383Z",
-  "pwaUpdateFixChecks": {
-    "status": "PASS",
-    "webPassed": 83,
-    "failed": 0,
-    "commands": [
-      "npm --workspace apps/web run test",
-      "npm --workspace apps/web run typecheck",
-      "npm --workspace apps/web run build"
-    ],
-    "currentCombinedUnitCounts": {
-      "core": 389,
+      "core": 434,
       "web": 83,
-      "api": 83,
+      "api": 85,
       "scheduler": 9
     },
-    "reason": "Actual SW regression tests exercise navigation revalidation/new-shell reload and external/private request exclusion; explicit Node test types fixed a first typecheck failure; dependencies unchanged"
+    "emulatorPassed": 63,
+    "build": "PASS",
+    "sourceVerificationUnchanged": 8,
+    "logs": [
+      "m7-final-types.log",
+      "m7-final-unit.log",
+      "m7-final-emulator.log",
+      "m7-release-build.log"
+    ]
   }
 }

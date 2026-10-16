@@ -1,0 +1,90 @@
+{
+  "generatedAt": "2026-10-16T07:43:03.288Z",
+  "node": "v24.20.0",
+  "status": "PASS",
+  "results": [
+    {
+      "label": "clean-install",
+      "command": "npm ci",
+      "exitCode": 0,
+      "durationMs": 164805
+    },
+    {
+      "label": "typecheck",
+      "command": "npm run typecheck",
+      "exitCode": 0,
+      "durationMs": 46526
+    },
+    {
+      "label": "unit-core",
+      "command": "npm --workspace packages/core run test -- --reporter=json --outputFile=C:\\Users\\NTK\\AppData\\Local\\Temp\\ntk-hunter-checks-W0wogA\\core.json",
+      "exitCode": 0,
+      "durationMs": 47705,
+      "passed": 434,
+      "failed": 0,
+      "skipped": 8,
+      "total": 442
+    },
+    {
+      "label": "unit-web",
+      "command": "npm --workspace apps/web run test -- --reporter=json --outputFile=C:\\Users\\NTK\\AppData\\Local\\Temp\\ntk-hunter-checks-W0wogA\\web.json",
+      "exitCode": 0,
+      "durationMs": 28538,
+      "passed": 83,
+      "failed": 0,
+      "skipped": 0,
+      "total": 83
+    },
+    {
+      "label": "unit-api",
+      "command": "npm --workspace services/hunter-api run test -- --reporter=json --outputFile=C:\\Users\\NTK\\AppData\\Local\\Temp\\ntk-hunter-checks-W0wogA\\api.json",
+      "exitCode": 0,
+      "durationMs": 27449,
+      "passed": 85,
+      "failed": 0,
+      "skipped": 56,
+      "total": 141
+    },
+    {
+      "label": "unit-scheduler",
+      "command": "npm --workspace workers/hunter-scheduler run test -- --reporter=json --outputFile=C:\\Users\\NTK\\AppData\\Local\\Temp\\ntk-hunter-checks-W0wogA\\scheduler.json",
+      "exitCode": 0,
+      "durationMs": 5957,
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0,
+      "total": 9
+    },
+    {
+      "label": "build",
+      "command": "npm run build",
+      "exitCode": 0,
+      "durationMs": 19446
+    },
+    {
+      "label": "permitted-source-verification",
+      "command": "npm run verify:live",
+      "exitCode": 0,
+      "durationMs": 14031,
+      "verifiedTests": 8
+    },
+    {
+      "label": "emulator-and-security-rules",
+      "command": "npm run verify:emulator",
+      "exitCode": 0,
+      "durationMs": 73929,
+      "verifiedTests": 56
+    },
+    {
+      "label": "dependency-audit",
+      "command": "npm audit --audit-level=high",
+      "exitCode": 0,
+      "durationMs": 2705
+    }
+  ],
+  "unitPassed": 611,
+  "unitFailed": 0,
+  "sourceVerificationPassed": 8,
+  "emulatorPassed": 56,
+  "productionAcceptance": "Recorded separately; these automated checks do not prove live acceptance."
+}

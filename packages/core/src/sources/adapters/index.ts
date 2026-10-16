@@ -9,6 +9,7 @@ import { githubBountiesAdapter } from './githubBounties.js';
 import { devpostAdapter } from './devpost.js';
 import { hnFreelancerAdapter } from './hnFreelancer.js';
 import { freelancerRssAdapter } from './freelancerRss.js';
+import { jobicyAdapter, weWorkRemotelyAdapter } from './expanded.js';
 
 /**
  * The adapter table.
@@ -26,7 +27,9 @@ export const ADAPTERS: readonly SourceAdapter[] = [
   githubBountiesAdapter,
   devpostAdapter,
   hnFreelancerAdapter,
-  freelancerRssAdapter
+  freelancerRssAdapter,
+  jobicyAdapter,
+  weWorkRemotelyAdapter
 ];
 
 export function getAdapter(sourceId: string): SourceAdapter | undefined {
@@ -63,6 +66,7 @@ export { remotiveAdapter, remoteOkAdapter, arbeitnowAdapter, githubBountiesAdapt
 export type { SourceAdapter, AdapterContext, SourceFetchResult } from './shared.js';
 export { makeCandidate, snapshotOf, emptyResult } from './shared.js';
 export { parseRss } from './rss.js';
+export { jobicyAdapter,weWorkRemotelyAdapter } from './expanded.js';
 export type { RssItem, RssChannel } from './rss.js';
 export { parsePrizeAmount, parseSubmissionDeadline } from './devpost.js';
 export { parseBudgetClause } from './freelancerRss.js';

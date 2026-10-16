@@ -179,9 +179,12 @@ function SettingsForm() {
 
 export function Notifications() {
   const { notifications } = useUserData(); const [error, setError] = useState(''); const [busy, setBusy] = useState(false);
-  async function act(id: string, remove: boolean) { setBusy(true); setError(''); try { await (remove ? deleteNotification(id) : markNotificationRead(id)); } catch (err) { setError(errorMessage(err)); } finally { setBusy(false); } }
-  return <PrivateGate><section className="page"><h1>Notifications</h1>{error && <p role="alert">{error}</p>}
+  async function act(id: string, remove: boolean,read=true) { setBusy(true); setError(''); try { await (remove ? deleteNotification(id) : markNotificationRead(id,read)); } catch (err) { setError(errorMessage(err)); } finally { setBusy(false); } }
+  const ordered=[...notifications].sort((a,b)=>b.createdAt.localeCompare(a.createdAt));
+  return <PrivateGate><section className="page"><h1>Notifications</h1><p>{notifications.filter(n=>!n.read).length} unread · <Link to="/settings">Manage smart alerts and daily digest</Link></p>{error && <p role="alert">{error}</p>}
     {!notifications.length && <p>No notifications yet. This list contains only server-created delivery records.</p>}
-    <div className="list">{notifications.map(n => <article key={n.id} className="profile-card"><h2>{n.title}</h2><p>{n.body}</p><p>{n.channel} · {n.status} · {n.createdAt}</p><p>{n.read ? 'Read' : 'Unread'}</p><button className="secondary" disabled={busy || n.read} onClick={() => void act(n.id, false)}>Mark read</button><button className="secondary" disabled={busy} onClick={() => void act(n.id, true)}>Delete notification</button></article>)}</div>
+    <div className="list">{ordered.map(n => <article key={n.id} className={`profile-card ${n.read?'':'unread-notice'}`}><h2>{n.title}</h2><p>{n.body}</p><p>{n.channel} · {n.status} · {new Date(n.createdAt).toLocaleString()}</p><p>{n.read ? 'Read' : 'Unread'}</p>
+      {n.items?.map((d,i)=><section key={`${d.opportunityId}-${i}`} className="notice-detail"><h3><Link to={`/opportunities/${encodeURIComponent(d.opportunityId)}`}>{d.title}</Link></h3><p>{d.reason}</p><p>{d.category} · Personal Fit: {d.personalFit??'unknown'}/100 · {d.source}</p><p>Capital: {d.capitalStatus.replaceAll('_',' ')} · {d.reward}</p>{d.deadline&&<p>Source deadline: {new Date(d.deadline).toLocaleString()}</p>}<p>{d.uncertainty}</p>{d.sourceUrl?.startsWith('https://')&&<a href={d.sourceUrl} target="_blank" rel="noreferrer">Official source listing</a>}</section>)}
+      <button className="secondary" disabled={busy} onClick={() => void act(n.id,false,!n.read)}>{n.read?'Mark unread':'Mark read'}</button><button className="secondary" disabled={busy} onClick={() => void act(n.id,true)}>Delete notification</button></article>)}</div>
   </section></PrivateGate>;
 }
