@@ -1,4 +1,4 @@
-# M7 implementation â€” v0.6.0
+# M7 implementation — v0.6.0
 
 Status: implementation and acceptance in progress. No final production/package verdict yet.
 
@@ -24,13 +24,13 @@ UTC daily summaries distinguish fetched attempts, accepted verification (includi
 
 ## Smart alerts and digest
 
-Existing private `m6Notifications` policy migrates by optional fields; disabled remains disabled. Controls: instant/digest, rules, categories, country/global filters, fit threshold, in-app/owner Telegram, quiet timezone/hours, maximum 1â€“3 deliveries/day, digest hour and 1â€“10 items. Equal quiet start/end disables quiet hours. Invalid policies/timezones fail closed. Minimum six-hour cooldown always applies; local day boundaries use policy timezone.
+Existing private `m6Notifications` policy migrates by optional fields; disabled remains disabled. Controls: instant/digest, rules, categories, country/global filters, fit threshold, in-app/owner Telegram, quiet timezone/hours, maximum 1–3 deliveries/day, digest hour and 1–10 items. Equal quiet start/end disables quiet hours. Invalid policies/timezones fail closed. Minimum six-hour cooldown always applies; local day boundaries use policy timezone.
 
 Rules include strong fit, high-fit direct pay, explicitly confirmed $0, explicitly no CV AND no portfolio, saved deadline, follow-up, next action, status reminder and payment follow-up. Discovery obeys filters/fit, excludes blocked fit and looks at recent discoveries; reminders derive only from actual private applications. A minimal profile is never filled with guesses.
 
 Server evaluation follows ingestion and cannot undo source writes on notification failure. A persistent UID cursor rotates at most two opted-in users per pass. Empty tail wraps; <=100 newest public rows plus <=50 saved rows/user, <=50 applications and <=20 proofs/user. Over-cap private histories skip rather than pretend complete. Candidate attempts are capped at 20; one delivery/user/pass. Full fan-out is never client privileged. At 48 heartbeats/day the worst-case notification reads remain bounded; processing latency grows with opted-in users, and Spark headroom must be reviewed before lifting these caps.
 
-Daily digest considers selected recent discoveries since previous digest (first: prior 24h) plus actual due reminders. It deduplicates opportunities, bounds 1â€“10 items, waits for configured hour and quiet-hours end, and reserves at most one digest per local day. In-app details carry reason, source URL, fit, category, uncertainty, capital, advertised reward and known deadline. Telegram appends only whole entries within 3,800 characters.
+Daily digest considers selected recent discoveries since previous digest (first: prior 24h) plus actual due reminders. It deduplicates opportunities, bounds 1–10 items, waits for configured hour and quiet-hours end, and reserves at most one digest per local day. In-app details carry reason, source URL, fit, category, uncertainty, capital, advertised reward and known deadline. Telegram appends only whole entries within 3,800 characters.
 
 Delivery selection, policy re-read, cooldown/daily counter and permanent attempt records are transactional. Deleting a notification receipt does not delete its attempt. Recent-key memory is an optimization, never the dedupe authority. Telegram token/destination remain server-only and only the configured owner UID can use that destination. One send attempt maximum; an HTTP error or ambiguous timeout is consumed without automatic resend, preferring possible missed notification over duplicate spam. Mock transport verifies this. Existing accepted Telegram transport evidence is reused; no new live message is required.
 
