@@ -41,6 +41,10 @@ describe.skipIf(!enabled)('M7 production-boundary Firestore behavior',()=>{
     expect((await db.collection('opportunities').doc(a.id).get()).data()?.discoveredAt).toBe(now.toISOString());
   });
   it('records real source health and new/known daily yield without receipts',async()=>{const c=await specimen('jobicy','m7-independent');await write([{...c,title:'Distinct engineer'}],new Date(now.getTime()+7200000).toISOString());const ops=await readOperations(db,now);expect(ops.sources.find(s=>s.id==='jobicy')?.health?.fetched).toBe(1);expect(ops.sources.find(s=>s.id==='devpost')?.enabled).toBe(false);expect(ops.days[0]?.new).toBeGreaterThan(0);expect((await db.collection(`users/${uid}/earnings`).get()).empty).toBe(true);});
+  it('shows real legacy crawl counts without inventing unmeasured M7 quality',async()=>{
+    const ref=db.collection('internalSourceRuns').doc('m7-legacy-remotive');await ref.set({sourceId:'remotive',startedAt:now.toISOString(),finishedAt:now.toISOString(),ok:true,httpStatus:200,itemsSeen:5,accepted:3,rejected:2,error:null,skippedForInterval:false});
+    try{const ops=await readOperations(db,now);const health=ops.sources.find(s=>s.id==='remotive')?.health;expect(health?.fetched).toBe(5);expect(health?.accepted).toBe(3);expect(health?.rewardKnownRate).toBeNull();expect(health?.measurementScope).toContain('Legacy');}finally{await ref.delete();}
+  });
   it('resumes deferred records without making another provider fetch',async()=>{
     const c=await specimen('jobicy','m7-queued');await db.collection('internal/ingestionQueue/records').doc(c.id).set({candidate:c,queuedAt:now.toISOString()});const network=vi.spyOn(globalThis,'fetch').mockRejectedValue(Error('no source fetch while resuming'));
     const r=await writer.writeRun({published:[],candidatesById:new Map(),sourcesById:sources,sourceRuns:[],updatedAt:new Date(now.getTime()+10800000).toISOString()});expect(r.ok).toBe(true);expect((await db.collection('opportunities').doc(c.id).get()).exists).toBe(true);expect((await db.collection('internal/ingestionQueue/records').doc(c.id).get()).exists).toBe(false);expect(network).not.toHaveBeenCalled();network.mockRestore();

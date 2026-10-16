@@ -22,6 +22,7 @@ function run(label, args) {
     const totals=[...plain.matchAll(/Tests\s+(\d+)\s+passed/g)];
     if (totals.length === 1) row.verifiedTests=Number(totals[0][1]);
   }
+  if(label==='probe-cache-rate-guards'){const passed=/pass\s+(\d+)/.exec(plain);if(!passed)throw Error('Probe cache test total missing');row.passed=Number(passed[1]);row.failed=0;}
   if(r.status!==0) throw new Error(label+' failed');
   return row;
 }
@@ -34,6 +35,7 @@ try {
     const j=JSON.parse(readFileSync(file,'utf8'));Object.assign(row,{passed:j.numPassedTests,failed:j.numFailedTests,skipped:j.numPendingTests,total:j.numTotalTests});
   }
   run('build',['run','build']);
+  run('probe-cache-rate-guards',['run','test:probe-cache']);
   run('permitted-source-verification',['run','verify:live']);
   run('emulator-and-security-rules',['run','verify:emulator']);
   run('dependency-audit',['audit','--audit-level=high']);

@@ -22,7 +22,8 @@
     "verify:emulator": "npm --workspace services/hunter-api run test:emulator",
     "verify:m5b": "node tools/verify-m5b.mjs",
     "verify:m6": "node tools/verify-m5b.mjs",
-    "verify:m7": "node tools/verify-m5b.mjs"
+    "verify:m7": "node tools/verify-m5b.mjs",
+    "test:probe-cache": "node --test tools/source-probe-cache.test.mjs"
   },
   "overrides": {
     "@grpc/grpc-js": "^1.14.6"

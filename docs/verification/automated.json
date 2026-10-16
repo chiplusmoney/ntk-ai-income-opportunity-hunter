@@ -82,23 +82,24 @@
       "durationMs": 2705
     }
   ],
-  "unitPassed": 611,
+  "unitPassed": 615,
   "unitFailed": 0,
   "sourceVerificationPassed": 8,
-  "emulatorPassed": 63,
+  "emulatorPassed": 64,
   "productionAcceptance": "Recorded separately; these automated checks do not prove live acceptance.",
   "followUp": {
     "generatedAt": "2026-10-16T07:47:32.483068+00:00",
     "reason": "Final source-index bound/canonical counter fix, two-user quota guard, internal security rules cases and UI operational dimensions",
     "typecheck": "PASS",
-    "unitPassed": 611,
+    "unitPassed": 615,
     "unitCounts": {
       "core": 434,
       "web": 83,
       "api": 85,
-      "scheduler": 9
+      "scheduler": 9,
+      "nodeProbeCache": 4
     },
-    "emulatorPassed": 63,
+    "emulatorPassed": 64,
     "build": "PASS",
     "sourceVerificationUnchanged": 8,
     "logs": [
@@ -106,6 +107,11 @@
       "m7-final-unit.log",
       "m7-final-emulator.log",
       "m7-release-build.log"
-    ]
+    ],
+    "nodeProbeCacheTests": 4,
+    "latestTypecheck": "m7-legacy-types.log PASS",
+    "latestBuild": "m7-legacy-build.log PASS",
+    "latestEmulator": "m7-legacy-emulator.log 64 PASS",
+    "liveProbePolicy": "No more live source requests; production receipts and local cache guard intervals"
   }
 }

@@ -1,4 +1,8 @@
 import { describe, expect, it } from 'vitest';
+import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+// @ts-expect-error Node-only verification helper, not a frontend/runtime dependency.
+import { createProbeCache } from '../../../tools/source-probe-cache.mjs';
 import {
   ADAPTERS,
   SOURCE_REGISTRY,
@@ -45,13 +49,13 @@ for (const line of describePlan(plan)) console.log(`[live-probe] ${line}`);
 
 /** fetch, with the compliance guard applied to every URL it is asked for. */
 // Reuse one permitted response per URL within this suite. Tests do not multiply polling passes.
-const probeCache = new Map<string, Promise<Response>>();
+let productionRuns:unknown[]=[];
+try { productionRuns=JSON.parse(readFileSync(new URL('../../../docs/verification/m7-production-yield.json',import.meta.url),'utf8')).sources??[]; } catch { /* no production receipt yet */ }
+const cachedProbe=createProbeCache({directory:fileURLToPath(new URL('../../../.cache/live-probes/',import.meta.url)),sources:plan.probe,productionRuns,log:(line:string)=>console.log(`[live-probe] ${line}`)});
 const guardedFetch: typeof fetch = async (input, init) => {
   const url = typeof input === 'string' ? input : input instanceof URL ? input.toString() : input.url;
   assertProbeAllowed(url, plan);
-  let cached = probeCache.get(url);
-  if (!cached) { cached = fetch(url, { ...init,redirect:'error' });probeCache.set(url,cached); }
-  return (await cached).clone();
+  return cachedProbe(url,init);
 };
 
 const ctx = {
