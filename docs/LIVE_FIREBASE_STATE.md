@@ -1,114 +1,22 @@
-> SUPERSEDED PRE-REVIEW RECEIPT. Some claims below were not supported by live acceptance. Use `M5B_HARDENING_STATE.md` and the current verification receipts. This historical text is not a current completion claim.
+# Live Firebase state
 
-# Live Firebase State — ntk-income-opportunity-hunter
+Date: 2026-10-16. Project: `ntk-income-opportunity-hunter` (813703245101), existing Spark project; no billing change. Other Firebase projects were untouched.
 
-Date: 2026-10-15  
-Project ID: **`ntk-income-opportunity-hunter`**  
-Project Number: `813703245101`  
-Hosting Site: `https://ntk-income-opportunity-hunter.web.app`  
-Billing Plan: **Spark ($0/month, free tier)**
+| Path | Current authorization / data |
+|---|---|
+| `opportunities/{id}` | Public read only for published records. Ordinary clients cannot write; privileged admin claim / Admin SDK is trusted. |
+| `opportunityEvidence/{id}` | Authenticated read. Ordinary clients cannot write; privileged admin claim / Admin SDK is trusted. It is not public. |
+| `internalSourceRuns/{id}` and `internal/**` | Denied to client SDK accounts. Server-only audit/state/notification attempt records. |
+| `users/{uid}` | Only that authenticated UID may read or write its own profile. |
+| `users/{uid}/{saved,applications,earnings,syncQueue}/{id}` | Owner only. No cross-account access. |
+| `users/{uid}/notifications/{id}` | Owner may read/delete or change only the Boolean `read` field. Client creation is denied. Server creates receipts. |
 
----
+The canonical `firestore.rules` were reviewed and deployed on 2026-10-15. Fresh probes on 2026-10-16: public catalog 200; evidence anonymous 403 / owner 200; profile anonymous 403 / owner 200; owner earnings 200; every tested other-UID collection 403; forged notification creation 403. See `verification/live-security.json`. Emulator coverage: 29 passing tests.
 
-## 1. Project Architecture & Resource Isolation
+One genuine live opportunity was saved in the owner's account. Profile country and skills persist in Firestore. No applied/accepted/paid status was manufactured, and actual earnings remain zero. Paid transaction and duplicate tests use only the emulator.
 
-To protect existing projects and avoid schema collisions with earlier prototypes (`ntk-income-radar` and `ntk-api-tester`), the dedicated project `ntk-income-opportunity-hunter` was provisioned under the authenticated owner account (`chiplusmoney@gmail.com`).
+Email/password signup and sign-in plus Google were exercised live; Google retained the same UID while replacing the unverified password provider. Current owner sign-in method is Google, not assumed dual linkage.
 
-| Resource | Value / Configuration | Status |
-|---|---|---|
-| **Project ID** | `ntk-income-opportunity-hunter` | ACTIVE |
-| **Project Number** | `813703245101` | ACTIVE |
-| **Firestore Database** | `(default)` | LIVE & POPULATED |
-| **Web App ID** | `1:813703245101:web:7141d8564c561dd99677a4` | ACTIVE |
-| **Hosting Domain** | `ntk-income-opportunity-hunter.web.app` | LIVE |
-| **Service Account** | `firebase-adminsdk-fbsvc@ntk-income-opportunity-hunter.iam.gserviceaccount.com` | Key mounted on Render |
+Render's mounted `/etc/secrets/firebase-service-account.json` is preserved and works: readiness makes an actual server read. The unnecessary downloaded service-account JSON was removed and its absence rechecked. No private key is packaged. Auth session persistence is distinct from backend credentials; the app retains the owner's normal Firebase session on their device.
 
----
-
-## 2. Firestore Collections & Live State
-
-| Collection | Role | Current Document Count | Access Rule |
-|---|---|---|---|
-| `opportunities` | Publicly browseable opportunity catalog | 54 live documents | Read: Public (`visibility == 'published'`). Write: Admin SDK only. |
-| `opportunityEvidence` | Verifiable evidence snapshots per opportunity | 54 live documents | Read: Public. Write: Admin SDK only. |
-| `internalSourceRuns` | Audit log of scheduler crawler executions | 4 source run records | Read: Admin SDK only. Write: Admin SDK only. |
-| `users` | User profile, bookmarks, and private trackers | Dynamic | Read/Write: Owner UID only. |
-
----
-
-## 3. Firestore Security Rules
-
-The live ruleset enforces least-privilege access and immutable evidence:
-
-```javascript
-rules_version = '2';
-service cloud.firestore {
-  match /databases/{database}/documents {
-    // Opportunities: Public read for published items; no client write allowed
-    match /opportunities/{opportunityId} {
-      allow read: if resource.data.visibility == 'published';
-      allow write: if false; // Only Admin SDK can write
-    }
-
-    // Opportunity Evidence: Public read; immutable from clients
-    match /opportunityEvidence/{evidenceId} {
-      allow read: if true;
-      allow write: if false; // Only Admin SDK can write
-    }
-
-    // Source Runs: Internal audit log; completely hidden from web clients
-    match /internalSourceRuns/{runId} {
-      allow read, write: if false; // Only Admin SDK can read/write
-    }
-
-    // Users: Private to authenticated account
-    match /users/{userId} {
-      allow read, write: if request.auth != null && request.auth.uid == userId;
-
-      match /applications/{applicationId} {
-        allow read, write: if request.auth != null && request.auth.uid == userId;
-      }
-      match /earnings/{earningId} {
-        allow read, write: if request.auth != null && request.auth.uid == userId;
-      }
-    }
-  }
-}
-```
-
-Behavioral validation:
-- All 15 security rules assertions passed against the emulator test suite (`test/securityRules.test.ts`).
-- Direct client write attempts to `opportunities` or `opportunityEvidence` return `PERMISSION_DENIED`.
-
----
-
-## 4. Composite Indexes
-
-Active indexes deployed and serving in `(default)`:
-
-1. `opportunities`:
-   - `visibility` (Ascending)
-   - `zeroCapital` (Ascending)
-   - `rankScore` (Descending)
-2. `opportunities`:
-   - `visibility` (Ascending)
-   - `capitalStatus` (Ascending)
-   - `rankScore` (Descending)
-
----
-
-## 5. Web Client Configuration
-
-Public Firebase client configuration compiled into PWA build:
-
-```typescript
-const firebaseConfig = {
-  apiKey: "AIzaSyCKdbOl94kSQz2rTDoJjggMOy-oGjHbvHg",
-  authDomain: "ntk-income-opportunity-hunter.firebaseapp.com",
-  projectId: "ntk-income-opportunity-hunter",
-  storageBucket: "ntk-income-opportunity-hunter.firebasestorage.app",
-  messagingSenderId: "813703245101",
-  appId: "1:813703245101:web:7141d8564c561dd99677a4"
-};
-```
-*Note: Firebase web client config keys are public client identifiers, not private secrets.*
+The custom persistent cache contains only public opportunities. Current Firestore private reads use memory. The obsolete Firestore persistent cache on the tested Neo origin was removed after verifying zero pending mutations; Auth storage was preserved.

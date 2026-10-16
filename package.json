@@ -19,9 +19,14 @@
     "test": "npm --workspace packages/core run test && npm --workspace apps/web run test && npm --workspace services/hunter-api run test && npm --workspace workers/hunter-scheduler run test",
     "typecheck": "npm --workspace packages/core run build && npm --workspace packages/core run typecheck && npm --workspace apps/web run typecheck && npm --workspace workers/hunter-scheduler run typecheck && npm --workspace services/hunter-api run typecheck",
     "verify:live": "npm --workspace packages/core run test:live",
-    "verify:emulator": "npm --workspace services/hunter-api run test:emulator"
+    "verify:emulator": "npm --workspace services/hunter-api run test:emulator",
+    "verify:m5b": "node tools/verify-m5b.mjs"
   },
   "overrides": {
     "@grpc/grpc-js": "^1.14.6"
+  },
+  "allowScripts": {
+    "@firebase/util": true,
+    "protobufjs": true
   }
 }

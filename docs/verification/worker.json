@@ -1,0 +1,14 @@
+{
+  "at": "2026-10-16T01:23:09.331Z",
+  "authenticatedCron": "BLOCKED",
+  "deployment": "NOT UPDATED: owning account access denied",
+  "health": {
+    "body": {
+      "ok": true,
+      "service": "hunter-scheduler"
+    },
+    "navigationStatus": 200
+  },
+  "matchingEncryptedSecret": "NOT UPDATED",
+  "publicManualRouteDisabled": "NOT VERIFIED"
+}

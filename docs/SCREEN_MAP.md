@@ -1,10 +1,9 @@
-# Screen Map
+# Current M5b screen map
 
-## Mobile-first core
-Splash, onboarding, sign up/login, country/profile setup, interests/skills, preferences, dashboard, categories, opportunity list, opportunity details, AI verification, application guide, notifications, saved/offline, applications, earnings, profile/proof builder, settings, AI assistant, PWA install.
+Date: 2026-10-16. Version 0.4.1. This is current implementation, not a completion claim for a future roadmap.
 
-## Desktop/tablet expansions
-Responsive dashboard, dense opportunity table/list, split-pane opportunity details + evidence, advanced filters, applications workspace, earnings analytics, proof builder/portfolio, learning/resources, notification center, AI assistant workspace, settings/admin preferences, offline manager and install guidance.
+Desktop sidebar: Dashboard, Opportunities, Applications, Earnings, AI Assistant, Offline, Settings. Mobile bottom navigation: Home, Explore, Applied, Earnings, Settings. The mobile drawer mirrors the sidebar.
 
-## Navigation
-Mobile: five-item bottom nav + overflow menu. Desktop: persistent left sidebar + top action bar. Tablet: adaptive sidebar/drawer depending width.
+The top avatar is the single profile entry. Its dropdown opens My profile, Account security, Settings, Notifications, Export my data and Sign out; signed-out users can Sign in. No profile item is duplicated in navigation and no footer slogan is displayed.
+
+Account pages: email/password and Google authentication, actual profile/provider details, country/skills preferences, private saved applications and payment ledger, private server-created notification receipts. Public opportunity browsing remains available without sign-in. The AI assistant is currently a scaffold; broader proof-builder/portfolio, learning and assistant roadmap items are not implemented or accepted by this pass.

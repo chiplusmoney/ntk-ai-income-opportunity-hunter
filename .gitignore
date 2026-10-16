@@ -27,3 +27,5 @@ coverage/
 .firebase/
 firebase-export*/
 firestore-debug.log
+__pycache__/
+*.pyc

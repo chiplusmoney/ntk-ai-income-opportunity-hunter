@@ -1,0 +1,17 @@
+{
+  "at": "2026-10-16T01:18:40.130Z",
+  "earningsOwner": 200,
+  "evidenceAnonymous": 403,
+  "evidenceOwner": 200,
+  "forgedNotification": 403,
+  "otherAccount": {
+    "applications": 403,
+    "earnings": 403,
+    "notifications": 403,
+    "profile": 403,
+    "saved": 403
+  },
+  "profileAnonymous": 403,
+  "profileOwner": 200,
+  "publicCatalog": 200
+}

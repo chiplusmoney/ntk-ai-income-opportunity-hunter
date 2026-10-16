@@ -26,21 +26,33 @@ function AccountData({ uid, children }: { uid: string; children: ReactNode }) {
     if (!firestore) return;
     let active = true;
     const pending = new Set(['applications', 'earnings', 'notifications', 'saved', 'profile']);
-    const failure = () => { if (active) setData({ ...EMPTY, error: 'Private data could not be loaded. Reconnect or sign in again.' }); };
+    const failure = () => {
+      if (!active) return;
+      ['applications', 'earnings', 'notifications', 'saved', 'profile'].forEach(name => pending.add(name));
+      setData({ ...EMPTY, error: 'Private data could not be loaded. Reconnect or sign in again.' });
+    };
     const accept = (name: string, value: unknown) => {
       if (!active || auth?.currentUser?.uid !== uid) return;
       pending.delete(name);
-      setData(old => ({ ...old, [name]: value, loading: pending.size > 0 }));
+      setData(old => ({ ...old, [name]: value, loading: pending.size > 0, error: pending.size === 0 ? null : old.error }));
     };
     const stops = ['applications', 'earnings', 'notifications', 'saved'].map(name => onSnapshot(
       query(collection(firestore!, 'users', uid, name), limit(1000)),
+      { includeMetadataChanges: true },
       snap => {
+        // An empty memory cache is not evidence of an empty server ledger.
+        // Wait for server confirmation; offline private views fail honestly.
+        if (snap.metadata.fromCache) { if (!navigator.onLine) failure(); return; }
         if (snap.size === 1000) { failure(); return; }
         accept(name, name === 'saved' ? snap.docs.map(d => d.id) : snap.docs.map(d => ({ ...d.data(), id: d.id })));
       }, failure
     ));
-    stops.push(onSnapshot(doc(firestore, 'users', uid), snap => accept('profile', snap.exists() ? snap.data() : null), failure));
-    return () => { active = false; stops.forEach(stop => stop()); };
+    stops.push(onSnapshot(doc(firestore, 'users', uid), { includeMetadataChanges: true }, snap => {
+      if (snap.metadata.fromCache) { if (!navigator.onLine) failure(); return; }
+      accept('profile', snap.exists() ? snap.data() : null);
+    }, failure));
+    window.addEventListener('offline', failure);
+    return () => { active = false; stops.forEach(stop => stop()); window.removeEventListener('offline', failure); };
   }, [uid]);
   return <Context.Provider value={data}>{children}</Context.Provider>;
 }

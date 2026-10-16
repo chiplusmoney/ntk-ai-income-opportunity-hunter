@@ -1,0 +1,297 @@
+{
+  "generatedAt": "2026-10-16T01:25:51.352099+00:00",
+  "version": "0.4.1",
+  "verdict": "M5b_PARTIAL_CLOUDFLARE_ACCESS_BLOCKED",
+  "M6": "NOT STARTED",
+  "browser": "BrowserOS Neo only; chiplusmoney account",
+  "firebaseProject": "ntk-income-opportunity-hunter",
+  "hosting": "https://ntk-income-opportunity-hunter.web.app",
+  "api": "https://ntk-hunter-api.onrender.com",
+  "worker": "https://ntk-income-hunter-scheduler.ntk-note.workers.dev",
+  "hostingDeployment": "VERIFIED 2026-10-16; avatar menu and settings live",
+  "apiDeployment": "VERIFIED; Telegram transport and real Firestore readiness live",
+  "renderSecretRotation": {
+    "status": "VERIFIED",
+    "oldCredentialRejected": 401,
+    "newCredentialAccepted": 200,
+    "credentialValuesRecorded": false,
+    "matchingCloudflareSecret": "BLOCKED"
+  },
+  "workerDeployment": "NOT UPDATED: existing owning account unavailable",
+  "cloudflareAccess": {
+    "accessibleAccounts": 1,
+    "workersInAccessibleAccount": 0,
+    "pendingInvitations": 0,
+    "owningAccountRequestStatus": 403,
+    "matchingInvitationEmailSearch": "No matching messages in signed-in chiplusmoney mailbox"
+  },
+  "auth": {
+    "emailPasswordSignup": "VERIFIED 2026-10-15",
+    "wrongPasswordRejected": "VERIFIED",
+    "emailPasswordSignIn": "VERIFIED 2026-10-15",
+    "signOut": "VERIFIED 2026-10-15",
+    "googleSignIn": "VERIFIED; retained same owner Firebase UID",
+    "currentOwnerProvider": "Google",
+    "note": "Google replaced the unverified password provider; current owner is not claimed to have both methods linked.",
+    "dropdownSignOut": "VERIFIED 2026-10-16; private identity and avatar immediately cleared",
+    "googleReturnAfterDropdownSignOut": "VERIFIED 2026-10-16; same saved preferences restored"
+  },
+  "outcomes": {
+    "liveSavedApplications": 1,
+    "livePaidRecordsCreatedForTesting": 0,
+    "liveEarningsUsd": 0,
+    "paidTransactionAcceptance": "29-test emulator suite includes actual frontend transaction, atomicity and duplicate rejection; no production payment fabricated"
+  },
+  "telegram": {
+    "status": "VERIFIED",
+    "bot": "ntkaiincomebot",
+    "messageCount": 1,
+    "at": "2026-10-16T01:14:54.136Z",
+    "providerMessageId": 5,
+    "kind": "controlled-owner-test",
+    "receiptStatus": "delivered",
+    "visibleInOwnerNeoTelegram": true,
+    "inAppMarkRead": "PASS",
+    "inAppDelete": "PASS",
+    "attemptLedgerRetained": true,
+    "destination": "Matched to signed-in owner; private chat identifier omitted"
+  },
+  "ui": {
+    "singleTopAvatar": "PASS; actual provider photo loaded",
+    "profileRemovedFromSidebarAndBottom": "PASS",
+    "footerTagRemoved": "PASS",
+    "dropdownActions": [
+      "My profile",
+      "Account security",
+      "Settings & preferences",
+      "Notifications",
+      "Export my data",
+      "Sign out"
+    ],
+    "nativeArrowEscapeFocus": "PASS",
+    "mobileDropdownFits": "PASS",
+    "preferencesSaveAndPersistence": "PASS",
+    "realExport": "PASS; one saved application, zero earnings; no credential fields",
+    "desktop": [
+      1440,
+      1000
+    ],
+    "tablet": [
+      820,
+      1180
+    ],
+    "mobile": [
+      390,
+      844
+    ],
+    "horizontalOverflow": false,
+    "offlineReloadPublicCards": 50,
+    "offlinePrivateMask": "PASS",
+    "onlinePrivateRecovery": "PASS"
+  },
+  "securityRules": {
+    "at": "2026-10-16T01:18:40.130Z",
+    "earningsOwner": 200,
+    "evidenceAnonymous": 403,
+    "evidenceOwner": 200,
+    "forgedNotification": 403,
+    "otherAccount": {
+      "applications": 403,
+      "earnings": 403,
+      "notifications": 403,
+      "profile": 403,
+      "saved": 403
+    },
+    "profileAnonymous": 403,
+    "profileOwner": 200,
+    "publicCatalog": 200
+  },
+  "browserCache": {
+    "at": "2026-10-16T01:20:39.081Z",
+    "authSessionPreserved": true,
+    "cachedResponsesScanned": 11,
+    "legacyCacheRemoved": true,
+    "legacyPendingMutations": 0,
+    "publicRowCount": 50,
+    "publicStores": [
+      "opportunities"
+    ],
+    "serverCredentialFound": false
+  },
+  "hunt": {
+    "first": {
+      "drafts": 17,
+      "due": [
+        "remotive",
+        "arbeitnow",
+        "github-bounties",
+        "remoteok"
+      ],
+      "finishedAt": "2026-10-16T01:17:41.945Z",
+      "paidAiUsed": false,
+      "published": 136,
+      "runId": "run_2026-10-16T01:17:07.678Z",
+      "skipped": [
+        {
+          "reason": "Devpost Terms of Service \u00c2\u00a74 prohibits automated access to the Site and to any related data. No official Devpost API or API terms exist. Enabling requires written permission from Devpost \u00e2\u20ac\u201d the endpoint returning HTTP 200 is not permission.",
+          "sourceId": "devpost"
+        },
+        {
+          "reason": "Express written authorisation from Y Combinator covering redistribution or public display of HN story metadata (nothing in the YC Terms of Use, the HN Guidelines/FAQ or the official HN API grants it). See docs/SOURCE_COMPLIANCE_REVIEW_HN_MULTIUSER.md.",
+          "sourceId": "hn-freelancer"
+        },
+        {
+          "reason": "Freelancer.com prohibits this use: User Agreement \u00c2\u00a733 requires express written permission for automated access including API access, \u00c2\u00a74 item 11 forbids cross-site aggregation of listings, and API T&Cs \u00c2\u00a75.3 bars storing the data or information expressed by it (such as a hash). Enabling requires express written permission from Freelancer.",
+          "sourceId": "freelancer-rss"
+        }
+      ],
+      "startedAt": "2026-10-16T01:17:07.678Z",
+      "stats": {
+        "accepted": 153,
+        "duplicates": 5,
+        "fetched": 443,
+        "finishedAt": "2026-10-16T01:17:07.678Z",
+        "perSource": {
+          "arbeitnow": {
+            "accepted": 24,
+            "error": null,
+            "fetched": 300,
+            "rejected": 276
+          },
+          "github-bounties": {
+            "accepted": 29,
+            "error": null,
+            "fetched": 30,
+            "rejected": 1
+          },
+          "remoteok": {
+            "accepted": 91,
+            "error": null,
+            "fetched": 99,
+            "rejected": 8
+          },
+          "remotive": {
+            "accepted": 9,
+            "error": null,
+            "fetched": 14,
+            "rejected": 5
+          }
+        },
+        "rejected": 290,
+        "startedAt": "2026-10-16T01:17:07.678Z",
+        "unknownFields": 3803
+      },
+      "status": "completed",
+      "writes": {
+        "batches": 1,
+        "failed": [],
+        "ok": true,
+        "perCollection": {
+          "internalSourceRuns": 4,
+          "opportunities": 136,
+          "opportunityEvidence": 136
+        },
+        "skippedInvalid": [],
+        "staged": 276,
+        "written": 276
+      }
+    },
+    "firstHttpStatus": 200,
+    "repeat": {
+      "drafts": 0,
+      "due": [],
+      "finishedAt": "2026-10-16T01:18:06.396Z",
+      "paidAiUsed": false,
+      "published": 0,
+      "runId": "run_2026-10-16T01:18:05.953Z",
+      "skipped": [
+        {
+          "reason": "Skipped: only 0 min since the last run, interval is 360 min.",
+          "sourceId": "remotive"
+        },
+        {
+          "reason": "Skipped: only 0 min since the last run, interval is 60 min.",
+          "sourceId": "remoteok"
+        },
+        {
+          "reason": "Skipped: only 0 min since the last run, interval is 60 min.",
+          "sourceId": "arbeitnow"
+        },
+        {
+          "reason": "Skipped: only 0 min since the last run, interval is 60 min.",
+          "sourceId": "github-bounties"
+        },
+        {
+          "reason": "Devpost Terms of Service \u00c2\u00a74 prohibits automated access to the Site and to any related data. No official Devpost API or API terms exist. Enabling requires written permission from Devpost \u00e2\u20ac\u201d the endpoint returning HTTP 200 is not permission.",
+          "sourceId": "devpost"
+        },
+        {
+          "reason": "Express written authorisation from Y Combinator covering redistribution or public display of HN story metadata (nothing in the YC Terms of Use, the HN Guidelines/FAQ or the official HN API grants it). See docs/SOURCE_COMPLIANCE_REVIEW_HN_MULTIUSER.md.",
+          "sourceId": "hn-freelancer"
+        },
+        {
+          "reason": "Freelancer.com prohibits this use: User Agreement \u00c2\u00a733 requires express written permission for automated access including API access, \u00c2\u00a74 item 11 forbids cross-site aggregation of listings, and API T&Cs \u00c2\u00a75.3 bars storing the data or information expressed by it (such as a hash). Enabling requires express written permission from Freelancer.",
+          "sourceId": "freelancer-rss"
+        }
+      ],
+      "startedAt": "2026-10-16T01:18:05.953Z",
+      "stats": {
+        "accepted": 0,
+        "duplicates": 0,
+        "fetched": 0,
+        "finishedAt": "2026-10-16T01:18:05.953Z",
+        "perSource": {},
+        "rejected": 0,
+        "startedAt": "2026-10-16T01:18:05.953Z",
+        "unknownFields": 0
+      },
+      "status": "completed",
+      "writes": {
+        "batches": 0,
+        "failed": [],
+        "ok": true,
+        "perCollection": {},
+        "skippedInvalid": [],
+        "staged": 0,
+        "written": 0
+      }
+    },
+    "repeatHttpStatus": 200
+  },
+  "workerState": {
+    "at": "2026-10-16T01:23:09.331Z",
+    "authenticatedCron": "BLOCKED",
+    "deployment": "NOT UPDATED: owning account access denied",
+    "health": {
+      "body": {
+        "ok": true,
+        "service": "hunter-scheduler"
+      },
+      "navigationStatus": 200
+    },
+    "matchingEncryptedSecret": "NOT UPDATED",
+    "publicManualRouteDisabled": "NOT VERIFIED"
+  },
+  "serviceAccount": {
+    "renderSecretFile": "PRESERVED; actual live server Firestore read succeeded",
+    "unnecessaryLocalDownload": "REMOVED; absence rechecked 2026-10-16",
+    "privateKeyRecordedInArtifacts": false
+  },
+  "cost": {
+    "newResourcesCreated": 0,
+    "billingChanges": 0,
+    "paidAiCalls": 0,
+    "boundedFinalHuntWrites": 276,
+    "repeatHuntWrites": 0
+  },
+  "securityIncident": "An earlier Firebase CLI JSON diagnostic emitted unrelated cached OAuth credentials into the transcript. They were not used or copied to artifacts. This pass did not revoke the unrelated account.",
+  "browserStorageSecurity": {
+    "at": "2026-10-16T01:31:12.951Z",
+    "indexedDatabases": 3,
+    "localStorageEntries": 52,
+    "normalAuthPersistenceIntentionallyRetained": true,
+    "recordsChecked": 52,
+    "serviceAccountOrCurrentSchedulerSecretFound": false,
+    "storesChecked": 3
+  }
+}

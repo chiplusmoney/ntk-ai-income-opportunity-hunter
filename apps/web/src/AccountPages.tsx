@@ -1,11 +1,13 @@
 import { useState, type FormEvent, type ReactNode } from 'react';
-import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
+import { createUserWithEmailAndPassword, GoogleAuthProvider, sendPasswordResetEmail, sendEmailVerification, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
+import { Link } from 'react-router-dom';
 import { ALLOWED_TRANSITIONS, progressIndex, type ApplicationRecord, type ApplicationState } from '@ntk/hunter-core';
 import { auth } from './lib/firebase';
 import { useAuth } from './auth/AuthProvider';
 import { deleteNotification, markNotificationRead, saveProfile, transitionApplication, useUserData } from './repositories/userData';
 import { outcomeSummary } from './outcomes';
 import { DEFAULT_PROFILE, validateProfile } from './auth/userProfile';
+import { AccountAvatar } from './AccountMenu';
 
 function errorMessage(error: unknown): string {
   const code = (error as { code?: string })?.code;
@@ -110,10 +112,38 @@ export function Earnings() {
 }
 
 export function Profile() {
-  return <PrivateGate><ProfileForm /></PrivateGate>;
+  return <PrivateGate><AccountDetails /></PrivateGate>;
 }
-function ProfileForm() {
-  const { user, logout } = useAuth(); const { profile } = useUserData();
+function AccountDetails() {
+  const { user } = useAuth();
+  const [busy, setBusy] = useState(false); const [message, setMessage] = useState(''); const [failed, setFailed] = useState(false);
+  const providers = [...new Set(user?.providerData.map(p => p.providerId) ?? [])];
+  async function securityAction(kind: 'password' | 'verification') {
+    if (!auth || !user?.email) return;
+    setBusy(true); setMessage(''); setFailed(false);
+    try {
+      if (kind === 'password') { await sendPasswordResetEmail(auth, user.email); setMessage('Check your email for the password reset link.'); }
+      else { await sendEmailVerification(user); setMessage('Check your email for a verification link, then sign in again to refresh your status.'); }
+    } catch (err) { setMessage(errorMessage(err)); setFailed(true); } finally { setBusy(false); }
+  }
+  return <section className="page account-page"><h1>My profile</h1>
+    <div className="profile-card profile-identity"><AccountAvatar large /><div><h2>{user?.displayName || 'Your account'}</h2><p>{user?.email || 'No email available'}</p><span>{user?.emailVerified ? 'Email verified' : 'Email not verified'}</span></div></div>
+    <section id="security" className="profile-card account-security" aria-labelledby="security-title"><h2 id="security-title">Account security</h2>
+      <dl className="account-details"><div><dt>Sign-in methods</dt><dd>{providers.map(p => p === 'google.com' ? 'Google' : p === 'password' ? 'Email and password' : p).join(', ') || 'Unavailable'}</dd></div>
+        <div><dt>Account created</dt><dd>{user?.metadata.creationTime ? new Date(user.metadata.creationTime).toLocaleDateString() : 'Unavailable'}</dd></div>
+        <div><dt>Last sign-in</dt><dd>{user?.metadata.lastSignInTime ? new Date(user.metadata.lastSignInTime).toLocaleString() : 'Unavailable'}</dd></div></dl>
+      {providers.includes('password') && <><p>Request an email link to change your password securely.</p><button className="secondary" disabled={busy || !user?.email} onClick={() => void securityAction('password')}>Send password reset email</button></>}
+      {providers.includes('google.com') && <p>Your Google sign-in security is managed in your <a href="https://myaccount.google.com/security" target="_blank" rel="noreferrer">Google Account</a>.</p>}
+      {!user?.emailVerified && user?.email && <button className="secondary" disabled={busy} onClick={() => void securityAction('verification')}>Send verification email</button>}
+      {message && <p role={failed ? 'alert' : 'status'} className={failed ? 'error' : ''}>{message}</p>}
+    </section>
+    <div className="profile-card"><h2>Your preferences and data</h2><p>Manage your country and skills in <Link to="/settings">Settings</Link>. Use “Export my data” in the avatar menu to download your private records.</p></div>
+  </section>;
+}
+
+export function Settings() { return <PrivateGate><SettingsForm /></PrivateGate>; }
+function SettingsForm() {
+  const { profile } = useUserData();
   const initial = validateProfile(profile ?? DEFAULT_PROFILE).profile;
   const [country, setCountry] = useState(initial.primaryCountry); const [skills, setSkills] = useState(initial.skills.join(', '));
   const [busy, setBusy] = useState(false); const [message, setMessage] = useState('');
@@ -122,13 +152,13 @@ function ProfileForm() {
     try {
       const checked = validateProfile({ ...initial, primaryCountry: country, skills: skills.split(',') });
       if (!checked.ok) throw new Error(checked.problems.join('. '));
-      await saveProfile({ ...checked.profile, updatedAt: new Date().toISOString() }); setMessage('Profile saved to your account.');
+      await saveProfile({ ...checked.profile, updatedAt: new Date().toISOString() }); setMessage('Preferences saved to your account.');
     } catch (err) { setMessage(errorMessage(err)); } finally { setBusy(false); }
   }
-  return <section className="page"><h1>Profile &amp; preferences</h1><p>Signed in as {user?.email}</p><button className="secondary" onClick={() => void logout()}>Sign out</button>
-    <form className="profile-card account-form" onSubmit={submit}><label>Primary country<select value={country} onChange={e => setCountry(e.target.value as typeof country)}>{['NG', 'GB', 'CA', 'US', 'OTHER'].map(c => <option key={c}>{c}</option>)}</select></label>
+  return <section className="page"><h1>Settings</h1><p>Keep your country and skills up to date for opportunity matching. These preferences are saved to your account.</p>
+    <form className="profile-card account-form" onSubmit={submit}><h2>Opportunity preferences</h2><label>Primary country<select value={country} onChange={e => setCountry(e.target.value as typeof country)}>{[['NG', 'Nigeria'], ['GB', 'United Kingdom'], ['CA', 'Canada'], ['US', 'United States'], ['GLOBAL', 'Worldwide'], ['OTHER', 'Other']].map(([code, name]) => <option key={code} value={code}>{name}</option>)}</select></label>
       <label>Skills (separate with commas)<input value={skills} maxLength={2000} onChange={e => setSkills(e.target.value)} /></label>
-      <button className="primary" disabled={busy}>{busy ? 'Saving…' : 'Save profile'}</button><p role="status">{message}</p>
+      <button className="primary" disabled={busy}>{busy ? 'Saving…' : 'Save preferences'}</button><p role="status">{message}</p>
     </form>
   </section>;
 }

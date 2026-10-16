@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useState } from 'react';
 import { BrowserRouter, NavLink, Route, Routes, useParams } from 'react-router-dom';
-import { Bell, Bookmark, Bot, BriefcaseBusiness, ChartNoAxesCombined, CircleDollarSign, CloudOff, Filter, Home, Menu, Search, ShieldCheck, UserRound } from 'lucide-react';
+import { Bell, Bookmark, Bot, BriefcaseBusiness, ChartNoAxesCombined, CircleDollarSign, CloudOff, Filter, Home, Menu, Search, ShieldCheck, Settings as SettingsIcon } from 'lucide-react';
 import { capitalStatusLabel } from '@ntk/hunter-core';
 import { AuthProvider, useAuth } from './auth/AuthProvider';
-import { Applications, Earnings, Notifications, Profile } from './AccountPages';
+import { Applications, Earnings, Notifications, Profile, Settings } from './AccountPages';
+import { AccountMenu } from './AccountMenu';
 import { UserDataProvider, saveOpportunity, useUserData } from './repositories/userData';
 import { outcomeSummary } from './outcomes';
 import { getCachedOpportunities } from './offline';
@@ -22,7 +23,6 @@ function AppShell() {
   const [live, setLive] = useState(false);
   const [online, setOnline] = useState(navigator.onLine);
   const [mobileMenu, setMobileMenu] = useState(false);
-  const { user } = useAuth();
   const [loadError, setLoadError] = useState<string | null>(null);
   const isDemo = items.length > 0 && items.every(row => row.demoSeed === true);
 
@@ -71,15 +71,14 @@ function AppShell() {
           <NavLink to="/earnings" onClick={() => setMobileMenu(false)}><CircleDollarSign size={18}/> Earnings</NavLink>
           <NavLink to="/ai" onClick={() => setMobileMenu(false)}><Bot size={18}/> AI Assistant</NavLink>
           <NavLink to="/offline" onClick={() => setMobileMenu(false)}><CloudOff size={18}/> Offline</NavLink>
-          <NavLink to="/profile" onClick={() => setMobileMenu(false)}><UserRound size={18}/> Profile</NavLink>
+          <NavLink to="/settings" onClick={() => setMobileMenu(false)}><SettingsIcon size={18}/> Settings</NavLink>
         </nav>
-        <div className="sidebar-foot"><ShieldCheck size={17}/> Free first. Evidence first.</div>
       </aside>
       <main>
         <header className="topbar">
           <button aria-label="Toggle navigation" aria-expanded={mobileMenu} className="icon-btn mobile-only" onClick={() => setMobileMenu(v => !v)}><Menu size={21}/></button>
           <div className={`connection ${online ? 'online' : 'offline'}`}>{!online ? 'Offline · cached catalog' : live ? 'Catalog synchronized' : 'Connecting to catalog…'}</div>
-          <div className="top-actions"><NavLink className="icon-btn" to="/notifications" aria-label="Notifications"><Bell size={19}/></NavLink><NavLink to="/profile">{user ? 'My account' : 'Sign in'}</NavLink></div>
+          <div className="top-actions"><NavLink className="icon-btn" to="/notifications" aria-label="Notifications"><Bell size={19}/></NavLink><AccountMenu /></div>
         </header>
         {loadError && <p role="alert" className="catalog-error">The live catalog could not refresh. Showing any available public cache.</p>}
         <Routes>
@@ -91,6 +90,7 @@ function AppShell() {
           <Route path="/ai" element={<AiAssistant/>} />
           <Route path="/offline" element={<Offline items={items}/>} />
           <Route path="/profile" element={<Profile/>} />
+          <Route path="/settings" element={<Settings/>} />
           <Route path="/notifications" element={<Notifications/>} />
         </Routes>
         <nav className="bottom-nav">
@@ -98,7 +98,7 @@ function AppShell() {
           <NavLink to="/opportunities"><Search size={18}/><span>Explore</span></NavLink>
           <NavLink to="/applications"><BriefcaseBusiness size={18}/><span>Applied</span></NavLink>
           <NavLink to="/earnings"><ChartNoAxesCombined size={18}/><span>Earnings</span></NavLink>
-          <NavLink to="/profile"><UserRound size={18}/><span>Profile</span></NavLink>
+          <NavLink to="/settings"><SettingsIcon size={18}/><span>Settings</span></NavLink>
         </nav>
       </main>
     </div>

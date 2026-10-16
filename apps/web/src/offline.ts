@@ -4,13 +4,10 @@ import type { Opportunity } from './types';
 /**
  * Offline cache.
  *
- * The offline contract (V1_PRODUCT_SPEC.md) is explicit: cache user-visible
- * opportunity data, evidence summaries, saved state and guides — never provider
- * secrets, private keys or privileged credentials.
- *
- * Only these two stores exist, and both hold display data only:
- *   - `opportunities`: the UI view model, keyed by opportunity id.
- *   - `evidence`: the bounded evidence summary shown on the detail screen.
+ * Persistent storage contains public opportunity display data only. Private
+ * applications, earnings, profile and notifications use account-scoped memory.
+ * Authenticated evidence is read on demand and is never stored in this shared
+ * cache. No provider secret or privileged credential belongs here.
  */
 
 const DB_NAME = 'ntk-income-hunter';
@@ -25,10 +22,6 @@ function db(): Promise<IDBPDatabase> {
     upgrade(database, oldVersion) {
       if (!database.objectStoreNames.contains(OPPORTUNITIES)) {
         database.createObjectStore(OPPORTUNITIES, { keyPath: 'id' });
-      }
-      // v2 adds the evidence summary store.
-      if (oldVersion < 2 && !database.objectStoreNames.contains(EVIDENCE)) {
-        database.createObjectStore(EVIDENCE, { keyPath: 'id' });
       }
       // v3 removes evidence summaries from the shared persistent cache.
       // Authenticated evidence belongs only in the current account's memory.

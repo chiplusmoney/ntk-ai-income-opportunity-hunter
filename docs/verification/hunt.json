@@ -1,0 +1,140 @@
+{
+  "first": {
+    "drafts": 17,
+    "due": [
+      "remotive",
+      "arbeitnow",
+      "github-bounties",
+      "remoteok"
+    ],
+    "finishedAt": "2026-10-16T01:17:41.945Z",
+    "paidAiUsed": false,
+    "published": 136,
+    "runId": "run_2026-10-16T01:17:07.678Z",
+    "skipped": [
+      {
+        "reason": "Devpost Terms of Service §4 prohibits automated access to the Site and to any related data. No official Devpost API or API terms exist. Enabling requires written permission from Devpost — the endpoint returning HTTP 200 is not permission.",
+        "sourceId": "devpost"
+      },
+      {
+        "reason": "Express written authorisation from Y Combinator covering redistribution or public display of HN story metadata (nothing in the YC Terms of Use, the HN Guidelines/FAQ or the official HN API grants it). See docs/SOURCE_COMPLIANCE_REVIEW_HN_MULTIUSER.md.",
+        "sourceId": "hn-freelancer"
+      },
+      {
+        "reason": "Freelancer.com prohibits this use: User Agreement §33 requires express written permission for automated access including API access, §4 item 11 forbids cross-site aggregation of listings, and API T&Cs §5.3 bars storing the data or information expressed by it (such as a hash). Enabling requires express written permission from Freelancer.",
+        "sourceId": "freelancer-rss"
+      }
+    ],
+    "startedAt": "2026-10-16T01:17:07.678Z",
+    "stats": {
+      "accepted": 153,
+      "duplicates": 5,
+      "fetched": 443,
+      "finishedAt": "2026-10-16T01:17:07.678Z",
+      "perSource": {
+        "arbeitnow": {
+          "accepted": 24,
+          "error": null,
+          "fetched": 300,
+          "rejected": 276
+        },
+        "github-bounties": {
+          "accepted": 29,
+          "error": null,
+          "fetched": 30,
+          "rejected": 1
+        },
+        "remoteok": {
+          "accepted": 91,
+          "error": null,
+          "fetched": 99,
+          "rejected": 8
+        },
+        "remotive": {
+          "accepted": 9,
+          "error": null,
+          "fetched": 14,
+          "rejected": 5
+        }
+      },
+      "rejected": 290,
+      "startedAt": "2026-10-16T01:17:07.678Z",
+      "unknownFields": 3803
+    },
+    "status": "completed",
+    "writes": {
+      "batches": 1,
+      "failed": [],
+      "ok": true,
+      "perCollection": {
+        "internalSourceRuns": 4,
+        "opportunities": 136,
+        "opportunityEvidence": 136
+      },
+      "skippedInvalid": [],
+      "staged": 276,
+      "written": 276
+    }
+  },
+  "firstHttpStatus": 200,
+  "repeat": {
+    "drafts": 0,
+    "due": [],
+    "finishedAt": "2026-10-16T01:18:06.396Z",
+    "paidAiUsed": false,
+    "published": 0,
+    "runId": "run_2026-10-16T01:18:05.953Z",
+    "skipped": [
+      {
+        "reason": "Skipped: only 0 min since the last run, interval is 360 min.",
+        "sourceId": "remotive"
+      },
+      {
+        "reason": "Skipped: only 0 min since the last run, interval is 60 min.",
+        "sourceId": "remoteok"
+      },
+      {
+        "reason": "Skipped: only 0 min since the last run, interval is 60 min.",
+        "sourceId": "arbeitnow"
+      },
+      {
+        "reason": "Skipped: only 0 min since the last run, interval is 60 min.",
+        "sourceId": "github-bounties"
+      },
+      {
+        "reason": "Devpost Terms of Service §4 prohibits automated access to the Site and to any related data. No official Devpost API or API terms exist. Enabling requires written permission from Devpost — the endpoint returning HTTP 200 is not permission.",
+        "sourceId": "devpost"
+      },
+      {
+        "reason": "Express written authorisation from Y Combinator covering redistribution or public display of HN story metadata (nothing in the YC Terms of Use, the HN Guidelines/FAQ or the official HN API grants it). See docs/SOURCE_COMPLIANCE_REVIEW_HN_MULTIUSER.md.",
+        "sourceId": "hn-freelancer"
+      },
+      {
+        "reason": "Freelancer.com prohibits this use: User Agreement §33 requires express written permission for automated access including API access, §4 item 11 forbids cross-site aggregation of listings, and API T&Cs §5.3 bars storing the data or information expressed by it (such as a hash). Enabling requires express written permission from Freelancer.",
+        "sourceId": "freelancer-rss"
+      }
+    ],
+    "startedAt": "2026-10-16T01:18:05.953Z",
+    "stats": {
+      "accepted": 0,
+      "duplicates": 0,
+      "fetched": 0,
+      "finishedAt": "2026-10-16T01:18:05.953Z",
+      "perSource": {},
+      "rejected": 0,
+      "startedAt": "2026-10-16T01:18:05.953Z",
+      "unknownFields": 0
+    },
+    "status": "completed",
+    "writes": {
+      "batches": 0,
+      "failed": [],
+      "ok": true,
+      "perCollection": {},
+      "skippedInvalid": [],
+      "staged": 0,
+      "written": 0
+    }
+  },
+  "repeatHttpStatus": 200
+}
