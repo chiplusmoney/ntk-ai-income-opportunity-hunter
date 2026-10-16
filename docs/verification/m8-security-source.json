@@ -1,0 +1,10 @@
+{
+  "scannedCurrentFilesAndBundles": 288,
+  "scannedHistoryBlobs": 455,
+  "findings": [],
+  "privateCredentialPatternFindingCount": 0,
+  "publicFirebaseWebConfiguration": "permitted; not a server credential",
+  "scope": "tracked and new source, documentation, production frontend bundle, all reachable Git history",
+  "recordedAt": "2026-10-16T08:54:25.429657+00:00",
+  "phase": "Precommit scan; final package metadata repeats the source/history and ZIP scans after commit."
+}

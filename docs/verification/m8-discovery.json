@@ -1,0 +1,127 @@
+{
+  "verdict": "M8_PARTIAL_ENGINE_TARGET_NOT_ESTABLISHED",
+  "m8Accepted": false,
+  "runtimeMilestone": "M7",
+  "runtimeVersion": "0.6.0",
+  "baselineCommit": "4c94a5212195e9f170f3787c185227ad75da2ce3",
+  "engineTarget": null,
+  "engineAuthentication": "NOT_ESTABLISHED",
+  "freeRouteAvailable": "NOT_VERIFIED",
+  "realAiCalls": 0,
+  "realAiCapabilitiesPassed": 0,
+  "realAiCapabilitiesRequired": 4,
+  "engineSourceChanged": false,
+  "poolSourceChanged": false,
+  "runtimeCodeChanged": false,
+  "mandatoryAiCapabilities": {
+    "opportunity_analysis": "NOT_TESTED_BLOCKED",
+    "personal_fit_explanation": "NOT_TESTED_BLOCKED",
+    "application_drafting": "NOT_TESTED_BLOCKED",
+    "proof_summary": "NOT_TESTED_BLOCKED"
+  },
+  "usageCost": {
+    "scope": "This M8 continuation only; no account-wide Engine billing assertion",
+    "inferenceRequests": 0,
+    "paidAiRequests": 0,
+    "requestedAiSpendUsd": 0,
+    "providerReportedCostUsd": null,
+    "providerReportedCostStatus": "NOT_APPLICABLE_NO_AI_REQUEST",
+    "billingChanges": 0,
+    "subscriptionsCreated": 0
+  },
+  "observations": [
+    {
+      "at": "2026-10-16T08:47:05.981Z",
+      "surface": "Neo separate FreeLLMAPI pool",
+      "url": "https://freellmapi.alwaysdata.net/api/ping",
+      "status": 200,
+      "result": "pool liveness only; protected health returned 401; no router identity/free route proven"
+    },
+    {
+      "at": "2026-10-16T08:48:44.218Z",
+      "surface": "Neo Hunter readiness",
+      "url": "https://ntk-hunter-api.onrender.com/ready",
+      "status": 200,
+      "firestore": true,
+      "schedulerConfigured": true,
+      "aiRouting": "not-configured",
+      "paidAiAuthorized": false,
+      "coldStartObserved": true
+    },
+    {
+      "at": "2026-10-16T08:51:41.173Z",
+      "surface": "Neo authenticated owner operations",
+      "status": 200,
+      "cacheControl": "no-store",
+      "enabled": [
+        {
+          "id": "jobicy",
+          "minIntervalMinutes": 360
+        },
+        {
+          "id": "weworkremotely",
+          "minIntervalMinutes": 360
+        },
+        {
+          "id": "remotive",
+          "minIntervalMinutes": 360
+        },
+        {
+          "id": "remoteok",
+          "minIntervalMinutes": 60
+        },
+        {
+          "id": "arbeitnow",
+          "minIntervalMinutes": 360
+        },
+        {
+          "id": "github-bounties",
+          "minIntervalMinutes": 60
+        }
+      ],
+      "disabled": [
+        "devpost",
+        "hn-freelancer",
+        "freelancer-rss"
+      ]
+    },
+    {
+      "at": "2026-10-16T08:52:55.564Z",
+      "surface": "Neo canonical scheduler",
+      "healthStatus": 200,
+      "publicRunStatus": 404
+    },
+    {
+      "at": "2026-10-16T08:53:57.462Z",
+      "surface": "Neo existing opportunity assistant",
+      "route": "/ai",
+      "heading": "Opportunity assistant",
+      "aiStatus": "FlagshipRouter is not configured; deterministic assistance available; paid AI disabled",
+      "avatarPhoto": true,
+      "script": "/assets/index-jaddVy9t.js"
+    }
+  ],
+  "browserAcceptance": {
+    "scope": "Current existing M7 surfaces only; no new M8 AI surfaces",
+    "browser": "BrowserOS Neo",
+    "account": "chiplusmoney",
+    "sourceHealthHeading": true,
+    "avatarPhoto": true,
+    "m8AiControls": "NOT_IMPLEMENTED",
+    "m8ResponsiveOfflineGates": "NOT_TESTED_NO_M8_RUNTIME_CHANGE",
+    "m7Evidence": "Retained unchanged with original dates; not claimed as fresh M8 acceptance"
+  },
+  "sourceNetworkProbesThisContinuation": 0,
+  "telegramMessagesThisContinuation": 0,
+  "employerApplicationsSubmitted": 0,
+  "privateRecordsChanged": false,
+  "productionConfigurationChanged": false,
+  "limitations": [
+    "No authoritative Engine deployment/contract in accessible inspected state.",
+    "No secret/target guessed; no direct pool/provider inference.",
+    "M8 free policy, live safety, cache, privacy controls and AI performance acceptance remain outstanding.",
+    "Fresh upstream source suite was not run; original M7 source evidence and current owner operations preserved.",
+    "Existing unrelated Firebase OAuth housekeeping remains owner-only; no credentials reproduced."
+  ],
+  "nextDependency": "Existing Engine deployment/contract and authorized credential path accessible to chiplusmoney."
+}

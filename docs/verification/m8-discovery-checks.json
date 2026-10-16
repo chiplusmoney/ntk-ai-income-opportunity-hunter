@@ -1,0 +1,96 @@
+{
+  "generatedAt": "2026-10-16T08:52:15.302Z",
+  "node": "v24.20.0",
+  "status": "PASS",
+  "results": [
+    {
+      "label": "clean-install",
+      "command": "npm ci",
+      "exitCode": 0,
+      "durationMs": 140814
+    },
+    {
+      "label": "typecheck",
+      "command": "npm run typecheck",
+      "exitCode": 0,
+      "durationMs": 11803
+    },
+    {
+      "label": "unit-core",
+      "command": "npm --workspace packages/core run test -- --reporter=json --outputFile=C:\\Users\\NTK\\AppData\\Local\\Temp\\ntk-hunter-m8-discovery-I0ahS6\\core.json",
+      "exitCode": 0,
+      "durationMs": 7160,
+      "passed": 434,
+      "failed": 0,
+      "skipped": 8,
+      "total": 442
+    },
+    {
+      "label": "unit-web",
+      "command": "npm --workspace apps/web run test -- --reporter=json --outputFile=C:\\Users\\NTK\\AppData\\Local\\Temp\\ntk-hunter-m8-discovery-I0ahS6\\web.json",
+      "exitCode": 0,
+      "durationMs": 5659,
+      "passed": 83,
+      "failed": 0,
+      "skipped": 0,
+      "total": 83
+    },
+    {
+      "label": "unit-api",
+      "command": "npm --workspace services/hunter-api run test -- --reporter=json --outputFile=C:\\Users\\NTK\\AppData\\Local\\Temp\\ntk-hunter-m8-discovery-I0ahS6\\api.json",
+      "exitCode": 0,
+      "durationMs": 11025,
+      "passed": 85,
+      "failed": 0,
+      "skipped": 64,
+      "total": 149
+    },
+    {
+      "label": "unit-scheduler",
+      "command": "npm --workspace workers/hunter-scheduler run test -- --reporter=json --outputFile=C:\\Users\\NTK\\AppData\\Local\\Temp\\ntk-hunter-m8-discovery-I0ahS6\\scheduler.json",
+      "exitCode": 0,
+      "durationMs": 2046,
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0,
+      "total": 9
+    },
+    {
+      "label": "build",
+      "command": "npm run build",
+      "exitCode": 0,
+      "durationMs": 10150
+    },
+    {
+      "label": "probe-cache-rate-guards",
+      "command": "npm run test:probe-cache",
+      "exitCode": 0,
+      "durationMs": 1320,
+      "passed": 4,
+      "failed": 0
+    },
+    {
+      "label": "fresh-source-verification",
+      "status": "NOT_RUN",
+      "reason": "No source changes; M7 polling intervals remain binding. Dated accepted source evidence is preserved."
+    },
+    {
+      "label": "emulator-and-security-rules",
+      "command": "npm run verify:emulator",
+      "exitCode": 0,
+      "durationMs": 52069,
+      "verifiedTests": 64
+    },
+    {
+      "label": "dependency-audit",
+      "command": "npm audit --audit-level=high",
+      "exitCode": 0,
+      "durationMs": 2365
+    }
+  ],
+  "unitPassed": 615,
+  "unitFailed": 0,
+  "sourceVerificationPassed": null,
+  "emulatorPassed": 64,
+  "productionAcceptance": "M8 PARTIAL: these regressions do not prove an Engine connection, free AI requests, or M8 runtime features."
+}

@@ -1,3 +1,5 @@
+> **M8 continuation: PARTIAL — Engine target not established.** Production remains accepted M7 0.6.0. No real AI integration was implemented or accepted. Read [M8 acceptance](docs/M8_ACCEPTANCE.md) and [Engine discovery](docs/M8_ENGINE_DISCOVERY.md).
+
 # M7 / version 0.6.0
 
 M7 extends the closed M6 baseline (`8a308abb5ed0a177ac8a11171ae7107a381bacc5`). The current implementation, production receipt, source qualification and package-gated acceptance are in [M7 acceptance](docs/M7_ACCEPTANCE.md), [implementation](docs/M7_IMPLEMENTATION.md), [source expansion](docs/M7_SOURCE_EXPANSION.md), [source yield](docs/M7_SOURCE_YIELD_REVIEW.md) and [handoff](docs/M7_HANDOFF_STATE.md). Final overall acceptance is issued only by the finished package receipt; a clean build alone is not production acceptance.
