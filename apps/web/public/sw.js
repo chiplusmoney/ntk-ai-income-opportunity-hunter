@@ -1,9 +1,11 @@
-const CACHE = 'ntk-income-hunter-m6-v1';
+const CACHE = 'ntk-income-hunter-m6-v2';
 const SHELL = ['/', '/manifest.webmanifest'];
 self.addEventListener('install', event => {
   event.waitUntil((async () => {
     const cache = await caches.open(CACHE);
-    await cache.addAll(SHELL);
+    // Deployment changes HTML before its hashed assets. Never seed a new shell
+    // from a still-fresh browser HTTP cache left by the previous deployment.
+    await cache.addAll(SHELL.map(url => new Request(url, { cache: 'reload' })));
     const index = await cache.match('/');
     const html = await index.text();
     const assets = [...html.matchAll(/(?:src|href)="(\/assets\/[^"#?]+)"/g)].map(match => match[1]);
@@ -28,7 +30,7 @@ self.addEventListener('fetch', event => {
   if (!navigation && !asset) return;
   event.respondWith((async () => {
     try {
-      const response = await fetch(request);
+      const response = await fetch(navigation ? new Request(request, { cache: 'no-cache' }) : request);
       if (response.ok && response.type === 'basic') {
         const cache = await caches.open(CACHE);
         await cache.put(navigation ? '/' : request, response.clone());

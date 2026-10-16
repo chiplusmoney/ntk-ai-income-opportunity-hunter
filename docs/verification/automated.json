@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-16T06:22:05.068085+00:00",
+  "generatedAt": "2026-10-16T06:32:59.725323+00:00",
   "node": "v24.20.0",
   "status": "PASS",
   "results": [
@@ -82,7 +82,7 @@
       "durationMs": 2527
     }
   ],
-  "unitPassed": 562,
+  "unitPassed": 564,
   "unitFailed": 0,
   "sourceVerificationPassed": 8,
   "emulatorPassed": 43,
@@ -110,5 +110,22 @@
     "emulatorAndSourceBasis": "43 security/emulator and 8 permitted-source cases passed in the prior complete clean suite; no rules, API trust boundary, transport or ingestion change in this UI fix"
   },
   "unitCountBasis": "Latest complete npm test rerun after UI fix; initial full-suite JSON results retained below with their original timestamp",
-  "initialSuiteGeneratedAt": "2026-10-16T06:12:53.383Z"
+  "initialSuiteGeneratedAt": "2026-10-16T06:12:53.383Z",
+  "pwaUpdateFixChecks": {
+    "status": "PASS",
+    "webPassed": 83,
+    "failed": 0,
+    "commands": [
+      "npm --workspace apps/web run test",
+      "npm --workspace apps/web run typecheck",
+      "npm --workspace apps/web run build"
+    ],
+    "currentCombinedUnitCounts": {
+      "core": 389,
+      "web": 83,
+      "api": 83,
+      "scheduler": 9
+    },
+    "reason": "Actual SW regression tests exercise navigation revalidation/new-shell reload and external/private request exclusion; explicit Node test types fixed a first typecheck failure; dependencies unchanged"
+  }
 }
