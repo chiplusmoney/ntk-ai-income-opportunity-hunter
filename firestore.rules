@@ -4,6 +4,17 @@ service cloud.firestore {
     function signedIn() { return request.auth != null; }
     function owns(uid) { return signedIn() && request.auth.uid == uid; }
     function isAdmin() { return signedIn() && request.auth.token.admin == true; }
+    function validProof() {
+      let p = request.resource.data;
+      return p.keys().hasOnly(['id','title','kind','description','skills','url','provenance','status','sourceIds','createdAt','updatedAt'])
+        && p.title is string && p.title.size() > 0 && p.title.size() <= 160
+        && p.description is string && p.description.size() <= 6000
+        && p.provenance is string && p.provenance.size() > 0 && p.provenance.size() <= 1000
+        && p.url is string && p.url.size() <= 2000 && (p.url == '' || p.url.matches('https://[^\\s]+'))
+        && p.skills is list && p.skills.size() <= 40 && p.sourceIds == []
+        && p.kind in ['project','screenshot','completed-task','work-sample','certificate','course-project','code','design','writing','experience']
+        && p.status in ['user-declared','incomplete'] && p.createdAt is string && p.updatedAt is string;
+    }
 
     // Published opportunities are publicly readable, on purpose.
     //
@@ -40,8 +51,28 @@ service cloud.firestore {
       allow delete: if owns(uid);
 
       match /saved/{id} { allow read, write: if owns(uid); }
-      match /applications/{id} { allow read, write: if owns(uid); }
-      match /earnings/{id} { allow read, write: if owns(uid); }
+      match /applications/{id} {
+        allow read: if owns(uid);
+        // A browser may start a genuine saved record, never forge a lifecycle or payment.
+        allow create: if owns(uid)
+          && get(/databases/$(database)/documents/opportunities/$(id)).data.visibility == 'published'
+          && request.resource.data.opportunityId == id && request.resource.data.id == id
+          && request.resource.data.title == get(/databases/$(database)/documents/opportunities/$(id)).data.title
+          && request.resource.data.state == 'saved'
+          && request.resource.data.payment == {'paidUsd': null, 'paidAt': null, 'method': null}
+          && request.resource.data.appliedAt == null
+          && request.resource.data.history.size() == 1 && request.resource.data.history[0].state == 'saved';
+        // M6 metadata, lifecycle and payment updates use the ID-token-authenticated API.
+        allow update, delete: if false;
+      }
+      match /earnings/{id} { allow read: if owns(uid); allow write: if false; }
+      match /proofs/{id} {
+        allow read, delete: if owns(uid);
+        allow create: if owns(uid) && validProof();
+        allow update: if owns(uid) && validProof()
+          && resource.data.status in ['user-declared','incomplete']
+          && request.resource.data.createdAt == resource.data.createdAt;
+      }
       // Notifications are created by the server only; the user may read, mark
       // read and delete them.
       match /notifications/{id} {

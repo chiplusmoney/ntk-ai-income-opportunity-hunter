@@ -39,13 +39,15 @@ describe('lifecycle definition', () => {
       'verified',
       'recommended',
       'saved',
+      'preparing',
       'applied',
       'accepted',
       'in_progress',
       'submitted',
       'paid',
       'rejected',
-      'expired'
+      'expired',
+      'withdrawn'
     ]);
   });
 

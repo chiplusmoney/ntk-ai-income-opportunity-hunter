@@ -1,13 +1,15 @@
 import { useState, type FormEvent, type ReactNode } from 'react';
 import { createUserWithEmailAndPassword, GoogleAuthProvider, sendPasswordResetEmail, sendEmailVerification, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 import { Link } from 'react-router-dom';
-import { ALLOWED_TRANSITIONS, progressIndex, type ApplicationRecord, type ApplicationState } from '@ntk/hunter-core';
+import { ALLOWED_TRANSITIONS, progressIndex, earningActions, earningProfileFromLegacy, personalFit, type ApplicationRecord, type ApplicationState, type PersonalFit } from '@ntk/hunter-core';
 import { auth } from './lib/firebase';
 import { useAuth } from './auth/AuthProvider';
 import { deleteNotification, markNotificationRead, saveProfile, transitionApplication, useUserData } from './repositories/userData';
 import { outcomeSummary } from './outcomes';
 import { DEFAULT_PROFILE, validateProfile } from './auth/userProfile';
 import { AccountAvatar } from './AccountMenu';
+import { ApplicationNotes } from './ApplicationNotes';
+import type { Opportunity } from './types';
 
 function errorMessage(error: unknown): string {
   const code = (error as { code?: string })?.code;
@@ -62,7 +64,7 @@ export function PrivateGate({ children }: { children: ReactNode }) {
   if (!user) return <section className="page">{error && <p role="alert">{error}</p>}<SignIn /></section>;
   if (data.error) return <section className="page"><p role="alert" className="error">{data.error}</p></section>;
   if (data.loading) return <section className="page" role="status">Loading your private records…</section>;
-  return children;
+  return <>{data.offline && <p className="draft-banner" role="status">Offline: showing the last server-confirmed records from this signed-in session. Draft notes and safe saves can wait in this tab. Payments and outcomes require reconnection.</p>}{children}</>;
 }
 const title = (state: string) => state.replaceAll('_', ' ').replace(/\b\w/g, c => c.toUpperCase());
 
@@ -89,6 +91,8 @@ function Application({ record }: { record: ApplicationRecord }) {
   return <article className="profile-card"><h2>{record.title}</h2><p>{record.provider} · <strong>{title(record.state)}</strong></p>
     <div className="progress" aria-label={`Stage ${progressIndex(record.state) + 1}`}><i style={{ width: `${(progressIndex(record.state) + 1) / 6 * 100}%` }} /></div>
     <a href={record.sourceUrl} target="_blank" rel="noreferrer">Official source</a>
+    <Link to={`/opportunities/${record.opportunityId}`}> Review fit and application checklist</Link>
+    <ApplicationNotes record={record} />
     {transitions.length > 0 && <form onSubmit={submit} className="account-form">
       <label>Record a genuine action or outcome<select value={next} required onChange={e => setNext(e.target.value as ApplicationState)}><option value="">Choose next stage</option>{transitions.map(s => <option key={s} value={s}>{title(s)}</option>)}</select></label>
       {next === 'paid' && <fieldset><legend>Actual payment received (USD)</legend><p>Do not enter the advertised or expected reward.</p>
@@ -102,12 +106,22 @@ function Application({ record }: { record: ApplicationRecord }) {
     {error && <p role="alert" className="error">{error}</p>}
   </article>;
 }
-export function Earnings() {
-  const { applications, earnings } = useUserData(); const s = outcomeSummary(applications, earnings);
+export function Earnings({ items = [] }: { items?: Opportunity[] }) {
+  const { applications, earnings, profile, proofs = [] } = useUserData(); const s = outcomeSummary(applications, earnings);
+  const p = earningProfileFromLegacy(profile); const now = new Date();
+  const fits = new Map<string,PersonalFit>(items.map(o => [o.id,personalFit(o,p,proofs,applications,{ enabled:false,resetAt:null },now)]));
+  const actions = earningActions(items,fits,applications,now);
+  const potential = new Map<string,{ count:number; min:number; max:number }>();
+  for (const o of items) if (o.currency && (o.rewardMin !== null || o.rewardMax !== null)) { const key = `${o.currency} / ${o.rewardBasis}`; const old = potential.get(key) ?? { count:0,min:Infinity,max:0 }; potential.set(key,{ count:old.count+1,min:Math.min(old.min,o.rewardMin ?? o.rewardMax!),max:Math.max(old.max,o.rewardMax ?? o.rewardMin!) }); }
+  const byCategory = new Map<string,number>(); for (const e of earnings) { const category = applications.find(a => a.id === e.applicationId)?.category ?? 'Unclassified'; byCategory.set(category,(byCategory.get(category) ?? 0)+e.paidUsd); }
   return <PrivateGate><section className="page"><h1>Earnings &amp; outcomes</h1><p>Only recorded receipts from your private earnings ledger are included. All amounts are USD.</p>
     <div className="stats-grid">{[[`$${s.totalPaidUsd.toLocaleString(undefined, { minimumFractionDigits: 2 })}`, 'Total earned'], [s.completed, 'Completed'], [s.inProgress, 'In progress'], [s.successRate === null ? '—' : `${s.successRate}%`, 'Success rate']].map(([n, label]) => <div className="stat" key={label}><b>{n}</b><span>{label}</span></div>)}</div>
     <p className="muted">Success rate requires at least three recorded terminal outcomes (paid, rejected or expired).</p>
     <div className="chart-card"><h2>Income trend</h2>{!s.trend.length ? <p>No income recorded yet. Your trend will appear after an actual payment is recorded.</p> : <div className="income-trend">{s.trend.map(t => <div key={t.month}><span>{t.month}</span><meter aria-label={`${t.month} income in USD`} min={0} max={Math.max(...s.trend.map(x => x.amount))} value={t.amount} /><b>${t.amount.toFixed(2)}</b></div>)}</div>}</div>
+    <div className="profile-card"><h2>Actual payments by category</h2>{[...byCategory].map(([c,n]) => <p key={c}>{c}: ${n.toFixed(2)} USD</p>)}{!earnings.length && <p>No paid categories yet.</p>}<p>Average actual payment: {earnings.length ? `$${(s.totalPaidUsd/earnings.length).toFixed(2)}` : '—'}</p></div>
+    <div className="profile-card"><h2>Application pipeline</h2>{['saved','preparing','applied','accepted','in_progress','submitted'].map(state => <p key={state}>{title(state)}: {applications.filter(a => a.state === state).length}</p>)}<p>Submitted / awaiting a recorded payment: {applications.filter(a => a.state === 'submitted').length}. Submission does not confirm a payment is due.</p></div>
+    <div className="profile-card"><h2>Opportunity potential — not earned</h2><p>Advertised ranges grouped by currency and payment period. Never added to actual income.</p>{[...potential].map(([key,v]) => <p key={key}>{key}: {v.min.toLocaleString()}–{v.max.toLocaleString()} across {v.count} listings</p>)}<p>Reward unknown: {items.filter(o => o.rewardMin === null && o.rewardMax === null).length}</p></div>
+    <div className="profile-card"><h2>Practical next actions</h2><ul>{actions.map(a => <li key={a}>{a}</li>)}</ul>{!actions.length && <p>Complete your earning profile, save real opportunities and record genuine outcomes to get specific next actions.</p>}</div>
   </section></PrivateGate>;
 }
 

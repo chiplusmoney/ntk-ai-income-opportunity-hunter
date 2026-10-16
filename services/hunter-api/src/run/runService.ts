@@ -111,6 +111,7 @@ export interface RunServiceDeps {
   /** Router candidates, injected so no model name is hard-coded here. */
   aiCandidates?: readonly ModelCapability[];
   routerPolicy?: RouterPolicy;
+  afterRun?: () => Promise<unknown>;
 }
 
 export type RunOutcome =
@@ -259,6 +260,11 @@ export class RunService {
       aiAttempted: ai.attempted
     });
 
+    // Notifications are optional; a provider or private-data failure cannot undo ingestion.
+    if (this.deps.afterRun) {
+      try { await this.deps.afterRun(); }
+      catch { logger.warn('Personalized notification pass unavailable; source records preserved'); }
+    }
     return summary;
   }
 

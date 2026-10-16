@@ -1,3 +1,13 @@
+# M6 / version 0.5.0
+
+M6 implementation extends the accepted M5b production baseline. Current M6 acceptance is recorded in `docs/M6_ACCEPTANCE.md`; the implementation contract is `docs/M6_IMPLEMENTATION.md`. Do not infer M6 production completion from the historical M5b receipts below.
+
+New capabilities: progressive earning profile, evidence-preserving Proof Builder, distinct deterministic Personal Fit, recommendation views/explanations, application preparation and lifecycle, bounded/resettable outcome learning, truthful earning optimization, opt-in personalized notification policies, and safe session-only offline drafts. AI is optional and paid AI remains disabled.
+
+Commands: `npm ci`, `npm run typecheck`, `npm test`, `npm run build`, `npm run verify:emulator`, `npm run verify:live`, `npm run verify:m6`. Use the declared Node 24 runtime. Existing infrastructure is reused.
+
+---
+
 # NTK AI Income Opportunity Hunter
 
 Current release: **0.4.1 - M5b_LIVE_DEPLOYMENT_AND_ACCEPTANCE_VERIFIED** (2026-10-16). The canonical scheduler is [ntk-income-opportunity-hunter-scheduler](https://ntk-income-opportunity-hunter-scheduler.chiplusmoney.workers.dev), Workers Free, cron `*/30 * * * *`. The scheduled Worker -> Render -> Firestore chain is proven. See [final hardening state](docs/M5B_HARDENING_STATE.md) and [remaining unrelated OAuth owner action](docs/OAUTH_SECURITY_ACTION.md). M6 has not started.

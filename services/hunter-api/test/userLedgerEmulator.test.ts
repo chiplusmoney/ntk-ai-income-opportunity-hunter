@@ -3,26 +3,40 @@ import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from 'vites
 import { initializeTestEnvironment, type RulesTestEnvironment } from '@firebase/rules-unit-testing';
 import { doc, getDoc, getDocs, collection, setDoc, type Firestore } from 'firebase/firestore';
 import { applyTransition, createApplicationRecord, type ApplicationRecord } from '@ntk/hunter-core';
+import express from 'express';
+import type { Server } from 'node:http';
+import { initializeApp,deleteApp } from 'firebase-admin/app';
+import { getFirestore } from 'firebase-admin/firestore';
+import { createPersonalRouter } from '../src/personal.js';
 
-const ports = vi.hoisted(() => ({ auth: { currentUser: { uid: 'ledger-alice' } as { uid: string } | null }, firestore: null as Firestore | null }));
+const ports = vi.hoisted(() => ({ auth: { currentUser: { uid: 'ledger-alice',getIdToken:async () => 'test-only-id-token' } as { uid: string; getIdToken: () => Promise<string> } | null }, firestore: null as Firestore | null }));
 vi.mock('../../../apps/web/src/lib/firebase', () => ports);
 import { transitionApplication } from '../../../apps/web/src/repositories/userData';
 
 const enabled = process.env.FIREBASE_EMULATOR_TEST === '1';
 describe.skipIf(!enabled)('actual frontend ledger transaction against Firestore rules', () => {
   let environment: RulesTestEnvironment;
+  let server: Server;
+  const originalFetch = globalThis.fetch;
+  const adminApp = initializeApp({ projectId:'demo-ntk-hunter' },'m6-ledger');
   beforeAll(async () => {
     environment = await initializeTestEnvironment({ projectId: 'demo-ntk-hunter', firestore: { host: '127.0.0.1', port: 8080, rules: readFileSync(new URL('../../../firestore.rules', import.meta.url), 'utf8') } });
     ports.firestore = environment.authenticatedContext('ledger-alice').firestore() as Firestore;
     vi.stubGlobal('navigator', { onLine: true });
+    const app = express(); app.use(express.json()); app.use('/v1',createPersonalRouter(getFirestore(adminApp),async token => {
+      if (token !== 'test-only-id-token') throw Error('invalid'); return { uid:'ledger-alice' } as never;
+    }));
+    const base = await new Promise<string>(resolve => { server = app.listen(0,() => { const address = server.address(); if (address && typeof address === 'object') resolve(`http://127.0.0.1:${address.port}`); }); });
+    vi.stubGlobal('fetch',(input: string | URL | Request,init?: RequestInit) => originalFetch(String(input).replace('https://ntk-hunter-api.onrender.com',base),init));
   });
-  beforeEach(() => { ports.auth.currentUser = { uid: 'ledger-alice' }; });
-  afterAll(async () => { vi.unstubAllGlobals(); await environment?.cleanup(); });
+  beforeEach(() => { ports.auth.currentUser = { uid: 'ledger-alice',getIdToken:async () => 'test-only-id-token' }; });
+  afterAll(async () => { vi.unstubAllGlobals(); if (server) await new Promise<void>(resolve => server.close(() => resolve())); await environment?.cleanup(); await deleteApp(adminApp); });
 
   async function submitted(id: string): Promise<ApplicationRecord> {
     let record = createApplicationRecord({ id, opportunityId: id, title: 'EMULATOR ONLY ledger fixture', provider: 'Test provider', category: 'Development', riskLevel: 'low', rankScore: 70, sourceUrl: 'https://example.invalid', attribution: 'Emulator fixture', now: new Date('2026-10-15T10:00:00Z') });
     for (const to of ['applied', 'accepted', 'in_progress', 'submitted'] as const) record = applyTransition(record, { to, now: new Date('2026-10-15T10:00:00Z') }).record;
-    await setDoc(doc(ports.firestore!, 'users', 'ledger-alice', 'applications', id), record);
+    // Seed pre-existing history as the trusted backend. Browser lifecycle writes are now denied.
+    await environment.withSecurityRulesDisabled(async context => { await setDoc(doc(context.firestore(),'users','ledger-alice','applications',id),record); });
     return record;
   }
   it('atomically persists an explicitly recorded payment and prevents duplicates', async () => {
@@ -37,7 +51,7 @@ describe.skipIf(!enabled)('actual frontend ledger transaction against Firestore 
   });
   it('does not create earnings from an expected reward', async () => {
     const record = await submitted('expected-only');
-    await setDoc(doc(ports.firestore!, 'users', 'ledger-alice', 'applications', record.id), { expectedRewardUsd: 1250 }, { merge: true });
+    await environment.withSecurityRulesDisabled(async context => { await setDoc(doc(context.firestore(),'users','ledger-alice','applications',record.id),{ expectedRewardUsd:1250 },{ merge:true }); });
     await expect(transitionApplication(record.id, { to: 'paid', now: new Date() })).rejects.toThrow('requires an amount');
     expect((await getDoc(doc(ports.firestore!, 'users', 'ledger-alice', 'earnings', record.id))).exists()).toBe(false);
     expect((await getDoc(doc(ports.firestore!, 'users', 'ledger-alice', 'applications', record.id))).data()?.state).toBe('submitted');

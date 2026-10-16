@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 import { onAuthStateChanged, signOut, type User } from 'firebase/auth';
 import { auth } from '../lib/firebase';
+import { clearPrivateActions } from '../repositories/privateQueue';
 
 interface AuthState { user: User | null; loading: boolean; error: string | null; logout: () => Promise<void> }
 const Context = createContext<AuthState>({ user: null, loading: true, error: null, logout: async () => {} });
@@ -12,7 +13,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [error, setError] = useState<string | null>(null);
   useEffect(() => {
     if (!auth) { setLoading(false); setError('Authentication is not configured.'); return; }
-    return onAuthStateChanged(auth, next => { setUser(next); setLoading(false); setError(null); }, () => {
+    return onAuthStateChanged(auth, next => { clearPrivateActions(); setUser(next); setLoading(false); setError(null); }, () => {
+      clearPrivateActions();
       setUser(null); setLoading(false); setError('Could not restore your session. Please sign in again.');
     });
   }, []);
@@ -20,6 +22,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (!auth) return;
     // Mask private state before the asynchronous sign-out completes.
     setUser(null); setLoading(true);
+    clearPrivateActions();
     try { await signOut(auth); } catch { setError('Sign out failed. Try again.'); setUser(auth.currentUser); }
     finally { setLoading(false); }
   }

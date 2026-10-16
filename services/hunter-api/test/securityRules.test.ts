@@ -164,6 +164,43 @@ describe.skipIf(!enabled)('firestore.rules behaviour', () => {
   it('refuses a forged earnings claim written by another user', async () => {
     await assertFails(setDoc(doc(asBob(), 'users', 'alice', 'earnings', 'earn-forged'), { paidUsd: 100000 }));
   });
+  it('refuses owner-forged earnings and paid lifecycle records',async () => {
+    await assertFails(setDoc(doc(asAlice(),'users','alice','earnings','fake-owner-payment'),{ paidUsd:100000,paidAt:'2026-10-16' }));
+    await assertFails(setDoc(doc(asAlice(),'users','alice','applications','fake-owner-payment'),{ state:'paid',payment:{ paidUsd:100000,paidAt:'2026-10-16',method:null } }));
+    await assertFails(updateDoc(doc(asAlice(),'users','alice','applications','app-1'),{ state:'paid',payment:{ paidUsd:100000,paidAt:'2026-10-16',method:null } }));
+  });
+  const proof = { id:'real-proof',title:'Genuine project',kind:'project',description:'My own work',skills:['React'],url:'https://example.com/proof',provenance:'User recorded their project',status:'user-declared',sourceIds:[],createdAt:'2026-10-16',updatedAt:'2026-10-16' };
+  it('allows own declared proof with provenance',async () => {
+    const ref = doc(asAlice(),'users','alice','proofs','real-proof');
+    await assertSucceeds(setDoc(ref,proof)); await assertSucceeds(getDoc(ref));
+    await assertSucceeds(updateDoc(ref,{ description:'Updated genuine work',updatedAt:'2026-10-17' }));
+  });
+  it.each(['verified','imported','generated-from-existing-evidence'])('rejects forged proof status %s',async status => {
+    await assertFails(setDoc(doc(asAlice(),'users','alice','proofs',`fake-${status}`),{ ...proof,status }));
+    await assertFails(updateDoc(doc(asAlice(),'users','alice','proofs','real-proof'),{ status }));
+  });
+  it('rejects proof without provenance and preserves server imports',async () => {
+    await assertFails(setDoc(doc(asAlice(),'users','alice','proofs','no-origin'),{ ...proof,provenance:'' }));
+    await testEnv.withSecurityRulesDisabled(async ctx => setDoc(doc(ctx.firestore(),'users','alice','proofs','imported'),{ ...proof,status:'imported',sourceIds:['actual-outcome'] }));
+    await assertFails(updateDoc(doc(asAlice(),'users','alice','proofs','imported'),{ description:'Forged replacement' }));
+    await assertSucceeds(getDoc(doc(asAlice(),'users','alice','proofs','imported')));
+  });
+  it.each(['proofs','syncQueue'])('isolates new private %s data from strangers',async collection => {
+    const ref = doc(asAlice(),'users','alice',collection,'private-isolation');
+    await assertSucceeds(setDoc(ref,collection === 'proofs' ? proof : { action:'notes' }));
+    for (const other of [asBob(),anon()]) {
+      await assertFails(getDoc(doc(other,'users','alice',collection,'private-isolation')));
+      await assertFails(setDoc(doc(other,'users','alice',collection,'private-isolation'),proof));
+      await assertFails(deleteDoc(doc(other,'users','alice',collection,'private-isolation')));
+    }
+  });
+  it('persists own earning preferences and learning while denying another UID',async () => {
+    const ref = doc(asAlice(),'users','alice');
+    await assertSucceeds(setDoc(ref,{ earningProfile:{ country:'NG',cv:'none',portfolio:'none' },recommendationLearning:{ enabled:true,resetAt:'2026-10-16' } },{ merge:true }));
+    expect((await getDoc(ref)).data()?.earningProfile.cv).toBe('none');
+    await assertFails(updateDoc(doc(asBob(),'users','alice'),{ recommendationLearning:{ enabled:true } }));
+    await assertFails(getDoc(doc(anon(),'users','alice')));
+  });
 
   it('does not let a client create its own notifications', async () => {
     await assertFails(setDoc(doc(asAlice(), 'users', 'alice', 'notifications', 'fake-1'), { title: 'Fake alert' }));

@@ -21,13 +21,15 @@ export const APPLICATION_STATES = [
   'verified',
   'recommended',
   'saved',
+  'preparing',
   'applied',
   'accepted',
   'in_progress',
   'submitted',
   'paid',
   'rejected',
-  'expired'
+  'expired',
+  'withdrawn'
 ] as const;
 
 export type ApplicationState = (typeof APPLICATION_STATES)[number];
@@ -37,15 +39,17 @@ export const ALLOWED_TRANSITIONS: Record<ApplicationState, ApplicationState[]> =
   discovered: ['verified', 'expired'],
   verified: ['recommended', 'expired'],
   recommended: ['saved', 'expired'],
-  saved: ['applied', 'rejected', 'expired'],
-  applied: ['accepted', 'rejected', 'expired'],
-  accepted: ['in_progress', 'rejected'],
-  in_progress: ['submitted', 'rejected'],
-  submitted: ['paid', 'rejected'],
+  saved: ['preparing', 'applied', 'rejected', 'expired', 'withdrawn'],
+  preparing: ['applied', 'rejected', 'expired', 'withdrawn'],
+  applied: ['accepted', 'rejected', 'expired', 'withdrawn'],
+  accepted: ['in_progress', 'rejected', 'withdrawn'],
+  in_progress: ['submitted', 'rejected', 'withdrawn'],
+  submitted: ['paid', 'rejected', 'withdrawn'],
   // Terminal states: recorded history is not rewritten.
   paid: [],
   rejected: [],
-  expired: []
+  expired: [],
+  withdrawn: []
 };
 
 export function isTerminal(state: ApplicationState): boolean {
@@ -53,7 +57,7 @@ export function isTerminal(state: ApplicationState): boolean {
 }
 
 export function canTransition(from: ApplicationState, to: ApplicationState): boolean {
-  return ALLOWED_TRANSITIONS[from].includes(to);
+  return ALLOWED_TRANSITIONS[from]?.includes(to) ?? false;
 }
 
 export interface PaymentRecord {
@@ -87,6 +91,10 @@ export interface ApplicationRecord {
   sourceUrl: string;
   attribution: string;
   updatedAt: string;
+  nextAction?: string;
+  followUpDate?: string | null;
+  attachedProof?: string[];
+  outcomeReason?: string;
 }
 
 export const EMPTY_PAYMENT: PaymentRecord = { paidUsd: null, paidAt: null, method: null };
@@ -150,9 +158,11 @@ export function applyTransition(record: ApplicationRecord, request: TransitionRe
     if (typeof supplied.paidUsd !== 'number' || !Number.isFinite(supplied.paidUsd) || supplied.paidUsd <= 0) {
       return { ok: false, record, problems: ['the recorded payment amount must be a positive number'] };
     }
-    if (!supplied.paidAt || !Number.isFinite(Date.parse(supplied.paidAt))) {
+    if (typeof supplied.paidAt !== 'string' || !supplied.paidAt || !Number.isFinite(Date.parse(supplied.paidAt))) {
       return { ok: false, record, problems: ['recording a payment requires a valid payment date'] };
     }
+    if (Date.parse(supplied.paidAt) > request.now.getTime()) return { ok: false, record, problems: ['payment date cannot be in the future'] };
+    if (supplied.method != null && (typeof supplied.method !== 'string' || supplied.method.length > 100)) return { ok:false,record,problems:['payment method must be short text'] };
 
     payment = {
       paidUsd: supplied.paidUsd,

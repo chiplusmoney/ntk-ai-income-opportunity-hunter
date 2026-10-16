@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-16T02:40:19.474Z",
+  "generatedAt": "2026-10-16T06:12:53.383Z",
   "node": "v24.20.0",
   "status": "PASS",
   "results": [
@@ -7,49 +7,49 @@
       "label": "clean-install",
       "command": "npm ci",
       "exitCode": 0,
-      "durationMs": 151785
+      "durationMs": 163587
     },
     {
       "label": "typecheck",
       "command": "npm run typecheck",
       "exitCode": 0,
-      "durationMs": 14415
+      "durationMs": 12722
     },
     {
       "label": "unit-core",
-      "command": "npm --workspace packages/core run test -- --reporter=json --outputFile=C:\\Users\\NTK\\AppData\\Local\\Temp\\ntk-hunter-checks-lo2UJe\\core.json",
+      "command": "npm --workspace packages/core run test -- --reporter=json --outputFile=C:\\Users\\NTK\\AppData\\Local\\Temp\\ntk-hunter-checks-ErIbUE\\core.json",
       "exitCode": 0,
-      "durationMs": 8156,
-      "passed": 319,
+      "durationMs": 7723,
+      "passed": 388,
       "failed": 0,
       "skipped": 8,
-      "total": 327
+      "total": 396
     },
     {
       "label": "unit-web",
-      "command": "npm --workspace apps/web run test -- --reporter=json --outputFile=C:\\Users\\NTK\\AppData\\Local\\Temp\\ntk-hunter-checks-lo2UJe\\web.json",
+      "command": "npm --workspace apps/web run test -- --reporter=json --outputFile=C:\\Users\\NTK\\AppData\\Local\\Temp\\ntk-hunter-checks-ErIbUE\\web.json",
       "exitCode": 0,
-      "durationMs": 6051,
-      "passed": 74,
+      "durationMs": 6056,
+      "passed": 81,
       "failed": 0,
       "skipped": 0,
-      "total": 74
+      "total": 81
     },
     {
       "label": "unit-api",
-      "command": "npm --workspace services/hunter-api run test -- --reporter=json --outputFile=C:\\Users\\NTK\\AppData\\Local\\Temp\\ntk-hunter-checks-lo2UJe\\api.json",
+      "command": "npm --workspace services/hunter-api run test -- --reporter=json --outputFile=C:\\Users\\NTK\\AppData\\Local\\Temp\\ntk-hunter-checks-ErIbUE\\api.json",
       "exitCode": 0,
-      "durationMs": 9693,
-      "passed": 77,
+      "durationMs": 10927,
+      "passed": 83,
       "failed": 0,
-      "skipped": 29,
-      "total": 106
+      "skipped": 43,
+      "total": 126
     },
     {
       "label": "unit-scheduler",
-      "command": "npm --workspace workers/hunter-scheduler run test -- --reporter=json --outputFile=C:\\Users\\NTK\\AppData\\Local\\Temp\\ntk-hunter-checks-lo2UJe\\scheduler.json",
+      "command": "npm --workspace workers/hunter-scheduler run test -- --reporter=json --outputFile=C:\\Users\\NTK\\AppData\\Local\\Temp\\ntk-hunter-checks-ErIbUE\\scheduler.json",
       "exitCode": 0,
-      "durationMs": 3093,
+      "durationMs": 2166,
       "passed": 9,
       "failed": 0,
       "skipped": 0,
@@ -59,32 +59,32 @@
       "label": "build",
       "command": "npm run build",
       "exitCode": 0,
-      "durationMs": 12881
+      "durationMs": 11614
     },
     {
       "label": "permitted-source-verification",
       "command": "npm run verify:live",
       "exitCode": 0,
-      "durationMs": 14668,
+      "durationMs": 13783,
       "verifiedTests": 8
     },
     {
       "label": "emulator-and-security-rules",
       "command": "npm run verify:emulator",
       "exitCode": 0,
-      "durationMs": 39116,
-      "verifiedTests": 29
+      "durationMs": 45041,
+      "verifiedTests": 43
     },
     {
       "label": "dependency-audit",
       "command": "npm audit --audit-level=high",
       "exitCode": 0,
-      "durationMs": 2880
+      "durationMs": 2527
     }
   ],
-  "unitPassed": 479,
+  "unitPassed": 561,
   "unitFailed": 0,
   "sourceVerificationPassed": 8,
-  "emulatorPassed": 29,
+  "emulatorPassed": 43,
   "productionAcceptance": "Recorded separately; these automated checks do not prove live acceptance."
 }

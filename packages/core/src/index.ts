@@ -46,3 +46,4 @@ export * from './persistence/index.js';
 export * from './ai/index.js';
 export * from './notifications/index.js';
 export * from './applications/index.js';
+export * from './personalization/index.js';

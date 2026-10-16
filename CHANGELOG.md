@@ -1,3 +1,15 @@
+## 0.5.0 - M6
+
+- Add private progressive earning profiles and first-class no-CV/no-portfolio paths with unknown requirement semantics.
+- Add provenance-preserving Proof Builder, capability cards and explicitly selected local portfolio exports.
+- Keep global rank; add deterministic explainable Personal Fit, recommendation views and grounded application preparation.
+- Extend applications with Preparing, Withdrawn, notes, follow-ups and real proof attachments.
+- Move lifecycle/payment writes to ID-token-verified API; reject client-forged earnings and proof verification.
+- Add bounded, resettable outcome learning, separate actual/potential earnings, practical next actions and opt-in deduplicated notifications.
+- Preserve public offline catalog and add account-scoped RAM-only safe drafts with conflict checks.
+- Preserve the canonical free Worker, existing cron, permitted sources, avatar navigation and Telegram transport.
+- Production acceptance is recorded separately in the M6 acceptance report.
+
 # Changelog
 
 Milestones record cumulative work and dated findings. The current deployment and

@@ -35,6 +35,7 @@ export interface AppDeps {
   readinessProbe?: () => Promise<{ firestore: boolean; detail: string }>;
   sendNotificationTest?: () => Promise<unknown>;
   inspectNotificationSetup?: () => Promise<unknown>;
+  personalRouter?: express.Router;
 }
 
 function parseRunRequest(body: unknown): RunRequest {
@@ -59,6 +60,7 @@ export function createApp(deps: AppDeps): Express {
 
   app.disable('x-powered-by');
   app.use(express.json({ limit: '256kb' }));
+  if (deps.personalRouter) app.use('/v1',deps.personalRouter);
 
   app.get('/health', (_request: Request, response: Response) => {
     response.json({ ok: true, service: 'hunter-api', time: now().toISOString() });

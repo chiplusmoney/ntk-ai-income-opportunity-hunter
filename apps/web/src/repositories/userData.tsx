@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 import { collection, deleteDoc, doc, limit, onSnapshot, query, runTransaction, setDoc, updateDoc } from 'firebase/firestore';
-import { applyTransition, createApplicationRecord, type ApplicationRecord, type TransitionRequest } from '@ntk/hunter-core';
+import { createApplicationRecord, readProofRecord, type ApplicationRecord, type TransitionRequest, type ProofRecord } from '@ntk/hunter-core';
+import { sendTransition } from './personalActions';
 import { auth, firestore } from '../lib/firebase';
 import { useAuth } from '../auth/AuthProvider';
 import type { EarningRecord, PrivateNotification } from '../outcomes';
@@ -9,8 +10,10 @@ import type { Opportunity } from '../types';
 interface Data {
   applications: ApplicationRecord[]; earnings: EarningRecord[]; notifications: PrivateNotification[];
   saved: string[]; profile: Record<string, unknown> | null; loading: boolean; error: string | null;
+  proofs: ProofRecord[];
+  offline: boolean;
 }
-const EMPTY: Data = { applications: [], earnings: [], notifications: [], saved: [], profile: null, loading: false, error: null };
+const EMPTY: Data = { applications: [], earnings: [], notifications: [], saved: [], profile: null, proofs: [], loading: false, error: null, offline:false };
 const Context = createContext<Data>(EMPTY);
 export const useUserData = () => useContext(Context);
 
@@ -25,18 +28,21 @@ function AccountData({ uid, children }: { uid: string; children: ReactNode }) {
   useEffect(() => {
     if (!firestore) return;
     let active = true;
-    const pending = new Set(['applications', 'earnings', 'notifications', 'saved', 'profile']);
+    const pending = new Set(['applications', 'earnings', 'notifications', 'saved', 'proofs', 'profile']);
     const failure = () => {
       if (!active) return;
-      ['applications', 'earnings', 'notifications', 'saved', 'profile'].forEach(name => pending.add(name));
+      // Retain only already server-confirmed records in this account's RAM.
+      // This enables safe drafts without claiming an offline read is fresh.
+      if (!navigator.onLine && pending.size === 0) { setData(old => ({ ...old,offline:true })); return; }
+      ['applications', 'earnings', 'notifications', 'saved', 'proofs', 'profile'].forEach(name => pending.add(name));
       setData({ ...EMPTY, error: 'Private data could not be loaded. Reconnect or sign in again.' });
     };
     const accept = (name: string, value: unknown) => {
       if (!active || auth?.currentUser?.uid !== uid) return;
       pending.delete(name);
-      setData(old => ({ ...old, [name]: value, loading: pending.size > 0, error: pending.size === 0 ? null : old.error }));
+      setData(old => ({ ...old, [name]: value, loading: pending.size > 0, error: pending.size === 0 ? null : old.error, offline:!navigator.onLine }));
     };
-    const stops = ['applications', 'earnings', 'notifications', 'saved'].map(name => onSnapshot(
+    const stops = ['applications', 'earnings', 'notifications', 'saved', 'proofs'].map(name => onSnapshot(
       query(collection(firestore!, 'users', uid, name), limit(1000)),
       { includeMetadataChanges: true },
       snap => {
@@ -44,7 +50,7 @@ function AccountData({ uid, children }: { uid: string; children: ReactNode }) {
         // Wait for server confirmation; offline private views fail honestly.
         if (snap.metadata.fromCache) { if (!navigator.onLine) failure(); return; }
         if (snap.size === 1000) { failure(); return; }
-        accept(name, name === 'saved' ? snap.docs.map(d => d.id) : snap.docs.map(d => ({ ...d.data(), id: d.id })));
+        accept(name, name === 'saved' ? snap.docs.map(d => d.id) : name === 'proofs' ? snap.docs.map(d => readProofRecord(d.data(),d.id)).filter(Boolean) : snap.docs.map(d => ({ ...d.data(), id: d.id })));
       }, failure
     ));
     stops.push(onSnapshot(doc(firestore, 'users', uid), { includeMetadataChanges: true }, snap => {
@@ -77,24 +83,7 @@ export async function saveOpportunity(o: Opportunity) {
   });
 }
 export async function transitionApplication(id: string, request: TransitionRequest) {
-  const { uid, db } = identity();
-  await runTransaction(db, async tx => {
-    const ref = doc(db, 'users', uid, 'applications', id);
-    const earningRef = doc(db, 'users', uid, 'earnings', id);
-    const snap = await tx.get(ref);
-    const earning = request.to === 'paid' ? await tx.get(earningRef) : null;
-    if (!snap.exists()) throw new Error('Application no longer exists.');
-    if (auth?.currentUser?.uid !== uid) throw new Error('Your account changed. Retry in the current account.');
-    const result = applyTransition(snap.data() as ApplicationRecord, request);
-    if (!result.ok) throw new Error(result.problems.join('. '));
-    if (earning?.exists()) throw new Error('A payment has already been recorded for this application.');
-    tx.set(ref, result.record);
-    // Atomic and deterministic: a retry cannot create a second earning.
-    if (request.to === 'paid' && request.payment) tx.set(earningRef, {
-      applicationId: id, paidUsd: request.payment.paidUsd, paidAt: request.payment.paidAt,
-      method: request.payment.method ?? null, recordedAt: request.now.toISOString(), recordedBy: uid
-    });
-  });
+  identity(); await sendTransition(id,request);
 }
 export async function saveProfile(profile: Record<string, unknown>) {
   const { uid, db } = identity(); await setDoc(doc(db, 'users', uid), profile, { merge: true });

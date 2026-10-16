@@ -9,6 +9,8 @@ import { FirestoreRunStateStore, MemoryRunStateStore, type SourceRunStateStore }
 import { RunService } from './run/runService.js';
 import type { DocumentStore } from './firestore/documentStore.js';
 import { inspectTelegramSetup, sendControlledTelegramTest } from './notifications/telegram.js';
+import { createPersonalRouter } from './personal.js';
+import { dispatchPersonalNotices } from './notifications/personalized.js';
 
 /**
  * Service bootstrap.
@@ -55,7 +57,8 @@ export function bootstrap(env: NodeJS.ProcessEnv = process.env) {
     adapters: ADAPTERS,
     writer,
     stateStore,
-    deploymentScope: resolvedScope.scope
+    deploymentScope: resolvedScope.scope,
+    ...(store instanceof FirestoreDocumentStore ? { afterRun: () => dispatchPersonalNotices((store as FirestoreDocumentStore).database, env) } : {})
   });
 
   const app = createApp({
@@ -64,6 +67,7 @@ export function bootstrap(env: NodeJS.ProcessEnv = process.env) {
     runService,
     stateStore,
     deploymentScope: resolvedScope.scope,
+    ...(store instanceof FirestoreDocumentStore ? { personalRouter: createPersonalRouter(store.database) } : {}),
     ...(env.TELEGRAM_BOT_TOKEN ? { inspectNotificationSetup: () => inspectTelegramSetup(env.TELEGRAM_BOT_TOKEN!) } : {}),
     ...(store instanceof FirestoreDocumentStore && env.TELEGRAM_BOT_TOKEN && env.TELEGRAM_OWNER_CHAT_ID && env.NOTIFICATION_OWNER_UID ? {
       sendNotificationTest: () => sendControlledTelegramTest({ token: env.TELEGRAM_BOT_TOKEN!, chatId: env.TELEGRAM_OWNER_CHAT_ID!, ownerUid: env.NOTIFICATION_OWNER_UID!, db: (store as FirestoreDocumentStore).database })
