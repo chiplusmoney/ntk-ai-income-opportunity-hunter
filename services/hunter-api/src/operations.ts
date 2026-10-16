@@ -11,7 +11,7 @@ export async function readOperations(db:Firestore,now=new Date()) {
   const statuses=new Map(sources.map(d=>[d.id,d.data()]));
   // Migration-safe legacy readback: a source not yet due in M7 still has a real
   // M6 crawl history. Missing M7 quality fields stay explicitly unmeasured.
-  const missing=SOURCE_REGISTRY.filter(s=>!statuses.get(s.id));
+  const missing=SOURCE_REGISTRY.filter(s=>s.enabled&&s.publicDeploymentAllowed&&!statuses.get(s.id));
   if(missing.length){
     const legacy=await db.collection('internalSourceRuns').orderBy('startedAt','desc').limit(200).get();
     for(const source of missing){const runs=legacy.docs.map(d=>d.data()).filter(r=>r.sourceId===source.id&&!r.skippedForInterval);const last=runs[0];if(!last)continue;
