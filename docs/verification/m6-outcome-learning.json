@@ -1,0 +1,16 @@
+{
+  "status": "VERIFIED",
+  "liveReset": "VERIFIED live; enabled with a fresh reset epoch; no fabricated outcomes",
+  "default": "off; reset can enable",
+  "bounds": "-6..+6",
+  "cannotOverrideEligibility": true,
+  "oldNotesDoNotResurrectOutcomes": true,
+  "tests": "packages/core/test/personalization.test.ts",
+  "actualProductionOutcomes": {
+    "paid": 0,
+    "accepted": 0,
+    "applied": 0,
+    "preparing": 1,
+    "saved": 1
+  }
+}

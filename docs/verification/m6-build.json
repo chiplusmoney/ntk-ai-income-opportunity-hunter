@@ -1,0 +1,59 @@
+{
+  "generatedAt": "2026-10-16T06:44:23.905784+00:00",
+  "version": "0.5.0",
+  "status": "PASS",
+  "runtime": "Node 24.20.0",
+  "cleanInstall": "PASS; exact receipt in m6-clean-suite.json",
+  "typecheck": "PASS across all workspaces; final web build typechecked after CSS correction",
+  "unitCounts": {
+    "core": 389,
+    "web": 83,
+    "api": 83,
+    "scheduler": 9
+  },
+  "unitPassed": 564,
+  "emulatorPassed": 43,
+  "permittedSourcePassed": 8,
+  "auditVulnerabilities": 0,
+  "artifacts": [
+    {
+      "path": "assets/firestoreOpportunityGateway-DczIsgcn.js",
+      "bytes": 650,
+      "sha256": "3d31b78557a793dacc632620e1ffed2d4f3ba79dbc9c6dfd06c2d9e3773dfdef"
+    },
+    {
+      "path": "assets/index-BXiREQfb.js",
+      "bytes": 942861,
+      "sha256": "03551481eba338b9aac66ee46940aa57ae27c0da0aeacbd253651d2dbda0919f"
+    },
+    {
+      "path": "assets/index-BYyIEzFb.css",
+      "bytes": 14805,
+      "sha256": "ac70366c4f70e3e457564c403e416371c57e0a7d0673e095f206d8593bd6bff0"
+    },
+    {
+      "path": "index.html",
+      "bytes": 649,
+      "sha256": "3c7e775317aa39d80e0b533c3d7de022fee5f5bc6d470fb3ca9fa73c491acbca"
+    },
+    {
+      "path": "manifest.webmanifest",
+      "bytes": 381,
+      "sha256": "ef276a3437b039b1dae1614b4bf063cd67c86e90c58ccbfad0874abcf6f6c72d"
+    },
+    {
+      "path": "sw.js",
+      "bytes": 1948,
+      "sha256": "2bc606de954533df41be900439e1188fc1a52fc07cd5e344368002ddd232684c"
+    }
+  ],
+  "buildWarnings": [
+    "main JS >500 kB; measured runtime/bundle receipt retained",
+    "ignored dependency use-client directives"
+  ],
+  "postAcceptanceFixes": [
+    "safe deterministic templates and explicit proof selection",
+    "HTTP/SW navigation revalidation",
+    "wrapping authenticated evidence hashes on narrow screens"
+  ]
+}

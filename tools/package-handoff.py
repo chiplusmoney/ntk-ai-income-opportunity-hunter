@@ -25,9 +25,9 @@ def main():
     scan = scanner.source_scan()
     if scan['findings']:
         raise RuntimeError('Private credential pattern scan failed; no package created')
-    live = json.loads((WORKING / 'docs/verification/m6-live.json').read_text())
-    automated = json.loads((WORKING / 'docs/verification/automated.json').read_text())
-    if automated['status'] != 'PASS' or live.get('verdict') != 'M6_PERSONALIZED_INTELLIGENCE_AND_EARNING_OPTIMIZATION_VERIFIED' or not all(v is True for v in live.get('mandatoryGates', {}).values()) or not live.get('mandatoryGates'):
+    live = json.loads((WORKING / 'docs/verification/m6-live.json').read_text(encoding='utf-8'))
+    automated = json.loads((WORKING / 'docs/verification/automated.json').read_text(encoding='utf-8'))
+    if automated['status'] != 'PASS' or live.get('targetVerdict') != 'M6_PERSONALIZED_INTELLIGENCE_AND_EARNING_OPTIMIZATION_VERIFIED' or live.get('status') != 'LIVE_GATES_VERIFIED_PACKAGE_PENDING' or not all(v is True for v in live.get('mandatoryGates', {}).values()) or not live.get('mandatoryGates'):
         raise RuntimeError('Mandatory M6 gates have not passed; accepted M5b handoff stays canonical')
     HANDOFF.mkdir(exist_ok=True)
     old_files = list(HANDOFF.iterdir())
@@ -54,6 +54,26 @@ def main():
         entries = archive.infolist()
         entry_count = len(entries)
         file_count = sum(not entry.is_dir() for entry in entries)
+    # A source receipt records live acceptance without pre-claiming package success.
+    # Only this measured archive adds the overall milestone acceptance receipt.
+    source_commit = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=WORKING).decode().strip()
+    final_verdict = live['targetVerdict']
+    package_receipt = {
+        'version': '0.5.0', 'verdict': final_verdict, 'sourceCommit': source_commit,
+        'liveGates': live['mandatoryGates'], 'sourceArchiveCrc': 'PASS',
+        'sourceAndHistorySecretScan': 'PASS', 'sourceAndReferenceFiles': file_count,
+        'finalArchiveFileCount': file_count + 1,
+        'checksumLocation': 'The SHA-256 sidecar and independently recomputed outer package-verification.json describe the finished ZIP; a ZIP cannot contain its own checksum.'
+    }
+    with zipfile.ZipFile(path, 'a', compression=zipfile.ZIP_DEFLATED, compresslevel=9) as archive:
+        archive.writestr('M6_PACKAGE_ACCEPTANCE.json', json.dumps(package_receipt, indent=2) + '\n')
+    with zipfile.ZipFile(path) as archive:
+        if archive.testzip():
+            raise RuntimeError('Final M6 archive CRC failed')
+        entries = archive.infolist()
+        entry_count = len(entries)
+        file_count = sum(not entry.is_dir() for entry in entries)
+    live = {**live, 'verdict': final_verdict, 'status': 'COMPLETE', 'mandatoryGates': {**live['mandatoryGates'], 'packaging': True}}
     zip_findings = scanner.zip_scan(path)
     if zip_findings:
         raise RuntimeError('Final ZIP secret scan failed')
@@ -78,7 +98,7 @@ def main():
         'archiveEntryCount': entry_count, 'archiveFileCount': file_count,
         'archiveDirectoryCount': entry_count - file_count,
         'sha256': checksum, 'recomputedSha256': recomputed,
-        'recomputedChecksumMatch': recomputed == sidecar.read_text().split()[0],
+        'recomputedChecksumMatch': recomputed == sidecar.read_text(encoding='utf-8').split()[0],
         'gitCommit': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=WORKING).decode().strip(),
         'testSummary': automated, 'liveDeploymentState': live,
         'secretScan': {**scan, 'zipPrivateCredentialPatternFindings': zip_findings},
@@ -87,7 +107,7 @@ def main():
     }
     (HANDOFF / 'package-verification.json').write_text(json.dumps(record, indent=2) + '\n')
     (HANDOFF / 'workspace-state.json').write_text(json.dumps({'version':'0.5.0','gitCommit':record['gitCommit'],'verdict':live['verdict'],'canonicalPackage':FILENAME,'M6':'VERIFIED','rollbackSourceBranch':'m6-baseline-0.4.1'},indent=2)+'\n')
-    facts = f"\n\n## Final archive measurements\n\nFilename: `{FILENAME}`  \nSource commit: `{record['gitCommit']}`  \nBytes: {record['sizeBytes']}  \nEntries: {entry_count}; files: {file_count}; directory entries: {entry_count - file_count}  \nSHA-256: `{checksum}`  \nIndependent recomputation matches sidecar: {record['recomputedChecksumMatch']}.\n"
+    facts = f"\n\nOverall verdict: `{live['verdict']}`.\n\n## Final archive measurements\n\nFilename: `{FILENAME}`  \nSource commit: `{record['gitCommit']}`  \nBytes: {record['sizeBytes']}  \nEntries: {entry_count}; files: {file_count}; directory entries: {entry_count - file_count}  \nSHA-256: `{checksum}`  \nIndependent recomputation matches sidecar: {record['recomputedChecksumMatch']}.\n"
     handoff = (WORKING / 'docs/M6_HANDOFF_STATE.md').read_text(encoding='utf-8')
     (HANDOFF / 'M6_HANDOFF_STATE.md').write_text(handoff + facts, encoding='utf-8')
     print(json.dumps({k: record[k] for k in ['filename','sizeBytes','archiveEntryCount','archiveFileCount','sha256','recomputedChecksumMatch','archiveIntegrity']},indent=2))

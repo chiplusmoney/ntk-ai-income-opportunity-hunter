@@ -1,0 +1,144 @@
+{
+  "status": "VERIFIED",
+  "browser": "BrowserOS Neo only; chiplusmoney",
+  "auth": {
+    "signOutMasksPrivateData": true,
+    "signOutClearsAvatar": true,
+    "googleReturn": true,
+    "sameUid": true,
+    "proofPersisted": true,
+    "applicationStatesPersisted": true,
+    "avatarLoaded": true
+  },
+  "profile": {
+    "status": "VERIFIED live",
+    "country": "NG",
+    "timezone": "Africa/Lagos",
+    "qualificationsNotInvented": true,
+    "completion": "2/10 minimal facts",
+    "noCvPathPreview": "none/none selected; restored saved unknown/unknown without persisting guessed availability"
+  },
+  "proof": {
+    "status": "VERIFIED live",
+    "count": 1,
+    "provenance": "Real canonical owner-operated project; AI assistance explicitly credited; no invented skills",
+    "capabilityCard": "VERIFIED existing description retained",
+    "portfolioExport": {
+      "bytes": 1149,
+      "format": "HTML",
+      "actualDownloaded": true,
+      "credentialsIncluded": false
+    },
+    "externalVerificationClaimed": false
+  },
+  "application": {
+    "status": "VERIFIED live",
+    "baselineSavedPreserved": true,
+    "newOpportunity": "remotive:1680495 — Remote Office Assistant",
+    "state": "preparing",
+    "officialSource": "https://remotive.com/remote-jobs/marketing/remote-office-assistant-1680495",
+    "applied": false,
+    "actualPaymentCreated": false,
+    "followUpDate": "2026-10-17",
+    "notesAndProofAttachment": "Saved through ID-token-authenticated API",
+    "blockedExample": "Existing remotive:1919266 remains Saved; personal fit 0 because source locations exclude the stated country despite global rank 78"
+  },
+  "draft": {
+    "templateOpening": true,
+    "realProofSelection": true,
+    "explicitAiAssistanceProvenance": true,
+    "fullEligibilityCaveat": true,
+    "aiProvider": "Not configured; deterministic fallback verified",
+    "paidAi": false
+  },
+  "earnings": {
+    "actualUsd": 0,
+    "receipts": 0,
+    "potentialSeparated": true,
+    "trend": "Empty; no simulated history",
+    "pipeline": {
+      "saved": 1,
+      "preparing": 1,
+      "applied": 0,
+      "paid": 0
+    }
+  },
+  "export": {
+    "formatVersion": 2,
+    "downloadedBytes": 5337,
+    "proofs": 1,
+    "applications": 2,
+    "earnings": 0,
+    "credentialFieldsFound": false,
+    "privateDownloadExcludedFromPackage": true
+  },
+  "offline": {
+    "publicFullReload": {
+      "cards": 50,
+      "script": "index-CTjAXOWU.js",
+      "serviceWorkerControlled": true
+    },
+    "sessionPrivateNotes": {
+      "queued": 1,
+      "clearedOnReconnect": true,
+      "serverPersistenceAfterReload": true,
+      "proofAttachmentPreserved": true
+    },
+    "privateCache": "RAM only; full reload does not invent an empty ledger",
+    "postFixFullReload": {
+      "cards": 50,
+      "script": "index-BXiREQfb.js",
+      "activeCache": "ntk-income-hunter-m6-v2",
+      "reconnected": true
+    }
+  },
+  "responsive": {
+    "desktop": {
+      "width": 1440,
+      "height": 1000,
+      "overflow": false,
+      "screenshot": "m6-desktop.png"
+    },
+    "tablet": {
+      "width": 820,
+      "height": 1180,
+      "scrollWidth": 805,
+      "screenshot": "m6-tablet.png"
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "screenshot": "m6-mobile.png"
+    },
+    "avatarKeyboard": {
+      "arrowOpens": true,
+      "escapeCloses": true,
+      "focusRestored": true
+    },
+    "duplicateProfileNavigation": false,
+    "removedSloganPresent": false
+  },
+  "pwaFix": {
+    "defect": "Some route HTML reused a prior fresh HTTP cache after deploy",
+    "resolution": "Hosting Cache-Control no-cache, service-worker navigation no-cache and installation reload requests; cache v2",
+    "verifiedScript": "index-BXiREQfb.js",
+    "verifiedCacheKeys": [
+      "ntk-income-hunter-m6-v2"
+    ],
+    "clearedBrowserCacheToPass": false,
+    "mobileHashOverflow": {
+      "cause": "Unbroken authenticated evidence hash",
+      "fix": "overflow-wrap:anywhere on detail/analysis cards",
+      "verifiedWidth": 390,
+      "temporaryInlineStyles": false
+    },
+    "liveCacheControl": "no-cache"
+  },
+  "screenshots": [
+    "m6-desktop.png",
+    "m6-tablet.png",
+    "m6-mobile.png",
+    "m6-mobile-fit.png"
+  ]
+}

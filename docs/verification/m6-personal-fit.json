@@ -1,0 +1,12 @@
+{
+  "status": "VERIFIED",
+  "algorithm": "Fixed-denominator v1, global rank preserved; hard blocks force zero; unknowns never treated as proof",
+  "live": "Existing remotive:1919266 remains Saved; personal fit 0 because source locations exclude the stated country despite global rank 78",
+  "normalExample": {
+    "id": "remotive:1680495",
+    "personalFit": 20,
+    "fullEligibility": "Requires source review"
+  },
+  "tests": "packages/core/test/personalization.test.ts",
+  "performance": "m6-performance.json"
+}

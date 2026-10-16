@@ -1,0 +1,223 @@
+{
+  "version": "0.5.0",
+  "baseline": "926c2467cfbb08bdeb71cd59fea980566f91938d",
+  "initialM6SourceCommit": "0ea41904f392596c56d2bd5630f090bc391de98c",
+  "renderDeployment": "dep-db8s13c9v7es7398ac70",
+  "hosting": "https://ntk-income-opportunity-hunter.web.app",
+  "api": "https://ntk-hunter-api.onrender.com",
+  "worker": "https://ntk-income-opportunity-hunter-scheduler.chiplusmoney.workers.dev",
+  "browser": "BrowserOS Neo only; chiplusmoney",
+  "profile": {
+    "status": "VERIFIED live",
+    "country": "NG",
+    "timezone": "Africa/Lagos",
+    "qualificationsNotInvented": true,
+    "completion": "2/10 minimal facts",
+    "noCvPathPreview": "none/none selected; restored saved unknown/unknown without persisting guessed availability"
+  },
+  "learningReset": "VERIFIED live; enabled with a fresh reset epoch; no fabricated outcomes",
+  "notifications": {
+    "policySave": "VERIFIED live",
+    "enabled": false,
+    "telegramEnabled": false,
+    "liveTestMessagesSent": 0
+  },
+  "infrastructure": {
+    "firebase": "Spark verified in console",
+    "render": "Free verified; M6 source Live",
+    "worker": "existing canonical unchanged",
+    "cron": "*/30 * * * *",
+    "paidAi": false,
+    "newResources": 0,
+    "billingChanges": 0
+  },
+  "automated": {
+    "unit": 564,
+    "sourceLive": 8,
+    "emulator": 43,
+    "auditVulnerabilities": 0,
+    "receipt": "automated.json"
+  },
+  "proof": {
+    "status": "VERIFIED live",
+    "count": 1,
+    "provenance": "Real canonical owner-operated project; AI assistance explicitly credited; no invented skills",
+    "capabilityCard": "VERIFIED existing description retained",
+    "portfolioExport": {
+      "bytes": 1149,
+      "format": "HTML",
+      "actualDownloaded": true,
+      "credentialsIncluded": false
+    },
+    "externalVerificationClaimed": false
+  },
+  "application": {
+    "status": "VERIFIED live",
+    "baselineSavedPreserved": true,
+    "newOpportunity": "remotive:1680495 — Remote Office Assistant",
+    "state": "preparing",
+    "officialSource": "https://remotive.com/remote-jobs/marketing/remote-office-assistant-1680495",
+    "applied": false,
+    "actualPaymentCreated": false,
+    "followUpDate": "2026-10-17",
+    "notesAndProofAttachment": "Saved through ID-token-authenticated API",
+    "blockedExample": "Existing remotive:1919266 remains Saved; personal fit 0 because source locations exclude the stated country despite global rank 78"
+  },
+  "offline": {
+    "publicFullReload": {
+      "cards": 50,
+      "script": "index-CTjAXOWU.js",
+      "serviceWorkerControlled": true
+    },
+    "sessionPrivateNotes": {
+      "queued": 1,
+      "clearedOnReconnect": true,
+      "serverPersistenceAfterReload": true,
+      "proofAttachmentPreserved": true
+    },
+    "privateCache": "RAM only; full reload does not invent an empty ledger",
+    "postFixFullReload": {
+      "cards": 50,
+      "script": "index-BXiREQfb.js",
+      "activeCache": "ntk-income-hunter-m6-v2",
+      "reconnected": true
+    }
+  },
+  "security": {
+    "ownProfile": 200,
+    "ownProofs": 200,
+    "anonymousProofs": 403,
+    "otherUidProfile": 403,
+    "anonymousPersonalApi": 401,
+    "forgedProofAndPayment": "Denied in 43-case emulator/rules suite; no fake payment record created in production"
+  },
+  "earnings": {
+    "actualUsd": 0,
+    "receipts": 0,
+    "potentialSeparated": true,
+    "trend": "Empty; no simulated history",
+    "pipeline": {
+      "saved": 1,
+      "preparing": 1,
+      "applied": 0,
+      "paid": 0
+    }
+  },
+  "export": {
+    "formatVersion": 2,
+    "downloadedBytes": 5337,
+    "proofs": 1,
+    "applications": 2,
+    "earnings": 0,
+    "credentialFieldsFound": false,
+    "privateDownloadExcludedFromPackage": true
+  },
+  "auth": {
+    "signOutMasksPrivateData": true,
+    "signOutClearsAvatar": true,
+    "googleReturn": true,
+    "sameUid": true,
+    "proofPersisted": true,
+    "applicationStatesPersisted": true,
+    "avatarLoaded": true
+  },
+  "responsive": {
+    "desktop": {
+      "width": 1440,
+      "height": 1000,
+      "overflow": false,
+      "screenshot": "m6-desktop.png"
+    },
+    "tablet": {
+      "width": 820,
+      "height": 1180,
+      "scrollWidth": 805,
+      "screenshot": "m6-tablet.png"
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "screenshot": "m6-mobile.png"
+    },
+    "avatarKeyboard": {
+      "arrowOpens": true,
+      "escapeCloses": true,
+      "focusRestored": true
+    },
+    "duplicateProfileNavigation": false,
+    "removedSloganPresent": false
+  },
+  "pwaFix": {
+    "defect": "Some route HTML reused a prior fresh HTTP cache after deploy",
+    "resolution": "Hosting Cache-Control no-cache, service-worker navigation no-cache and installation reload requests; cache v2",
+    "verifiedScript": "index-BXiREQfb.js",
+    "verifiedCacheKeys": [
+      "ntk-income-hunter-m6-v2"
+    ],
+    "clearedBrowserCacheToPass": false,
+    "mobileHashOverflow": {
+      "cause": "Unbroken authenticated evidence hash",
+      "fix": "overflow-wrap:anywhere on detail/analysis cards",
+      "verifiedWidth": 390,
+      "temporaryInlineStyles": false
+    },
+    "liveCacheControl": "no-cache"
+  },
+  "drafting": {
+    "templateOpening": true,
+    "realProofSelection": true,
+    "explicitAiAssistanceProvenance": true,
+    "fullEligibilityCaveat": true,
+    "aiProvider": "Not configured; deterministic fallback verified",
+    "paidAi": false
+  },
+  "scheduler": {
+    "verifiedDuringM6": true,
+    "runId": "run_2026-10-16T06:30:27.718Z",
+    "reason": "cron-30m",
+    "due": [
+      "arbeitnow",
+      "github-bounties",
+      "remoteok"
+    ],
+    "published": 127,
+    "drafts": 11,
+    "rejected": 291,
+    "written": 257,
+    "failedWrites": 0,
+    "skippedInvalid": 0,
+    "aiAttempted": false,
+    "source": "Actual Render logs; existing 30-minute canonical Worker unchanged; legacy invalid attempts rejected"
+  },
+  "generatedAtUTC": "2026-10-16 06:42:33 UTC",
+  "status": "LIVE_GATES_VERIFIED_PACKAGE_PENDING",
+  "targetVerdict": "M6_PERSONALIZED_INTELLIGENCE_AND_EARNING_OPTIMIZATION_VERIFIED",
+  "finalApplicationSourceCommit": "0aa84361c9ed7cca181327775518b89c55721706",
+  "mandatoryGates": {
+    "implementation": true,
+    "cleanInstall": true,
+    "typecheck": true,
+    "unitTests": true,
+    "emulatorAndRules": true,
+    "permittedSources": true,
+    "build": true,
+    "browserQA": true,
+    "productionDeployment": true,
+    "liveOwnerData": true,
+    "offlineReconnect": true,
+    "uidIsolation": true,
+    "sourceAndBundleSecretScan": true,
+    "performanceMeasurement": true,
+    "documentation": true
+  },
+  "remainingLimitations": [
+    "FlagshipRouter endpoint not configured; deterministic fallback and capability interface verified; paid AI disabled.",
+    "Owner profile intentionally minimal: only known country/timezone persisted; skills, experience and CV/portfolio availability remain unanswered.",
+    "Proof is user-declared with explicit AI assistance; no independent qualification verification claimed.",
+    "Private offline drafts are RAM-only and discarded on sign-out or reload.",
+    "Personal notification pass is bounded to 10 opted-in users and 100 newest catalog rows; disabled for owner acceptance; no new Telegram test sent.",
+    "Main bundle remains about 943 kB minified; scoring benchmark is local Node, not a mobile performance certificate.",
+    "Existing unrelated Firebase CLI OAuth incident remains owner security cleanup; see OAUTH_SECURITY_ACTION.md."
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "status": "VERIFIED",
+  "runtime": {
+    "ownProfile": 200,
+    "ownProofs": 200,
+    "anonymousProofs": 403,
+    "otherUidProfile": 403,
+    "anonymousPersonalApi": 401,
+    "forgedProofAndPayment": "Denied in 43-case emulator/rules suite; no fake payment record created in production"
+  },
+  "tests": 43,
+  "coverage": [
+    "own access",
+    "cross UID and anonymous denial",
+    "client earnings forgery denial",
+    "forged proof status denial",
+    "server-owned imported proof protection",
+    "owner learning isolation",
+    "transactional payment deduplication",
+    "server import provenance",
+    "personal notification deduplication and cooldown"
+  ],
+  "credentialsInClient": false,
+  "sourceScan": "m6-security-source.json",
+  "historicalIncident": "OAUTH_SECURITY_ACTION.md"
+}
