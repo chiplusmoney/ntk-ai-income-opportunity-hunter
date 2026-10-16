@@ -1,0 +1,12 @@
+{
+  "account": "4f67a960d66dff69c2fcab490616c811",
+  "cpuTimeMs": 0,
+  "eventSource": "Authenticated Cloudflare dashboard live event detail",
+  "eventTime": "2026-10-16T02:09:10.241Z",
+  "eventType": "scheduled",
+  "observedAt": "2026-10-16T02:11:31.970Z",
+  "outcome": "ok",
+  "requestId": "349cc9fd93e7f48b1f10cb8cb94e64dd",
+  "scriptName": "ntk-income-opportunity-hunter-scheduler",
+  "wallTimeMs": 773
+}

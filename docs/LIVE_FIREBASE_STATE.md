@@ -20,3 +20,5 @@ Email/password signup and sign-in plus Google were exercised live; Google retain
 Render's mounted `/etc/secrets/firebase-service-account.json` is preserved and works: readiness makes an actual server read. The unnecessary downloaded service-account JSON was removed and its absence rechecked. No private key is packaged. Auth session persistence is distinct from backend credentials; the app retains the owner's normal Firebase session on their device.
 
 The custom persistent cache contains only public opportunities. Current Firestore private reads use memory. The obsolete Firestore persistent cache on the tested Neo origin was removed after verifying zero pending mutations; Auth storage was preserved.
+
+Final scheduler closure: the canonical chiplusmoney Worker completed run_2026-10-16T02:17:09.869Z with 259 writes. Independent readback measured 184 published records with deterministic source:item IDs and paired new evidence for all three due sources. These are a measured catalog read and a per-run write count, respectively; they are not interchangeable. No user payment/outcome was created.

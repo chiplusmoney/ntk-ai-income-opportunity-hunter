@@ -1,42 +1,47 @@
-# Self-contained M5b hardening handoff
+# Self-contained final M5b handoff
 
-Date: 2026-10-16. Version 0.4.1. Verdict: **M5b_PARTIAL_CLOUDFLARE_ACCESS_BLOCKED**. Do not use the full live-acceptance verdict. M6 is excluded.
+Date: 2026-10-16. Version 0.4.1. Verdict: **M5b_LIVE_DEPLOYMENT_AND_ACCEPTANCE_VERIFIED**. M6: NOT STARTED.
 
-This is an existing React/Vite/Firebase PWA and Node Hunter API. The deterministic core reads permitted feeds, captures evidence, filters and ranks public opportunity records in Firestore. Render runs the API; a pre-existing Cloudflare Worker is intended to trigger it on a 30-minute cron heartbeat, while the API enforces individual source intervals.
+This existing React/Vite/Firebase PWA discovers permitted public job/bounty opportunities, records source evidence, ranks deterministically and lets signed-in users save applications and record actual payments. Render hosts the Node API. A canonical free Cloudflare Worker provides the scheduler heartbeat; the API persists interval state in Firestore.
 
-## Current deployed behavior
+## Authoritative production endpoints
 
-Hosting: https://ntk-income-opportunity-hunter.web.app
-API: https://ntk-hunter-api.onrender.com
-Existing Worker: https://ntk-income-hunter-scheduler.ntk-note.workers.dev
-Firebase project: ntk-income-opportunity-hunter; no other project is part of this release.
+- Firebase project: ntk-income-opportunity-hunter (existing Spark project).
+- Hosting: https://ntk-income-opportunity-hunter.web.app
+- Render API: https://ntk-hunter-api.onrender.com
+- Canonical scheduler: https://ntk-income-opportunity-hunter-scheduler.chiplusmoney.workers.dev
+- Canonical Worker name: ntk-income-opportunity-hunter-scheduler
+- Authoritative Cloudflare account: 4f67a960d66dff69c2fcab490616c811, chiplusmoney, Workers Free.
+- Production cron: */30 * * * *.
 
-The top real avatar is now the single profile entry. Its working dropdown contains profile, security, settings, notifications, field-selected data export and sign-out. Sidebar and mobile navigation contain Settings, not Profile. The footer slogan is gone. Actual Google identity and sign-in security appear in Profile; country/skills persist in Settings.
+The owner explicitly authorized this replacement Worker rather than continuing to seek the inaccessible account. The old https://ntk-income-hunter-scheduler.ntk-note.workers.dev is **LEGACY_ORPHANED_WORKER - INACCESSIBLE - CREDENTIAL INVALIDATED - NOT CANONICAL**. Do not rely on it or modify its inaccessible account.
 
-Authentication and private UID-scoped saved/application/earnings/notification data are real. One live opportunity was genuinely saved. Earnings are actual recorded receipts only: the owner currently has zero. Payment transaction and duplicate tests run only in the emulator; no paid record was fabricated in production.
+## What is verified
 
-Telegram delivered exactly one controlled test at 2026-10-16T01:14:54.136Z, message ID 5. The owner chat was independently matched to the signed-in Neo Telegram identity before sending. Provider confirmation, visible message and in-app mark-read/delete all passed. A permanent server-only attempt ledger prevents a second send. Broader automated opportunity notification delivery, email and push are not claimed.
+The new deployed module matches the tested compiled build. Public health is 200; actual browser POST /run is 404. No public HTTP hunt trigger exists. A brand-new cryptographic shared value is stored only server-side in Render and the encrypted Worker binding; it is omitted from source, logs and this package. Fresh API authentication is 200; missing/invalid requests are 401. Earlier values were not recovered or reused. Actual legacy attempts are rejected in Render; the old wrapper returns 500/1101.
 
-## Verification
+A temporary one-minute cron proved the real scheduled path. Restoration to */30 was accepted at 02:09:56 UTC immediately after the observed successful receipt. Cloudflare propagation allowed some short-interval invocations afterward; the API respected source intervals throughout. No keep-alive schedule or forced crawl was added.
 
-Clean install, typecheck, build and audit pass. Ordinary unit tests: 476 passed, zero failed; 8 permitted-source checks and 29 emulator/security tests pass separately. See verification/automated.json. Fresh live rules probes prove signed-in evidence, owner-private access, other-UID denial and client notification-creation denial. Render readiness performs a real Firestore read.
+At 02:17:09.869 UTC (03:17 Lagos), a real scheduled run of due Arbeitnow, GitHub bounties and Remote OK produced 128 published results, 17 drafts and 259 writes with zero failures and no AI calls. Cloudflare request 638eb48035ad1c5b31d18ab41bb728dc and Render agree on run_2026-10-16T02:17:09.869Z. Firestore source-run timestamps and paired evidence records match. The following scheduled run at 02:18 wrote zero. Remotive's six-hour interval was not due. Devpost, Freelancer and public-scope Hacker News remained excluded.
 
-Final bounded hunt: 136 published, 17 drafts, 276 writes, zero failures. Immediate repeat: zero writes, all sources correctly interval-skipped. These are per-run figures, not total database counts. Forbidden sources were not contacted.
+One actual saved application remains in the owner's account, in saved state. Earnings remain zero, with no invented history or success percentage. The single top avatar dropdown, actual provider photo, Settings navigation and removed footer slogan are preserved. The dropdown provides profile, security, settings, notifications, export and sign-out. Auth sign-out and Google return preserve the same account data. Email/password's earlier live signup/signin evidence is retained; no duplicate test account was created.
 
-Desktop, tablet and mobile screenshots were inspected. The actual avatar loads. Native menu arrow/Escape/sign-out, Google return and saved preferences pass. Public offline full reload shows 50 cached opportunities; private data asks for reconnection and recovers online. Legacy Firestore cache was removed after checking zero pending mutations, preserving Auth persistence.
+Existing Telegram controlled delivery at 2026-10-16T01:14:54.136Z, provider message ID 5, remains the only smoke test. It was marked read and deleted in the app during prior acceptance; the permanent server-only attempt ledger remains. No additional test was sent during closure. Automated opportunity broadcasts, email and push are not claimed by this bounded channel transport acceptance.
 
-The unnecessary local service-account download is absent. Render's mounted Secret File is preserved and working. Secret scans cover current source, bundles, docs, reachable Git blobs and final ZIP. Metadata is computed after ZIP creation and independently recomputed; exact filename, bytes, entry counts, SHA-256 and source commit are external in package-verification.json, avoiding a circular ZIP self-hash claim.
+Desktop, tablet and mobile screenshots are current. Offline full reload shows 50 public cached opportunities; private records are protected until reconnecting. Service worker and public-only IndexedDB caching remain active. Normal Firebase Auth session persistence is intentionally retained. The mounted Render service account performs a real Firestore read; the unnecessary local download is absent.
 
-## Outstanding Cloudflare gate
+## Checks and evidence
 
-Render's compromised shared secret has been rotated; the old returns 401, the fresh returns 200. Canonical Worker source removes all HTTP /run triggers (Option A), and six scheduler tests pass. However, the existing Worker belongs to Cloudflare account bf704dfd0ec55748ffa95a10b414b2b0, which chiplusmoney cannot access. The sole accessible account 4f67a960d66dff69c2fcab490616c811 has zero Workers. No pending invite or matching invitation email was found; owning-account request returned 403.
+Clean install, typecheck, all workspace builds, 479 unit tests, 8 permitted-source checks and 29 emulator/integration/rules tests pass. Audit: zero vulnerabilities. Payment/atomicity/replay fixtures run only in the emulator and never create a production payment. The frontend entry remains about 271 kB gzip; physical-device/performance certification is not claimed. The existing AI assistant remains a scaffold; no M6 features were added.
 
-Therefore the encrypted Cloudflare secret, hardened Worker deployment and authenticated cron-to-Render execution remain incomplete. Do not recreate the Worker, use a different account or restore the compromised value. Resume by giving chiplusmoney access to the existing owning account, update that Worker's encrypted secret to match Render without exposing it, deploy canonical source, verify public /run is unavailable and confirm authenticated cron execution. Repackage with fresh measured evidence afterward.
+Machine receipts are in docs/verification: automated.json, scheduled-chain.json, cloudflare-event.json, cloudflare-console.json, cloudflare-due-hunt.json, render-scheduled-hunt.json, post-scheduler-status.json, firestore-persistence.json, live-security.json, worker-deployment.json and final audit files. Exact final filename, bytes, entries, SHA-256, source commit and checksum recomputation are measured after ZIP creation in external package-verification.json; no circular archive self-hash is claimed.
 
-## Scope, cost, security and rollback
+## Remaining owner security action
 
-No resource recreation, billing change, paid AI call or M6 work. Source rollback branch is m5b-pre-hardening-20261015 at a66532d, but never restore an exposed secret or older public manual trigger. Real user records and mounted credentials are preserved.
+**OWNER SECURITY ACTION STILL REQUIRED** for the earlier unrelated Firebase CLI OAuth grant. Account email metadata identifies a different cached identity from chiplusmoney. No credential value is reproduced or copied into canonical artifacts, and no unauthorized account switch was made. The affected owner should use their own Google Account > Security > Connections to third-party apps and services, remove the Firebase CLI connection, and reauthorize only when needed. See OAUTH_SECURITY_ACTION.md. The application verdict does not assert revocation of that unrelated grant or a credential-free historical transcript.
 
-The AI assistant remains an existing interface scaffold, not a verified analysis service. Physical device testing and performance certification are not claimed; the built client entry is about 271 kB gzip.
+## Preservation, cost and rollback
 
-An earlier Firebase CLI JSON diagnostic emitted unrelated cached OAuth credentials into the execution transcript. They were not used or copied to artifacts. Revocation was outside this account-restricted pass and remains an account-owner action. Do not describe the execution transcript as credential-free.
+Firebase, Render, production user data and Telegram are preserved. Exactly one new free Worker was authorized and created; no paid add-on, billing upgrade or paid AI call. Rollback branch m5b-pre-canonical-scheduler-20261016 preserves the hardened baseline. Preserve the new Worker account/name and fresh synchronized values when rolling code back. Never reactivate the orphaned scheduler, old public manual trigger or prior exposed credential. Source and final receipts are pushed to canonical main; the previous partial handoff is preserved under ARCHIVE.
+
+Final regular-cron confirmation: actual provider event `*/30 * * * *` completed at 2026-10-16T02:30:27.919Z (03:30 Lagos). Cloudflare and Render match `run_2026-10-16T02:30:27.644Z`, zero writes, zero failures. The last observed short-interval propagation event was 02:21 UTC; the regular production cadence is now proven. See verification/regular-cron.json.

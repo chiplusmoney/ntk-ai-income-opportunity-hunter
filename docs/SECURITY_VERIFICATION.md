@@ -1,23 +1,16 @@
-# Security verification — M5b hardening
+# M5b final security verification
 
-Date: 2026-10-16. **PARTIAL: Worker hardening deployment blocked.**
+Date: 2026-10-16. Project verdict: **M5b_LIVE_DEPLOYMENT_AND_ACCEPTANCE_VERIFIED**. Unrelated OAuth action remains explicitly open.
 
-## Verified boundaries
+- Fresh cryptographic scheduler value is synchronized in Render and the canonical Cloudflare encrypted secret_text binding. No previous literal value was recovered or reused. Fresh /internal/status is 200; missing and invalid credentials are 401.
+- Actual legacy invalid-credential rejections are visible in Render, including the bounded manual probe at 02:07 UTC. The middleware maps that result to 401; the legacy Worker's external response is 500/1101. Its prior credential cannot authorize a hunt.
+- New public POST /run returns 404. Actual scheduled invocations succeed with matched Cloudflare and Render run IDs. Provider module readback matches the tested hardened build.
+- Fresh live Firestore probes: anonymous published catalog 200; anonymous evidence/profile 403; owner evidence/profile/earnings 200; all tested other-UID private collections 403; forged notification creation 403. 29 emulator/rules tests pass.
+- One saved application remains saved; no production payment was fabricated. Deterministic source:item IDs have zero duplicate stable keys in the 184-document bounded public read; three fresh source/evidence pairs match the 02:17 run. Writer replay/atomic payment/duplicate rejection tests use the emulator.
+- Telegram credentials and mounted service-account file are preserved server-side. No extra Telegram message was sent. Actual existing bot delivery remains visible; current session confirms it is one delivered bubble plus its chat-list preview, not two sends.
+- Private Firestore data remains in memory; persistent opportunities are public. Offline private masking and reconnection pass. Field-selected export and account isolation are preserved.
+- Dependency audit: zero vulnerabilities. Pattern scans cover current source, bundles, docs, reachable Git blobs and all final ZIP entries; exact metadata is generated at packaging. Public Firebase configuration and normal owner Auth persistence are intentionally allowed. Pattern scans do not prove absence of every possible secret encoding.
 
-- Render uses a fresh cryptographic shared credential. Direct rotation probes: old value 401, fresh value 200. Values were not written to source, receipts or the package.
-- Reviewed Firebase rules deployed. Current live tests: anonymous published catalog 200; anonymous evidence/profile 403; owner evidence/profile/earnings 200; all tested other-UID private paths 403; forged notification creation 403.
-- Notification edits are limited to Boolean read status. Real mark-read/delete passed. A server-only permanent send-attempt ledger prevents a deleted receipt from authorizing another message.
-- Telegram token/destination and Firebase service account remain on Render only. The mounted service-account file is working; its unnecessary local download is absent.
-- Public-only persistent PWA cache. Private Firestore documents use memory. Offline private views do not present empty cache as actual zero records. Legacy persistence was removed only after zero pending mutations; normal owner Auth persistence was preserved.
-- Export selects explicit fields rather than serializing Auth or raw Firestore objects. Unit test injects sensitive marker fields at multiple levels; they are excluded. Real export had no credential fields.
-- 29 emulator/security tests pass; dependency audit reports zero vulnerabilities. Source/history/bundle/documentation and final ZIP pattern scans are measured by the packaging tool. A broader 375-file WORKING scan (excluding dependencies, Git internals and binary images) found no private credential patterns.
+**OWNER SECURITY ACTION STILL REQUIRED:** the earlier exposed Firebase CLI OAuth grant belongs to a different cached Google identity. No switch to that account or credential use was authorized by the chiplusmoney-only rule. Its owner should revoke the Firebase CLI connection in their own Google Account security settings, then reauthorize only when needed. See OAUTH_SECURITY_ACTION.md. No credential content is recorded; do not call the earlier execution transcript credential-free.
 
-## Incomplete boundary
-
-Cloudflare's encrypted secret cannot yet be matched to Render, and source removal of public `/run` cannot be deployed. Only one account is accessible to chiplusmoney, with zero Workers and zero pending invites; owning-account access returns 403. The compromised credential remains rejected by Render, so that old Worker cannot authenticate. No replacement account or resource was created.
-
-## Scope of scanning and incident
-
-The scanner checks private-key blocks, GitHub/Telegram/Google OAuth/Render token shapes, literal bearer tokens, secret assignments including Cloudflare, and the fresh scheduler-value shape. It scans tracked/new files, frontend output and all reachable Git history, then every final ZIP entry. Public Firebase web identifiers are intentionally allowed. Pattern scans are evidence of their stated checks, not a proof against every possible secret encoding. The browser cache was also checked against the actual current scheduler credential and PEM markers; none were found. A final scan of every current-origin IndexedDB store and localStorage likewise found neither a private-key block nor the current scheduler credential; normal Firebase Auth session persistence is intentionally retained. See verification/browser-storage-security.json.
-
-An earlier Firebase CLI JSON account-list diagnostic emitted unrelated cached OAuth credentials into the execution transcript. They were not used or copied to artifacts. Revocation of that unrelated account was outside this account-restricted pass; the transcript must not be described as credential-free.
+Final new-credential browser audit: 11 cached responses, 3 IndexedDB databases/stores and 52 records plus localStorage were checked; no current scheduler credential or private-key marker was found. Auth persistence remains intentionally active. See verification/browser-cache-final.json.

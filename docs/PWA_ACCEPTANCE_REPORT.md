@@ -17,4 +17,8 @@ Date: 2026-10-16. Browser: **BrowserOS Neo only**, chiplusmoney. Live Firebase H
 
 ## Limits
 
-This is browser/device emulation in the real Neo browser, not physical-device certification. The browser was restored from a minimized window before the final native controls and screenshots were tested. The AI assistant page is an existing interface scaffold; no live AI analysis is configured or claimed. No M6 features were added. Automatic cron operation remains blocked by Cloudflare account access, independent of the UI checks.
+This is browser/device emulation in the real Neo browser, not physical-device certification. The browser was restored from a minimized window before the final native controls and screenshots were tested. The AI assistant page is an existing interface scaffold; no live AI analysis is configured or claimed. No M6 features were added. The new canonical chiplusmoney Worker now has verified authenticated scheduled execution. The product source was unchanged during this scheduler closure.
+
+Final closure reran desktop/tablet/mobile inspection and offline/reconnect. A settled offline catalog measured 50 cards; the first shell-only frame was not counted as loaded data. Real sign-out/Google return and private saved state were checked again.
+
+Final new-credential browser audit: 11 cached responses, 3 IndexedDB databases/stores and 52 records plus localStorage were checked; no current scheduler credential or private-key marker was found. Auth persistence remains intentionally active. See verification/browser-cache-final.json.

@@ -1,0 +1,15 @@
+{
+  "at": "2026-10-16T02:29:44.544Z",
+  "cachedResponsesScanned": 11,
+  "caches": [
+    "ntk-income-hunter-m5b-hardened-v2"
+  ],
+  "currentSchedulerCredentialOrPrivateKeyFound": false,
+  "indexedDatabases": 3,
+  "normalAuthPersistenceRetained": true,
+  "online": true,
+  "publicOpportunityCount": 50,
+  "recordsChecked": 52,
+  "serviceWorkerActive": true,
+  "storesChecked": 3
+}

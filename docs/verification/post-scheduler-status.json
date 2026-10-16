@@ -1,0 +1,26 @@
+{
+  "at": "2026-10-16T02:18:47.867Z",
+  "lastRun": {
+    "aiAttempted": false,
+    "drafts": 0,
+    "failedWrites": 0,
+    "finishedAt": "2026-10-16T02:18:09.692Z",
+    "published": 0,
+    "reason": "cron-30m",
+    "rejected": 0,
+    "runId": "run_2026-10-16T02:18:09.537Z",
+    "skippedInvalid": 0,
+    "startedAt": "2026-10-16T02:18:09.537Z",
+    "written": 0
+  },
+  "lastRunBySource": {
+    "arbeitnow": "2026-10-16T02:17:09.869Z",
+    "github-bounties": "2026-10-16T02:17:09.869Z",
+    "remoteok": "2026-10-16T02:17:09.869Z",
+    "remotive": "2026-10-16T01:17:07.678Z"
+  },
+  "running": false,
+  "sourceRuns": [],
+  "stateError": null,
+  "status": 200
+}

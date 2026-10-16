@@ -1,0 +1,54 @@
+{
+  "at": "2026-10-16T02:23:53.046Z",
+  "deterministicIdsMatch": true,
+  "duplicateStableKeyCount": 0,
+  "limit": 500,
+  "newRunPairedEvidence": [
+    {
+      "contentHashPresent": true,
+      "evidenceId": "arbeitnow:bankkaufmann-frau-als-kreditspezialist-im-homeoffice-berlin-57091",
+      "evidenceStatus": 200,
+      "fetchedAt": "2026-10-16T02:17:09.869Z",
+      "opportunityId": "arbeitnow:bankkaufmann-frau-als-kreditspezialist-im-homeoffice-berlin-57091",
+      "opportunityUpdatedAt": "2026-10-16T02:17:09.869Z",
+      "sourceId": "arbeitnow"
+    },
+    {
+      "contentHashPresent": true,
+      "evidenceId": "github-bounties:1896",
+      "evidenceStatus": 200,
+      "fetchedAt": "2026-10-16T02:17:09.869Z",
+      "opportunityId": "github-bounties:1896",
+      "opportunityUpdatedAt": "2026-10-16T02:17:09.869Z",
+      "sourceId": "github-bounties"
+    },
+    {
+      "contentHashPresent": true,
+      "evidenceId": "remoteok:1136094",
+      "evidenceStatus": 200,
+      "fetchedAt": "2026-10-16T02:17:09.869Z",
+      "opportunityId": "remoteok:1136094",
+      "opportunityUpdatedAt": "2026-10-16T02:17:09.869Z",
+      "sourceId": "remoteok"
+    }
+  ],
+  "ownerCollections": {
+    "applications": {
+      "count": 1,
+      "states": [
+        "saved"
+      ],
+      "status": 200
+    },
+    "earnings": {
+      "count": 0,
+      "status": 200
+    },
+    "saved": {
+      "count": 1,
+      "status": 200
+    }
+  },
+  "publicDocumentsMeasured": 184,
+  "publicQueryStatus": 200
+}

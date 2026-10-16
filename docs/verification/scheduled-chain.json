@@ -1,0 +1,74 @@
+{
+  "accountId": "4f67a960d66dff69c2fcab490616c811",
+  "canonicalUrl": "https://ntk-income-opportunity-hunter-scheduler.chiplusmoney.workers.dev",
+  "canonicalWorker": "ntk-income-opportunity-hunter-scheduler",
+  "firstScheduledRun": {
+    "aiAttempted": false,
+    "drafts": 0,
+    "failedWrites": 0,
+    "finishedAt": "2026-10-16T02:09:10.153Z",
+    "published": 0,
+    "reason": "cron-30m",
+    "rejected": 0,
+    "runId": "run_2026-10-16T02:09:09.991Z",
+    "skippedInvalid": 0,
+    "startedAt": "2026-10-16T02:09:09.991Z",
+    "written": 0
+  },
+  "freePlan": true,
+  "renderAuthentication": 200,
+  "restoredCron": {
+    "at": "2026-10-16T02:09:55.737Z",
+    "schedules": [
+      {
+        "created_on": "2026-10-16T02:09:56.628127Z",
+        "cron": "*/30 * * * *",
+        "modified_on": "2026-10-16T02:09:56.628127Z"
+      }
+    ],
+    "status": 200,
+    "success": true
+  },
+  "sourceRuns": [],
+  "stateError": null,
+  "telegramTestsSentThisPass": 0,
+  "temporaryCronStartedAt": "2026-10-16T02:00:53.346178Z",
+  "restoredRegularCronExecution": {
+    "console": {
+      "cron": "*/30 * * * *",
+      "event": "scheduler-run",
+      "failedWrites": 0,
+      "runId": "run_2026-10-16T02:30:27.644Z",
+      "written": 0
+    },
+    "observedAt": "2026-10-16T02:32:47.626Z",
+    "render": {
+      "lastRun": {
+        "aiAttempted": false,
+        "drafts": 0,
+        "failedWrites": 0,
+        "finishedAt": "2026-10-16T02:30:27.842Z",
+        "published": 0,
+        "reason": "cron-30m",
+        "rejected": 0,
+        "runId": "run_2026-10-16T02:30:27.644Z",
+        "skippedInvalid": 0,
+        "startedAt": "2026-10-16T02:30:27.644Z",
+        "written": 0
+      },
+      "stateError": null,
+      "status": 200
+    },
+    "provider": {
+      "cron": "*/30 * * * *",
+      "eventTime": "2026-10-16T02:30:27.919Z",
+      "eventType": "scheduled",
+      "providerOutcome": "ok",
+      "requestId": "6b90cb1b59533ff948038a08f25a32a0",
+      "scriptName": "ntk-income-opportunity-hunter-scheduler"
+    },
+    "runIdsMatch": true
+  },
+  "shortCronPropagationLastObservedAt": "2026-10-16T02:21:09.816Z",
+  "restorationConfirmedByRealRegularEvent": true
+}

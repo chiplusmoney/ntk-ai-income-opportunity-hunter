@@ -1,0 +1,15 @@
+{
+  "date": "2026-10-16",
+  "status": "OWNER SECURITY ACTION STILL REQUIRED",
+  "affectedAuthorization": "Firebase CLI authorization for a different cached Google identity; not chiplusmoney",
+  "authorizedBrowserIdentity": "chiplusmoney",
+  "investigation": "Read cached account email metadata only; no token values printed. The affected default CLI identity differs from the authorized account. Current Neo Google session is chiplusmoney.",
+  "autonomousRevocation": "Not performed: switching to or revoking another owner account is outside the sole-authorized-identity restriction.",
+  "preciseOwnerGuidance": [
+    "Use the affected Google account, not chiplusmoney, to open Google Account > Security > Connections to third-party apps and services.",
+    "Find the Firebase CLI connection and remove its access. This revokes the exposed CLI authorization; it does not delete Firebase projects or their data.",
+    "Reauthorize that account with the Firebase CLI only when its owner next needs it. Do not run or share JSON credential listings."
+  ],
+  "projectImpact": "No canonical source, bundle, ZIP or production project credentials contain the exposed OAuth grant. The dedicated chiplusmoney Firebase authorization was preserved.",
+  "credentialContentRecorded": false
+}

@@ -1,7 +1,13 @@
 # Changelog
 
-All milestones are cumulative; each package is a strict superset of the one it
-replaces. Verdicts are recorded exactly as verified, including the narrow ones.
+Milestones record cumulative work and dated findings. The current deployment and
+verdict appear first; earlier entries are historical.
+
+## Final M5b scheduler closure - 2026-10-16 - 0.4.1
+
+Verdict: **M5b_LIVE_DEPLOYMENT_AND_ACCEPTANCE_VERIFIED**. Under explicit owner authorization, created the canonical ntk-income-opportunity-hunter-scheduler in chiplusmoney's free account and synchronized a newly generated credential. Public /run is unavailable. Actual scheduled executions, a due-source hunt (259 writes), interval-safe repeat, persisted source audits and paired evidence are verified. All 479 unit, 8 source and 29 emulator checks pass. Product/UI/Auth/Telegram preserved; no M6. The unrelated OAuth grant still requires its different account owner's security action.
+
+The entries below record earlier dated milestones and partial states; they are not the current verdict.
 
 ## M5b — 2026-10-15 — Verdict: `M5b_PARTIAL`
 

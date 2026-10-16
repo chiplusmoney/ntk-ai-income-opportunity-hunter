@@ -1,0 +1,17 @@
+{
+  "at": "2026-10-16T02:12:09.609Z",
+  "cron": "* * * * *",
+  "drafts": 0,
+  "event": "scheduler-run",
+  "failedWrites": 0,
+  "origin": "scheduled",
+  "published": 0,
+  "requestId": "349cc9fd93e7f48b1f10cb8cb94e64dd",
+  "runId": "run_2026-10-16T02:09:09.991Z",
+  "scheduledAt": "2026-10-16T02:09:08.835Z",
+  "scriptName": "ntk-income-opportunity-hunter-scheduler",
+  "written": 0,
+  "providerOutcome": "ok",
+  "apiOutcome": "completed",
+  "apiOutcomeBasis": "Matching authenticated Render receipt in scheduled-chain.json"
+}

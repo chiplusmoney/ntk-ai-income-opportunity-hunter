@@ -1,140 +1,113 @@
 {
-  "first": {
+  "generatedAt": "2026-10-16T02:28:31.025535+00:00",
+  "trigger": "Actual canonical Cloudflare scheduled event; no interval override or forced crawl",
+  "cloudflare": {
+    "apiOutcome": "completed",
+    "at": "2026-10-16T02:21:27.242Z",
+    "cron": "* * * * *",
     "drafts": 17,
-    "due": [
-      "remotive",
-      "arbeitnow",
-      "github-bounties",
-      "remoteok"
-    ],
-    "finishedAt": "2026-10-16T01:17:41.945Z",
-    "paidAiUsed": false,
-    "published": 136,
-    "runId": "run_2026-10-16T01:17:07.678Z",
-    "skipped": [
-      {
-        "reason": "Devpost Terms of Service §4 prohibits automated access to the Site and to any related data. No official Devpost API or API terms exist. Enabling requires written permission from Devpost — the endpoint returning HTTP 200 is not permission.",
-        "sourceId": "devpost"
-      },
-      {
-        "reason": "Express written authorisation from Y Combinator covering redistribution or public display of HN story metadata (nothing in the YC Terms of Use, the HN Guidelines/FAQ or the official HN API grants it). See docs/SOURCE_COMPLIANCE_REVIEW_HN_MULTIUSER.md.",
-        "sourceId": "hn-freelancer"
-      },
-      {
-        "reason": "Freelancer.com prohibits this use: User Agreement §33 requires express written permission for automated access including API access, §4 item 11 forbids cross-site aggregation of listings, and API T&Cs §5.3 bars storing the data or information expressed by it (such as a hash). Enabling requires express written permission from Freelancer.",
-        "sourceId": "freelancer-rss"
-      }
-    ],
-    "startedAt": "2026-10-16T01:17:07.678Z",
-    "stats": {
-      "accepted": 153,
-      "duplicates": 5,
-      "fetched": 443,
-      "finishedAt": "2026-10-16T01:17:07.678Z",
-      "perSource": {
-        "arbeitnow": {
-          "accepted": 24,
-          "error": null,
-          "fetched": 300,
-          "rejected": 276
-        },
-        "github-bounties": {
-          "accepted": 29,
-          "error": null,
-          "fetched": 30,
-          "rejected": 1
-        },
-        "remoteok": {
-          "accepted": 91,
-          "error": null,
-          "fetched": 99,
-          "rejected": 8
-        },
-        "remotive": {
-          "accepted": 9,
-          "error": null,
-          "fetched": 14,
-          "rejected": 5
-        }
-      },
-      "rejected": 290,
-      "startedAt": "2026-10-16T01:17:07.678Z",
-      "unknownFields": 3803
-    },
-    "status": "completed",
-    "writes": {
-      "batches": 1,
-      "failed": [],
-      "ok": true,
-      "perCollection": {
-        "internalSourceRuns": 4,
-        "opportunities": 136,
-        "opportunityEvidence": 136
-      },
-      "skippedInvalid": [],
-      "staged": 276,
-      "written": 276
-    }
+    "event": "scheduler-run",
+    "failedWrites": 0,
+    "origin": "scheduled",
+    "published": 128,
+    "requestId": "638eb48035ad1c5b31d18ab41bb728dc",
+    "runId": "run_2026-10-16T02:17:09.869Z",
+    "scheduledAt": "2026-10-16T02:17:08.835Z",
+    "scriptName": "ntk-income-opportunity-hunter-scheduler",
+    "written": 259,
+    "providerOutcome": "ok",
+    "eventType": "scheduled"
   },
-  "firstHttpStatus": 200,
-  "repeat": {
+  "render": [
+    {
+      "level": "info",
+      "time": "2026-10-16T02:17:10.076Z",
+      "message": "Hunt run started",
+      "fields": {
+        "runId": "run_2026-10-16T02:17:09.869Z",
+        "reason": "cron-30m",
+        "due": [
+          "arbeitnow",
+          "github-bounties",
+          "remoteok"
+        ],
+        "deferred": [],
+        "adapters": 3
+      }
+    },
+    {
+      "level": "info",
+      "time": "2026-10-16T02:17:39.866Z",
+      "message": "Hunt run finished",
+      "fields": {
+        "runId": "run_2026-10-16T02:17:09.869Z",
+        "published": 128,
+        "drafts": 17,
+        "rejected": 284,
+        "written": 259,
+        "skippedInvalid": 0,
+        "failedWrites": 0,
+        "aiAttempted": false
+      }
+    }
+  ],
+  "firestoreReadback": {
+    "arbeitnow": "2026-10-16T02:17:09.869Z",
+    "github-bounties": "2026-10-16T02:17:09.869Z",
+    "remoteok": "2026-10-16T02:17:09.869Z",
+    "remotive": "2026-10-16T01:17:07.678Z"
+  },
+  "evidenceReadback": [
+    {
+      "contentHashPresent": true,
+      "evidenceId": "arbeitnow:bankkaufmann-frau-als-kreditspezialist-im-homeoffice-berlin-57091",
+      "evidenceStatus": 200,
+      "fetchedAt": "2026-10-16T02:17:09.869Z",
+      "opportunityId": "arbeitnow:bankkaufmann-frau-als-kreditspezialist-im-homeoffice-berlin-57091",
+      "opportunityUpdatedAt": "2026-10-16T02:17:09.869Z",
+      "sourceId": "arbeitnow"
+    },
+    {
+      "contentHashPresent": true,
+      "evidenceId": "github-bounties:1896",
+      "evidenceStatus": 200,
+      "fetchedAt": "2026-10-16T02:17:09.869Z",
+      "opportunityId": "github-bounties:1896",
+      "opportunityUpdatedAt": "2026-10-16T02:17:09.869Z",
+      "sourceId": "github-bounties"
+    },
+    {
+      "contentHashPresent": true,
+      "evidenceId": "remoteok:1136094",
+      "evidenceStatus": 200,
+      "fetchedAt": "2026-10-16T02:17:09.869Z",
+      "opportunityId": "remoteok:1136094",
+      "opportunityUpdatedAt": "2026-10-16T02:17:09.869Z",
+      "sourceId": "remoteok"
+    }
+  ],
+  "repeatScheduledRun": {
+    "aiAttempted": false,
     "drafts": 0,
-    "due": [],
-    "finishedAt": "2026-10-16T01:18:06.396Z",
-    "paidAiUsed": false,
+    "failedWrites": 0,
+    "finishedAt": "2026-10-16T02:18:09.692Z",
     "published": 0,
-    "runId": "run_2026-10-16T01:18:05.953Z",
-    "skipped": [
-      {
-        "reason": "Skipped: only 0 min since the last run, interval is 360 min.",
-        "sourceId": "remotive"
-      },
-      {
-        "reason": "Skipped: only 0 min since the last run, interval is 60 min.",
-        "sourceId": "remoteok"
-      },
-      {
-        "reason": "Skipped: only 0 min since the last run, interval is 60 min.",
-        "sourceId": "arbeitnow"
-      },
-      {
-        "reason": "Skipped: only 0 min since the last run, interval is 60 min.",
-        "sourceId": "github-bounties"
-      },
-      {
-        "reason": "Devpost Terms of Service §4 prohibits automated access to the Site and to any related data. No official Devpost API or API terms exist. Enabling requires written permission from Devpost — the endpoint returning HTTP 200 is not permission.",
-        "sourceId": "devpost"
-      },
-      {
-        "reason": "Express written authorisation from Y Combinator covering redistribution or public display of HN story metadata (nothing in the YC Terms of Use, the HN Guidelines/FAQ or the official HN API grants it). See docs/SOURCE_COMPLIANCE_REVIEW_HN_MULTIUSER.md.",
-        "sourceId": "hn-freelancer"
-      },
-      {
-        "reason": "Freelancer.com prohibits this use: User Agreement §33 requires express written permission for automated access including API access, §4 item 11 forbids cross-site aggregation of listings, and API T&Cs §5.3 bars storing the data or information expressed by it (such as a hash). Enabling requires express written permission from Freelancer.",
-        "sourceId": "freelancer-rss"
-      }
-    ],
-    "startedAt": "2026-10-16T01:18:05.953Z",
-    "stats": {
-      "accepted": 0,
-      "duplicates": 0,
-      "fetched": 0,
-      "finishedAt": "2026-10-16T01:18:05.953Z",
-      "perSource": {},
-      "rejected": 0,
-      "startedAt": "2026-10-16T01:18:05.953Z",
-      "unknownFields": 0
-    },
-    "status": "completed",
-    "writes": {
-      "batches": 0,
-      "failed": [],
-      "ok": true,
-      "perCollection": {},
-      "skippedInvalid": [],
-      "staged": 0,
-      "written": 0
-    }
+    "reason": "cron-30m",
+    "rejected": 0,
+    "runId": "run_2026-10-16T02:18:09.537Z",
+    "skippedInvalid": 0,
+    "startedAt": "2026-10-16T02:18:09.537Z",
+    "written": 0
   },
-  "repeatHttpStatus": 200
+  "sourceScope": "public",
+  "dueSources": [
+    "arbeitnow",
+    "github-bounties",
+    "remoteok"
+  ],
+  "remotive": "Skipped: six-hour interval not due",
+  "prohibitedSourcesContacted": false,
+  "prohibitedSourceBasis": "Public-scope registry plan, live source policy tests, and Render started-run due list; no third-party packet capture claimed.",
+  "paidAiUsed": false,
+  "productionPaymentRecordsCreated": 0
 }

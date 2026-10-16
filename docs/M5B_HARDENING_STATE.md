@@ -1,35 +1,31 @@
-# M5b hardening state
+# M5b final hardening state
 
-Date: 2026-10-16 (Africa/Lagos). Version: 0.4.1.
-Verdict: **M5b_PARTIAL_CLOUDFLARE_ACCESS_BLOCKED**. M6 has not started.
+Date: 2026-10-16 (Africa/Lagos). Version 0.4.1. Verdict: **M5b_LIVE_DEPLOYMENT_AND_ACCEPTANCE_VERIFIED**. M6 is NOT STARTED.
 
-The earlier full production-acceptance verdict is withdrawn. Current source and receipts replace those unsupported claims.
+The owner explicitly designated accessible chiplusmoney Cloudflare account `4f67a960d66dff69c2fcab490616c811` authoritative and authorized one replacement Worker. The prior partial blocker is closed; the inaccessible old account was not changed.
 
-## VERIFIED
+## Verified production chain
 
-- Render's compromised shared credential was replaced with a cryptographic value. The old credential returned 401 and the fresh credential returned 200. Values are omitted everywhere.
-- Firebase Hosting serves the corrected interface: one working top avatar dropdown, actual account photo, Settings in navigation, no duplicate Profile item, and no footer slogan.
-- Email/password signup, rejected wrong password, email sign-in, sign-out and Google sign-in were exercised in the live app. Google retained the owner UID. The current owner provider is Google; password linkage is not assumed.
-- Private account subscriptions and writes are scoped by UID. Real saved work persists. Earnings derive only from explicit actual payments. No production payment or application outcome was invented.
-- Telegram delivered exactly one controlled message; it was visible in the signed-in owner's Telegram, recorded server-side, marked read and deleted in the app. A permanent server-only attempt ledger prevents another send after receipt deletion.
-- Reviewed Firebase rules were deployed; fresh live probes and 29 emulator tests pass. Evidence requires sign-in. Anonymous public catalog reads remain permitted.
-- Clean install, typecheck, 476 unit tests, build, 8 permitted-source checks, 29 emulator/rules tests and dependency audit pass. Audit: zero vulnerabilities.
-- A due-source live hunt wrote 276 documents without failures. Immediate repeat wrote zero and respected crawl intervals.
-- Desktop, tablet and mobile inspection pass. Offline full reload shows 50 cached public opportunities; private views fail honestly until connection returns.
-- Render's mounted service-account file performs a real Firestore read. The unnecessary downloaded local JSON was removed and absence rechecked.
+Canonical Worker: `ntk-income-opportunity-hunter-scheduler` on Workers Free, https://ntk-income-opportunity-hunter-scheduler.chiplusmoney.workers.dev. Public health returns 200. A real browser POST /run returns 404. The deployed JavaScript matches the tested build byte for byte. The internal credential is an encrypted secret_text binding; public HTTP cannot trigger hunts.
 
-## BLOCKED / NOT VERIFIED
+A brand-new cryptographic credential was synchronized only into Render and the new Worker. Earlier values were not recovered or reused. Fresh authentication returns 200; missing/invalid credentials return 401. Actual legacy calls produce invalid-credential rejections in Render; the old Worker's external wrapper throws 500/1101. It cannot authorize a hunt.
 
-The existing Worker belongs to a different Cloudflare account than the only account available to chiplusmoney. Accessible account inventory: zero Workers; pending invitations: zero; request to the owning account: HTTP 403. A targeted invitation search in the signed-in mailbox returned no matching message.
+Production cron is `*/30 * * * *`. A temporary one-minute cron was enabled for proof at 02:00:53 UTC and restoration was accepted at 02:09:56 UTC immediately after an observed success. Cloudflare propagation continued some already distributed short-interval events; source interval enforcement prevented repeated crawling. Settings readback confirms the restored cron. No keep-alive automation or forced source interval was added.
 
-No Worker or account was recreated. The canonical source removes HTTP `/run` entirely (Option A), with six scheduler tests passing, but that source could not be deployed to the existing Worker. Matching encrypted-secret rotation and successful cron-to-Render execution are therefore **not complete**. Old scheduler credentials cannot authorize Render.
+Cloudflare scheduled event, provider request `638eb48035ad1c5b31d18ab41bb728dc`, and Render agree on run `run_2026-10-16T02:17:09.869Z`: 128 published, 17 drafts, 259 document writes, zero failed writes, no AI calls. The next scheduled run at 02:18 wrote zero. Firestore source-run readback and paired new opportunity/evidence documents match the due run. Remotive correctly remained interval-skipped; only Arbeitnow, GitHub bounties and Remote OK were due.
 
-Access needed to close this gate: give the existing chiplusmoney identity permission to manage `ntk-income-hunter-scheduler` in its owning Cloudflare account, then deploy the existing source and update its encrypted secret to match Render. Do not restore the compromised value or use another account as a workaround.
+## Product and checks
 
-## Security incident
+The approved single avatar dropdown, Settings navigation, removed footer tag, real Auth and private UID-scoped records are preserved. One real saved application remains saved; actual earnings remain zero. No fabricated payment or user outcome was created. Offline full reload shows 50 public cached cards while private data is protected until reconnection. Desktop, tablet and mobile were checked again.
 
-An earlier Firebase CLI JSON account-list diagnostic unexpectedly emitted cached OAuth credentials for an unrelated CLI account into the execution transcript. Those credentials were not used, committed or copied into artifacts and are not repeated here. Revocation of that unrelated account was outside this account-restricted pass. Do not claim that the transcript is credential-free.
+Clean install, typecheck, build, 479 unit tests, 8 permitted-source checks and 29 emulator/rules tests pass. Dependency audit: zero vulnerabilities. Reviewed Firebase rules remain deployed and fresh isolation probes pass. Existing Telegram delivery remains valid; no new test was sent.
 
-## Preservation and handoff
+## Remaining owner security action
 
-Existing Firebase, Render and Cloudflare resources were reused; no billing change or paid AI call. Rollback source: local branch `m5b-pre-hardening-20261015` (a66532d). Never roll back to the compromised secret or earlier weak Worker behavior. Current evidence is under `docs/verification`; exact final ZIP measurements and source commit are in the external `package-verification.json` generated after packaging.
+**OWNER SECURITY ACTION STILL REQUIRED** for the earlier unrelated Firebase CLI OAuth grant. Its cached account identity differs from chiplusmoney and was not used or switched into. See OAUTH_SECURITY_ACTION.md for precise revocation guidance. The project verdict verifies this application's production chain; it does not claim the unrelated grant was revoked or that the earlier transcript is credential-free.
+
+## Preservation
+
+Firebase, Render, production data and Telegram were preserved. New infrastructure: exactly one authorized free Worker; no paid add-on or billing change. Rollback branch `m5b-pre-canonical-scheduler-20261016` preserves the hardened baseline; older `m5b-pre-hardening-20261015` is retained for provenance. Keep the new account/name and fresh encrypted values during any rollback. Do not reactivate the legacy scheduler or restore exposed credentials.
+
+Final regular-cron confirmation: actual provider event `*/30 * * * *` completed at 2026-10-16T02:30:27.919Z (03:30 Lagos). Cloudflare and Render match `run_2026-10-16T02:30:27.644Z`, zero writes, zero failures. The last observed short-interval propagation event was 02:21 UTC; the regular production cadence is now proven. See verification/regular-cron.json.

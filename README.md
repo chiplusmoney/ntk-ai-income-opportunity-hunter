@@ -1,6 +1,6 @@
 # NTK AI Income Opportunity Hunter
 
-Current release: **0.4.1 — M5b_PARTIAL_CLOUDFLARE_ACCESS_BLOCKED** (2026-10-16). Hosting, API, Auth, real outcomes and the controlled Telegram delivery are verified. Existing Worker hardening and matching encrypted-secret rotation require access to its owning account. See [current hardening state](docs/M5B_HARDENING_STATE.md). M6 has not started.
+Current release: **0.4.1 - M5b_LIVE_DEPLOYMENT_AND_ACCEPTANCE_VERIFIED** (2026-10-16). The canonical scheduler is [ntk-income-opportunity-hunter-scheduler](https://ntk-income-opportunity-hunter-scheduler.chiplusmoney.workers.dev), Workers Free, cron `*/30 * * * *`. The scheduled Worker -> Render -> Firestore chain is proven. See [final hardening state](docs/M5B_HARDENING_STATE.md) and [remaining unrelated OAuth owner action](docs/OAUTH_SECURITY_ACTION.md). M6 has not started.
 
 Autonomous, zero-capital-first income opportunity discovery. The deterministic
 evidence system is the source of truth; AI explains and ranks verified evidence

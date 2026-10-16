@@ -1,0 +1,36 @@
+{
+  "console": {
+    "cron": "*/30 * * * *",
+    "event": "scheduler-run",
+    "failedWrites": 0,
+    "runId": "run_2026-10-16T02:30:27.644Z",
+    "written": 0
+  },
+  "observedAt": "2026-10-16T02:32:47.626Z",
+  "render": {
+    "lastRun": {
+      "aiAttempted": false,
+      "drafts": 0,
+      "failedWrites": 0,
+      "finishedAt": "2026-10-16T02:30:27.842Z",
+      "published": 0,
+      "reason": "cron-30m",
+      "rejected": 0,
+      "runId": "run_2026-10-16T02:30:27.644Z",
+      "skippedInvalid": 0,
+      "startedAt": "2026-10-16T02:30:27.644Z",
+      "written": 0
+    },
+    "stateError": null,
+    "status": 200
+  },
+  "provider": {
+    "cron": "*/30 * * * *",
+    "eventTime": "2026-10-16T02:30:27.919Z",
+    "eventType": "scheduled",
+    "providerOutcome": "ok",
+    "requestId": "6b90cb1b59533ff948038a08f25a32a0",
+    "scriptName": "ntk-income-opportunity-hunter-scheduler"
+  },
+  "runIdsMatch": true
+}

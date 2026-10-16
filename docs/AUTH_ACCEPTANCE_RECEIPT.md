@@ -9,3 +9,5 @@ The current owner provider is Google. Google replaced the unverified password pr
 On 2026-10-16 the new top-avatar dropdown's native Sign out action was tested: private profile details disappeared and the photo was removed. Continue with Google restored the same owner's session automatically. Settings loaded the persisted country NG and empty skills from Firestore. A saved real application remained in the account; no fabricated outcome or payment was created.
 
 Owner data is keyed by UID, masked immediately on logout and reloaded from server-confirmed snapshots. Cross-UID profile, saved, applications, earnings and notifications probes all returned 403. Public opportunity browsing remains anonymous. The browser's normal Firebase Auth session persists on this owner device; it is not exported or packaged.
+
+Final closure recheck: sign-out showed the private sign-in gate and removed the avatar; Google sign-in restored the real avatar and the same one saved application. No duplicate Auth account or fabricated paid state was created.

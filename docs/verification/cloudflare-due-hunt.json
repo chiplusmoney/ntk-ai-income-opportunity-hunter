@@ -1,0 +1,17 @@
+{
+  "apiOutcome": "completed",
+  "at": "2026-10-16T02:21:27.242Z",
+  "cron": "* * * * *",
+  "drafts": 17,
+  "event": "scheduler-run",
+  "failedWrites": 0,
+  "origin": "scheduled",
+  "published": 128,
+  "requestId": "638eb48035ad1c5b31d18ab41bb728dc",
+  "runId": "run_2026-10-16T02:17:09.869Z",
+  "scheduledAt": "2026-10-16T02:17:08.835Z",
+  "scriptName": "ntk-income-opportunity-hunter-scheduler",
+  "written": 259,
+  "providerOutcome": "ok",
+  "eventType": "scheduled"
+}

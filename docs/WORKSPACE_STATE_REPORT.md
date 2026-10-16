@@ -1,11 +1,11 @@
-# Workspace state
+# Final M5b workspace state
 
-Date: 2026-10-16. Version 0.4.1. Verdict: **M5b_PARTIAL_CLOUDFLARE_ACCESS_BLOCKED**.
+Date: 2026-10-16. Version 0.4.1. **M5b_LIVE_DEPLOYMENT_AND_ACCEPTANCE_VERIFIED**. M6 NOT STARTED.
 
-Canonical source: WORKING, branch main, repository https://github.com/chiplusmoney/ntk-ai-income-opportunity-hunter. Final source commit and clean-tree result are generated externally by the packager. Source rollback branch: m5b-pre-hardening-20261015 at a66532d.
+Canonical source: WORKING, branch main, https://github.com/chiplusmoney/ntk-ai-income-opportunity-hunter. Final Git commit, clean-tree check and pushed-main match are generated with package metadata. Pre-closure rollback: m5b-pre-canonical-scheduler-20261016 at e6d2e113d5220f1062ff71d6cf7da6cbcba56bd8. Earlier pre-hardening branch remains preserved; do not restore weaker security or old resource names.
 
-The project root retains WORKING, DESIGN_REFERENCES, ARCHIVE and HANDOFF_TO_CHATGPT. Ignored local runtime scratch remains outside the portable source package. Do not copy runtime credentials, CLI sessions, dependencies, build output or Git internals into the handoff.
+Project areas: WORKING, HANDOFF_TO_CHATGPT, ARCHIVE, DESIGN_REFERENCES. Local ignored .zwork and BrowserOS runtime output are not portable release material. No downloaded key, root-level ZIP, screenshot or log is part of the root handoff.
 
-Superseded handoff files are preserved together under a timestamped ARCHIVE child. Exactly one current canonical ZIP is published to HANDOFF_TO_CHATGPT, with its checksum and metadata computed from the completed archive. Its source excludes node_modules, dist, local env files and .git; source files and design references are included.
+The previous partial hardened M5b package and its metadata are archived together by the packager. Exactly one current final ZIP remains in HANDOFF_TO_CHATGPT, with checksum, measured metadata and self-contained review documents. No .git, dependencies, build output, local env values or CLI sessions are included.
 
-Resources preserved: existing Firebase project/database/Hosting; existing Render service and mounted Secret File; existing Cloudflare Worker. No replacement resource, billing change or M6 work. Fresh credential values must stay server-side. The optional runtime used for validation is Node 24.20 on this machine; the project declares >=24.20 <25.
+Existing Firebase, Render, production records and Telegram were preserved. New infrastructure: one explicitly authorized Workers Free scheduler in chiplusmoney. The legacy inaccessible Worker is noncanonical and credential-invalidated. No billing change or paid AI use.

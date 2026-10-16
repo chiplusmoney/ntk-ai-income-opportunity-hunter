@@ -1,0 +1,61 @@
+{
+  "at": "2026-10-16T02:15:34.021Z",
+  "bindings": [
+    {
+      "name": "DEFAULT_REGION_PRIORITY",
+      "type": "plain_text"
+    },
+    {
+      "name": "HUNTER_API_URL",
+      "type": "plain_text"
+    },
+    {
+      "name": "HUNTER_SHARED_SECRET",
+      "type": "secret_text"
+    }
+  ],
+  "cron": [
+    {
+      "created_on": "2026-10-16T02:09:56.628127Z",
+      "cron": "*/30 * * * *",
+      "modified_on": "2026-10-16T02:09:56.628127Z"
+    }
+  ],
+  "deployment": [
+    {
+      "annotations": {
+        "workers/message": "M5b canonical hardened scheduler; no public tri...",
+        "workers/triggered_by": "upload"
+      },
+      "author_email": "chiplusmoney@gmail.com",
+      "created_on": "2026-10-16T01:57:48.234516Z",
+      "id": "55debc9c-9db4-4115-aea8-de26358535c5",
+      "source": "dash",
+      "strategy": "percentage",
+      "versions": [
+        {
+          "percentage": 100,
+          "version_id": "add14e17-4051-4672-8275-34c7c4f0d000"
+        }
+      ]
+    }
+  ],
+  "exactBuiltModuleMatch": true,
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 1,
+    "logs": {
+      "enabled": true,
+      "head_sampling_rate": 1,
+      "invocation_logs": true,
+      "persist": true
+    },
+    "redact_query_string": false,
+    "traces": {
+      "enabled": false,
+      "head_sampling_rate": 1,
+      "persist": true
+    }
+  },
+  "sourceReadStatus": 200
+}

@@ -17,6 +17,11 @@ function run(label, args) {
   const r=spawnSync(process.execPath,[npm,...args],{cwd:root,env,encoding:'utf8',maxBuffer:12*1024*1024,windowsHide:true});
   process.stdout.write(r.stdout??'');process.stderr.write(r.stderr??'');
   const row={label,command:'npm '+args.join(' '),exitCode:r.status,durationMs:Date.now()-start};results.push(row);
+  const plain=(r.stdout??'').replace(/\u001b\[[0-9;]*m/g,'');
+  if (label === 'permitted-source-verification' || label === 'emulator-and-security-rules') {
+    const totals=[...plain.matchAll(/Tests\s+(\d+)\s+passed/g)];
+    if (totals.length === 1) row.verifiedTests=Number(totals[0][1]);
+  }
   if(r.status!==0) throw new Error(label+' failed');
   return row;
 }
@@ -34,7 +39,7 @@ try {
   run('dependency-audit',['audit','--audit-level=high']);
 } catch(error) { console.error(error.message); process.exitCode=1; }
 finally {
-  const report={generatedAt:new Date().toISOString(),node:process.version,status:process.exitCode?'FAIL':'PASS',results,unitPassed:results.reduce((n,r)=>n+(r.passed??0),0),unitFailed:results.reduce((n,r)=>n+(r.failed??0),0),productionAcceptance:'Recorded separately; these automated checks do not prove live acceptance.'};
+  const report={generatedAt:new Date().toISOString(),node:process.version,status:process.exitCode?'FAIL':'PASS',results,unitPassed:results.reduce((n,r)=>n+(r.passed??0),0),unitFailed:results.reduce((n,r)=>n+(r.failed??0),0),sourceVerificationPassed:results.find(r=>r.label==='permitted-source-verification')?.verifiedTests??null,emulatorPassed:results.find(r=>r.label==='emulator-and-security-rules')?.verifiedTests??null,productionAcceptance:'Recorded separately; these automated checks do not prove live acceptance.'};
   mkdirSync(join(root,'docs/verification'),{recursive:true});writeFileSync(join(root,'docs/verification/automated.json'),JSON.stringify(report,null,2)+'\n');
   // Only remove the exact mkdtemp child of the system temporary directory.
   if (!resolve(temp).startsWith(resolve(tmpdir()) + sep) || !basename(temp).startsWith('ntk-hunter-checks-')) throw new Error('Unsafe temporary cleanup path');

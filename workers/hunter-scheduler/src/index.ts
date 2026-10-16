@@ -61,8 +61,30 @@ async function trigger(env: Env, reason: string, sourceIds: string[] = []): Prom
 }
 
 export default {
-  async scheduled(_event: ScheduledEvent, env: Env, ctx: ExecutionContext) {
-    ctx.waitUntil(trigger(env, 'cron-30m'));
+  async scheduled(event: ScheduledEvent, env: Env, ctx: ExecutionContext) {
+    ctx.waitUntil((async () => {
+      try {
+        const text = await trigger(env, 'cron-30m');
+        const result = JSON.parse(text) as { status?: string; activeRunId?: string; summary?: { runId?: string; published?: number; drafts?: number; writes?: { written?: number; failed?: unknown[] } } };
+        if (result.status !== 'completed' && result.status !== 'busy') throw new Error('Unexpected Hunter API result');
+        // Deliberately select audit fields: never log the response body,
+        // source payloads, credentials, headers or the environment object.
+        console.log(JSON.stringify({
+          event: 'scheduler-run',
+          scheduledAt: Number.isFinite(event.scheduledTime) ? new Date(event.scheduledTime).toISOString() : null,
+          cron: event.cron ?? null,
+          outcome: result.status,
+          runId: result.status === 'completed' ? result.summary?.runId ?? null : result.activeRunId ?? null,
+          written: result.summary?.writes?.written ?? 0,
+          failedWrites: result.summary?.writes?.failed?.length ?? 0,
+          published: result.summary?.published ?? 0,
+          drafts: result.summary?.drafts ?? 0
+        }));
+      } catch {
+        console.error(JSON.stringify({ event: 'scheduler-failed', detail: 'Scheduled API execution did not complete successfully.' }));
+        throw new Error('Scheduled API execution failed');
+      }
+    })());
   },
   async fetch(request: Request, env: Env) {
     const url = new URL(request.url);

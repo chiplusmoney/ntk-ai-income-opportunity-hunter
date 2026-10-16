@@ -8,7 +8,7 @@ WORKING = Path(__file__).resolve().parents[1]
 PROJECT = WORKING.parent
 HANDOFF = PROJECT / 'HANDOFF_TO_CHATGPT'
 ARCHIVE = PROJECT / 'ARCHIVE'
-FILENAME = 'NTK_AI_Income_Opportunity_Hunter_M5b_Hardening_2026-10-16.zip'
+FILENAME = 'NTK_AI_Income_Opportunity_Hunter_M5b_FINAL_2026-10-16.zip'
 spec = spec_from_file_location('secret_scan', WORKING / 'tools/secret-scan.py')
 scanner = module_from_spec(spec); spec.loader.exec_module(scanner)
 
@@ -84,7 +84,7 @@ def main():
         'measurementMethod': 'Final ZIP reopened, entries enumerated, full CRC checked and SHA-256 recomputed after sidecar write'
     }
     (HANDOFF / 'package-verification.json').write_text(json.dumps(record, indent=2) + '\n')
-    (HANDOFF / 'workspace-state.json').write_text(json.dumps({'version':'0.4.1','gitCommit':record['gitCommit'],'verdict':live['verdict'],'canonicalPackage':FILENAME,'M6':'NOT STARTED','rollbackSourceBranch':'m5b-pre-hardening-20261015'},indent=2)+'\n')
+    (HANDOFF / 'workspace-state.json').write_text(json.dumps({'version':'0.4.1','gitCommit':record['gitCommit'],'verdict':live['verdict'],'canonicalPackage':FILENAME,'M6':'NOT STARTED','rollbackSourceBranch':'m5b-pre-canonical-scheduler-20261016'},indent=2)+'\n')
     facts = f"\n\n## Final archive measurements\n\nFilename: `{FILENAME}`  \nSource commit: `{record['gitCommit']}`  \nBytes: {record['sizeBytes']}  \nEntries: {entry_count}; files: {file_count}; directory entries: {entry_count - file_count}  \nSHA-256: `{checksum}`  \nIndependent recomputation matches sidecar: {record['recomputedChecksumMatch']}.\n"
     handoff = (WORKING / 'docs/M5B_HANDOFF_STATE.md').read_text(encoding='utf-8')
     (HANDOFF / 'M5B_HANDOFF_STATE.md').write_text(handoff + facts, encoding='utf-8')

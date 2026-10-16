@@ -1,6 +1,11 @@
-name = "ntk-income-hunter-scheduler"
+name = "ntk-income-opportunity-hunter-scheduler"
+account_id = "4f67a960d66dff69c2fcab490616c811"
 main = "src/index.ts"
 compatibility_date = "2026-10-01"
+
+[observability]
+enabled = true
+head_sampling_rate = 1
 
 [triggers]
 crons = ["*/30 * * * *"]

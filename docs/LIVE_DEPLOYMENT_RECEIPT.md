@@ -1,20 +1,21 @@
-# Live deployment receipt — M5b hardening
+# Live deployment receipt - final M5b
 
-Date: 2026-10-16. Version: 0.4.1. **PARTIAL: Cloudflare access blocked.**
+Date: 2026-10-16. Version 0.4.1. **M5b_LIVE_DEPLOYMENT_AND_ACCEPTANCE_VERIFIED**.
 
-| Resource | Verified current state |
+| Resource | Current authoritative deployment |
 |---|---|
-| Firebase Hosting `ntk-income-opportunity-hunter.web.app` | Updated profile/avatar/settings UI deployed and checked live in Neo |
-| Render `ntk-hunter-api`, service `srv-db8btdvavr4c73av54vg` | Hardened readiness, rotated server credential, owner Telegram transport deployed |
-| Firestore `ntk-income-opportunity-hunter/(default)` | Existing database preserved; reviewed owner-isolation and notification rules deployed |
-| Cloudflare `ntk-income-hunter-scheduler.ntk-note.workers.dev` | Existing health navigation returned 200 with `hunter-scheduler`; hardening source NOT deployed |
+| Firebase Hosting | https://ntk-income-opportunity-hunter.web.app - approved UI preserved and rechecked |
+| Firebase | ntk-income-opportunity-hunter, existing Spark database/rules/data preserved |
+| Render | https://ntk-hunter-api.onrender.com, service srv-db8btdvavr4c73av54vg - live Firestore readiness and fresh authentication verified |
+| Canonical Cloudflare Worker | https://ntk-income-opportunity-hunter-scheduler.chiplusmoney.workers.dev, account 4f67a960d66dff69c2fcab490616c811, Workers Free |
+| Cron | */30 * * * *; temporary proof interval restored at 02:09:56 UTC |
 
-Render `/ready` returns 200, mode `live`, scope `public`, with a real server Firestore read succeeding and paid AI disabled. No cloud resource was recreated and billing was not changed.
+The canonical Worker module matches the tested build. Its health returns 200 and unauthenticated POST /run returns 404. Handler configuration includes scheduled and fetch; the fresh shared value is an encrypted secret_text binding. No paid subscription, add-on or billing upgrade was created.
 
-Fresh Render secret works. The old value returned 401 in the direct rotation check. Cloudflare's encrypted value has not been updated because chiplusmoney cannot access the owning account. Successful scheduled authenticated execution is not claimed.
+Scheduled event proof: Cloudflare outcome ok, origin scheduled, same run ID as Render. Due run run_2026-10-16T02:17:09.869Z wrote 259 documents (128 published plus their evidence and 3 source audits), with zero failures and no AI. Next scheduled run at 02:18 wrote zero. Source audit times were read back from Firestore and fresh evidence pairs independently read with the owner session.
 
-A protected administrative hunt completed at 2026-10-16T01:17:41.945Z: 136 published, 17 drafts, 276 documents written, zero failed writes. The immediate repeat wrote zero and skipped every source by its interval. These are counts for the run, not total database counts. No interval was forced. See `verification/hunt.json`.
+Legacy only: https://ntk-income-hunter-scheduler.ntk-note.workers.dev is **LEGACY_ORPHANED_WORKER - INACCESSIBLE - CREDENTIAL INVALIDATED - NOT CANONICAL**. Its periodic/manual attempts log invalid-credential in Render (middleware returns 401); its own wrapper returns 500/1101. The inaccessible account was not modified.
 
-Firebase and GitHub operations used the explicitly authorized chiplusmoney identity. Other globally cached CLI accounts were not used for deployment or push. No credentials are included in this receipt.
+Rollback source: m5b-pre-canonical-scheduler-20261016. Preserve the new Worker ownership/name, fresh secret synchronization, mounted service-account file and production records. Never redeploy the old public-trigger implementation or restore prior credential values.
 
-Rollback: `m5b-pre-hardening-20261015` preserves the starting source. Preserve mounted Render secrets and real user data; never restore an exposed credential. Do not redeploy the older public manual-trigger implementation.
+Final regular-cron confirmation: actual provider event `*/30 * * * *` completed at 2026-10-16T02:30:27.919Z (03:30 Lagos). Cloudflare and Render match `run_2026-10-16T02:30:27.644Z`, zero writes, zero failures. The last observed short-interval propagation event was 02:21 UTC; the regular production cadence is now proven. See verification/regular-cron.json.
