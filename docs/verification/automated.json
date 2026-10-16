@@ -112,6 +112,19 @@
     "latestTypecheck": "m7-legacy-types.log PASS",
     "latestBuild": "m7-legacy-build.log PASS",
     "latestEmulator": "m7-legacy-emulator.log 64 PASS",
-    "liveProbePolicy": "No more live source requests; production receipts and local cache guard intervals"
+    "liveProbePolicy": "No more live source requests; production receipts and local cache guard intervals",
+    "finalUnitLog": "m7-quality-unit.log",
+    "finalTypecheck": "m7-quality-types.log PASS",
+    "finalBuilds": [
+      "m7-quality-build.log",
+      "m7-copy-build.log"
+    ],
+    "postYieldDecision": "Arbeitnow 360-minute operational cadence, no extra provider call",
+    "finalCountsVerified": [
+      434,
+      83,
+      85,
+      9
+    ]
   }
 }

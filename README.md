@@ -1,16 +1,16 @@
-# M6 / version 0.5.0
+# M7 / version 0.6.0
 
-M6 implementation extends the accepted M5b production baseline. Current M6 acceptance is recorded in `docs/M6_ACCEPTANCE.md`; the implementation contract is `docs/M6_IMPLEMENTATION.md`. Do not infer M6 production completion from the historical M5b receipts below.
+M7 extends the closed M6 baseline (`8a308abb5ed0a177ac8a11171ae7107a381bacc5`). The current implementation, production receipt, source qualification and package-gated acceptance are in [M7 acceptance](docs/M7_ACCEPTANCE.md), [implementation](docs/M7_IMPLEMENTATION.md), [source expansion](docs/M7_SOURCE_EXPANSION.md), [source yield](docs/M7_SOURCE_YIELD_REVIEW.md) and [handoff](docs/M7_HANDOFF_STATE.md). Final overall acceptance is issued only by the finished package receipt; a clean build alone is not production acceptance.
 
-New capabilities: progressive earning profile, evidence-preserving Proof Builder, distinct deterministic Personal Fit, recommendation views/explanations, application preparation and lifecycle, bounded/resettable outcome learning, truthful earning optimization, opt-in personalized notification policies, and safe session-only offline drafts. AI is optional and paid AI remains disabled.
+Six public sources (four before M7), owner Source Health, measured yield, conservative persistent dedupe, optional instant/digest alerts and bounded resumable scheduling. M6 profiles, proof, Personal Fit, preparation, actual earnings and offline drafts remain. AI stays unconfigured, paid AI off; existing Firebase Spark, Render Free and canonical Cloudflare Worker are reused. No new live Telegram message is needed.
 
-Commands: `npm ci`, `npm run typecheck`, `npm test`, `npm run build`, `npm run verify:emulator`, `npm run verify:live`, `npm run verify:m6`. Use the declared Node 24 runtime. Existing infrastructure is reused.
+Node 24: `npm ci`, `npm run typecheck`, `npm test`, `npm run test:probe-cache`, `npm run build`, `npm run verify:emulator`. The source live suite is interval guarded: use current production receipts or a valid local response cache rather than forcing a second poll. See the documented early-development polling defect and fix in the source report.
+
+Current checks: 611 Vitest unit cases plus 4 Node probe-cache cases; 64 emulator/security cases; 8 permitted live-source cases. The complete clean-install receipt and later targeted follow-ups retain separate timestamps. No private credentials or user export belongs in this repository.
 
 ---
 
 # NTK AI Income Opportunity Hunter
-
-Current release: **0.4.1 - M5b_LIVE_DEPLOYMENT_AND_ACCEPTANCE_VERIFIED** (2026-10-16). The canonical scheduler is [ntk-income-opportunity-hunter-scheduler](https://ntk-income-opportunity-hunter-scheduler.chiplusmoney.workers.dev), Workers Free, cron `*/30 * * * *`. The scheduled Worker -> Render -> Firestore chain is proven. See [final hardening state](docs/M5B_HARDENING_STATE.md) and [remaining unrelated OAuth owner action](docs/OAUTH_SECURITY_ACTION.md). M6 has not started.
 
 Autonomous, zero-capital-first income opportunity discovery. The deterministic
 evidence system is the source of truth; AI explains and ranks verified evidence
@@ -61,7 +61,7 @@ provider pool. They are **not** source-merged (`packages/core/src/ai/`).
 ```bash
 npm install
 npm run typecheck        # core build + 4 workspaces
-npm test                 # 379 tests (core 246, web 63, api 70)
+npm test                 # 611 workspace unit cases; add npm run test:probe-cache (4)
 npm run build            # core dist, web dist, worker dist, api dist
 npm run verify:live      # real provider probes; fails if a feed changes shape or terms
 npm run verify:emulator  # Firestore emulator: full path to a stored document

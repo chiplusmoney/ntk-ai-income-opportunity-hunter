@@ -1,3 +1,5 @@
+> Current M7 additions and review: [M7_SOURCE_EXPANSION.md](M7_SOURCE_EXPANSION.md). The dated baseline review below remains historical evidence. No unreviewed or prohibited source is newly authorized by a live HTTP response.
+
 # Source Compliance Review — Devpost, Hacker News (Algolia), Freelancer.com RSS
 
 **Review date:** 2026-10-14

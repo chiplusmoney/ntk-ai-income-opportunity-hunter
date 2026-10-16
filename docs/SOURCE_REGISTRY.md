@@ -1,10 +1,8 @@
-# Source Registry — verification record
+# Source Registry — M7 current qualification and dated observations
 
-Every entry in `packages/core/src/sources/registry.ts` was probed with a real
-HTTP request on **2026-10-14** before being written down. This file records what
-was actually observed, what was read verbatim, and what is still unverified.
+Current executable entries: nine; public enabled: six; prohibited/restricted: three. M7 adds Jobicy and We Work Remotely under their official feed grants. See [M7 source expansion/compliance](M7_SOURCE_EXPANSION.md), [measured yield review](M7_SOURCE_YIELD_REVIEW.md), `qualificationFor()` and the owner Source Health view for current status. Candidate references are not executable sources.
 
-Re-run the probe at any time:
+The old 2026-10-14 observations below remain dated baseline evidence. New M7 measurements are from 2026-10-16. Neither HTTP 200 nor this historical table authorizes a new integration. Terms and deployment scope must be checked before retrieval. Verification now reuses cached responses within polling intervals and refuses an extra pass inside the production interval:
 
 ```bash
 cd WORKING
@@ -37,9 +35,11 @@ its rate budget, so this record cannot silently go stale.
 
 | id | endpoint | probe result | terms provenance | min interval |
 |----|----------|--------------|------------------|--------------|
+| `jobicy` | `https://jobicy.com/api/v2/remote-jobs?count=50` | M7 production: HTTP 200, 50 rows, 40 published | Official API Fair Use permits public products/cache with attribution and canonical Jobicy link | 360 min |
+| `weworkremotely` | `https://weworkremotely.com/remote-jobs.rss` | M7 production: HTTP 200, first 50 normalized, 35 published | Official RSS invitation permits feed reuse with attributed WWR links | 360 min |
 | `remotive` | `https://remotive.com/api/remote-jobs` | HTTP 200, `application/json`, ~189 KB, 15–20 jobs | **Verbatim from the API payload's own `0-legal-notice` string** | 360 min |
 | `remoteok` | `https://remoteok.com/api` | HTTP 200, `application/json`, ~601 KB, 100 array elements | **Verbatim from array element 0 (`legal`)** | 60 min |
-| `arbeitnow` | `https://www.arbeitnow.com/api/job-board-api` | HTTP 200, `application/json`, ~2.4 MB, 300 items/page | **Verbatim from the response's `meta.terms` / `meta.info`** | 60 min |
+| `arbeitnow` | `https://www.arbeitnow.com/api/job-board-api` | HTTP 200, `application/json`, ~2.4 MB, 300 items/page | **Verbatim from the response's `meta.terms` / `meta.info`** | 360 min (M7 low-yield operational cap) |
 | `github-bounties` | `https://api.github.com/search/issues?q=label%3Abounty+state%3Aopen` | HTTP 200, 30 issues, `total_count` 4260 | Live `/rate_limit` measured: 10 search/min, 60 core/hr | 60 min |
 | Service | Status | Queue policy | Scope note |
 |--------|--------|--------------|------------|

@@ -32,11 +32,10 @@ export function isHiddenByDefault(category: OpportunityCategory): boolean {
  * The Source Registry.
  *
  * ## How to add an entry
- * 1. Probe the endpoint with a real request and record the status, content type
- *    and payload bytes in `notes`.
- * 2. Read the provider's own terms. If the provider embeds them in the API
- *    payload, quote that; set `termsSource` to the matching provenance value.
- *    Anything you did not read goes in as `unverified`.
+ * 1. Read the provider's official integration terms before any listing probe.
+ *    Establish retrieval, storage, public display, attribution and rate scope.
+ * 2. Only after a grant is established, probe within its interval and record
+ *    the dated status/content type/bytes. Unknown permission stays unverified.
  * 3. A source is only `enabled` when `termsReviewed` AND `adapterImplemented`
  *    are both true. `docs/SOURCE_REGISTRY.md` explains each entry.
  *
@@ -120,7 +119,8 @@ export const SOURCE_REGISTRY: readonly SourceDefinition[] = [
     termsReviewed: true,
     verifiedAt: '2026-10-14',
     requiresLinkBack: true,
-    minIntervalMinutes: 60,
+    // M7 measured 13/300 accepted: six-hour operational cap reduces low-yield work.
+    minIntervalMinutes: 360,
     adapterImplemented: true,
     enabled: true,
     publicDeploymentAllowed: true,
