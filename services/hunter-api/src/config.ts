@@ -20,6 +20,14 @@ export interface ApiConfig {
   /** Bearer token for the optional FlagshipRouter capability API. */
   flagshipRouterUrl: string;
   routerApiKey: string;
+  /** NTK Hunter AI Core base URL (always includes the version segment). Server-side only. */
+  coreBaseUrl: string;
+  /** Production NTK Hunter AI Core API key. Server-side only; never logged or returned. */
+  coreApiKey: string;
+  /** Per-call timeout for the AI Core. */
+  aiTimeoutMs: number;
+  /** Attempts for transport/5xx failures. A Core 503 is never retried. */
+  aiMaxAttempts: number;
   /** Paid AI use is off unless explicitly authorised. */
   paidAiAuthorized: boolean;
   /** Hard cap on how long one run may take. */
@@ -51,6 +59,10 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): ApiConfig {
     usingEmulator: emulatorHost.length > 0,
     flagshipRouterUrl: readString(env.FLAGSHIP_ROUTER_URL),
     routerApiKey: readString(env.FLAGSHIP_ROUTER_API_KEY),
+    coreBaseUrl: readString(env.NTK_HUNTER_AI_CORE_BASE_URL) || 'https://ntkhaic.alwaysdata.net/v1',
+    coreApiKey: readString(env.NTK_HUNTER_AI_CORE_API_KEY),
+    aiTimeoutMs: readInteger(env.AI_TIMEOUT_MS, 20_000),
+    aiMaxAttempts: Math.min(3, Math.max(1, readInteger(env.AI_MAX_ATTEMPTS, 2))),
     paidAiAuthorized: readBoolean(env.PAID_AI_AUTHORIZED),
     runTimeoutMs: readInteger(env.RUN_TIMEOUT_MS, 120_000),
     logLevel: (readString(env.LOG_LEVEL) || 'info') as ApiConfig['logLevel']
@@ -90,5 +102,5 @@ export function describeConfigProblems(config: ApiConfig): ConfigProblem[] {
  * Used by the logger and by the error handler to redact before emitting.
  */
 export function sensitiveValues(config: ApiConfig): string[] {
-  return [config.schedulerSecret, config.routerApiKey].filter(value => value.length >= 6);
+  return [config.schedulerSecret, config.routerApiKey, config.coreApiKey].filter(value => value.length >= 6);
 }

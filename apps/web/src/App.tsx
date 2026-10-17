@@ -15,6 +15,7 @@ import { PersonalizationProvider, usePersonalization, FitExplanation } from './P
 import { EarningProfileSettings } from './EarningProfile';
 import { ProofBuilder } from './ProofBuilder';
 import { ApplicationAssistant } from './ApplicationAssistant';
+import { AiOpportunityAssistance } from './AiAssistance';
 import { queuePrivateAction } from './repositories/privateQueue';
 const SourceHealth = lazy(()=>import('./SourceHealth'));
 
@@ -194,6 +195,7 @@ function OpportunityDetail({items}:{items:Opportunity[]}) {
     <p className={(o.capitalStatus === 'confirmed_free' ? 'note-confirmed' : 'note-unconfirmed')}>{capitalStatusLabel(o.capitalStatus, 'long')}</p>
     <h2>About this opportunity</h2><p>{o.description}</p><h2>Requirements</h2><ul>{o.requirements.map(r=><li key={r}>{r}</li>)}</ul><h2>Payment</h2><p>{o.paymentMethods.join(' · ')}</p>
     {fit && <><FitExplanation fit={fit} confidence={o.confidence} /><ApplicationAssistant key={o.id} o={o} fit={fit} /></>}
+    {user && <AiOpportunityAssistance key={`ai-${o.id}`} opportunityId={o.id} />}
     <div className="cta-row"><a href={o.sourceUrl} target="_blank" rel="noreferrer" className="primary">Visit official source</a><button disabled={busy || saved.includes(o.id)} className="secondary" onClick={() => void save()}><Bookmark size={17}/>{busy ? 'Saving…' : saved.includes(o.id) ? 'Saved to account' : 'Save to my account'}</button></div>
     {!user && <p><NavLink to="/profile">Sign in</NavLink> to save and track this opportunity. Evidence snapshots require sign-in.</p>}
     {message && <p role="status">{message}</p>}

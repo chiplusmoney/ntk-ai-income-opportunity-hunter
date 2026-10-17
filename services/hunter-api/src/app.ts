@@ -36,6 +36,10 @@ export interface AppDeps {
   sendNotificationTest?: () => Promise<unknown>;
   inspectNotificationSetup?: () => Promise<unknown>;
   personalRouter?: express.Router;
+  /** Mounted at /v1/ai when the Core is configured; absent otherwise. */
+  aiRouter?: express.Router;
+  /** Safe, non-secret AI availability for /ready. */
+  aiStatus?: () => Promise<{ state: string; detail: string }>;
 }
 
 function parseRunRequest(body: unknown): RunRequest {
@@ -61,6 +65,7 @@ export function createApp(deps: AppDeps): Express {
   app.disable('x-powered-by');
   app.use(express.json({ limit: '256kb' }));
   if (deps.personalRouter) app.use('/v1',deps.personalRouter);
+  if (deps.aiRouter) app.use('/v1/ai', deps.aiRouter);
 
   app.get('/health', (_request: Request, response: Response) => {
     response.json({ ok: true, service: 'hunter-api', time: now().toISOString() });
@@ -69,6 +74,7 @@ export function createApp(deps: AppDeps): Express {
   app.get('/ready', async (_request: Request, response: Response) => {
     const problems = describeConfigProblems(config);
     let firestore = { reachable: false, detail: 'not probed' };
+    let aiAssistantState = config.coreApiKey ? 'unknown' : 'not-configured';
 
     if (deps.readinessProbe) {
       try {
@@ -76,6 +82,14 @@ export function createApp(deps: AppDeps): Express {
         firestore = { reachable: probe.firestore, detail: probe.detail };
       } catch (error) {
         firestore = { reachable: false, detail: 'Firestore probe failed' };
+      }
+    }
+
+    if (deps.aiStatus) {
+      try {
+        aiAssistantState = (await deps.aiStatus()).state;
+      } catch {
+        aiAssistantState = 'degraded';
       }
     }
 
@@ -89,6 +103,8 @@ export function createApp(deps: AppDeps): Express {
         schedulerCredential: config.schedulerSecret ? 'configured' : 'missing',
         firestore,
         aiRouting: config.flagshipRouterUrl ? 'configured' : 'not-configured',
+        aiAssistant: config.coreApiKey ? 'configured' : 'not-configured',
+        aiAssistantState: aiAssistantState,
         paidAiAuthorized: config.paidAiAuthorized
       },
       problems

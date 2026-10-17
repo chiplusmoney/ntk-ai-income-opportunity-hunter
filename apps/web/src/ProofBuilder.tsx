@@ -4,6 +4,7 @@ import { PROOF_KINDS, proofCard, safeWebUrl, type ProofRecord } from '@ntk/hunte
 import { PrivateGate } from './AccountPages';
 import { useUserData } from './repositories/userData';
 import { personalApi, removeProof, saveDeclaredProof } from './repositories/personalActions';
+import { AiProofSummary } from './AiAssistance';
 
 const EMPTY = { title:'', kind:'project' as ProofRecord['kind'], description:'', skills:'', url:'', provenance:'', status:'user-declared' as 'user-declared' | 'incomplete' };
 function escapeHtml(s: string) { return s.replace(/[&<>"']/g,c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]!)); }
@@ -27,6 +28,7 @@ function ProofWorkspace() {
     <p role="status">{message}</p><h2>My proof library ({proofs.length})</h2>{!proofs.length && <div className="profile-card"><p>No proof yet. Start with a real course project, a writing sample, work experience or a project you maintain. You do not need a conventional CV.</p></div>}
     <div className="list">{proofs.map(p => <article className="profile-card" key={p.id}><label className="check-label"><input type="checkbox" checked={selected.includes(p.id)} onChange={e => setSelected(e.target.checked ? [...selected,p.id] : selected.filter(id => id !== p.id))} />Include in my export</label><h3>{p.title}</h3><span className="category">{p.status}</span><p>{p.description || 'Incomplete description'}</p><p>Skills: {p.skills.join(', ') || 'Not recorded'}</p><p>Provenance: {p.provenance}</p>{p.url && <a href={p.url} target="_blank" rel="noreferrer">Open evidence link</a>}<details><summary>Capability card / mini portfolio entry</summary><p>{proofCard(p).statement}</p><small>{proofCard(p).provenance} · generated-from-existing-evidence · Source: {p.id}</small></details>{['user-declared','incomplete'].includes(p.status) && <button className="secondary" disabled={busy} onClick={() => { setEditing(p); setForm({ title:p.title,kind:p.kind,description:p.description,skills:p.skills.join(', '),url:p.url,provenance:p.provenance,status:p.status as typeof form.status }); window.scrollTo({ top:0,behavior:'smooth' }); }}>Edit proof</button>}<button className="secondary" disabled={busy} onClick={() => void perform(() => removeProof(p.id),'Proof removed. Existing application notes remain intact.')}>Delete proof</button></article>)}</div>
     <button className="primary" disabled={!selected.length} onClick={exportPortfolio}>Export selected portfolio view</button><p>Private by default. Sharing requires you to choose proof and share the downloaded view.</p>
+    <AiProofSummary />
     <div className="profile-card"><h2>Import genuine Hunter outcomes</h2>{applications.filter(a => ['submitted','paid'].includes(a.state)).map(a => <button className="secondary" disabled={busy} key={a.id} onClick={() => void perform(() => personalApi(`proofs/import-outcome/${encodeURIComponent(a.id)}`,{}),'Hunter record imported with its real provenance.')}>Import {a.title}</button>)}{!applications.some(a => ['submitted','paid'].includes(a.state)) && <p>No submitted or paid outcomes to import. <Link to="/applications">Track a real application</Link>.</p>}</div>
   </section>;
 }

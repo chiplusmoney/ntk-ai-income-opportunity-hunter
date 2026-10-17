@@ -13,6 +13,9 @@ import { createPersonalRouter } from './personal.js';
 import { dispatchPersonalNotices } from './notifications/personalized.js';
 import { IntelligenceWriter } from './firestore/intelligenceWriter.js';
 import { PersistentRunGuard } from './run/guard.js';
+import { CoreClient } from './ai/coreClient.js';
+import { AiService } from './ai/service.js';
+import { createAiRouter } from './ai/router.js';
 
 /**
  * Service bootstrap.
@@ -22,6 +25,31 @@ import { PersistentRunGuard } from './run/guard.js';
  * document store is chosen from configuration rather than from a hard-coded
  * environment check scattered through the code.
  */
+/**
+ * M8 AI wiring. The Core client lives only here: one credential, one base URL, one place that can
+ * log. When the key is missing the router is still mounted so the PWA gets a clean, stable
+ * "temporarily unavailable" answer instead of a 404 that looks like a broken deployment.
+ */
+function buildAi(
+  config: ReturnType<typeof loadConfig>,
+  logger: ReturnType<typeof createLogger>,
+  db: import('firebase-admin/firestore').Firestore
+) {
+  const core = new CoreClient(
+    {
+      baseUrl: config.coreBaseUrl,
+      apiKey: config.coreApiKey,
+      timeoutMs: config.aiTimeoutMs,
+      maxAttempts: config.aiMaxAttempts
+    }
+  );
+  const ai = new AiService({ db, core, logger });
+  return {
+    aiRouter: createAiRouter({ ai }),
+    aiStatus: () => ai.status()
+  };
+}
+
 export function bootstrap(env: NodeJS.ProcessEnv = process.env) {
   const config = loadConfig(env);
   const logger = createLogger(config.logLevel, sensitiveValues(config));
@@ -72,6 +100,7 @@ export function bootstrap(env: NodeJS.ProcessEnv = process.env) {
     stateStore,
     deploymentScope: resolvedScope.scope,
     ...(store instanceof FirestoreDocumentStore ? { personalRouter: createPersonalRouter(store.database,undefined,env.NOTIFICATION_OWNER_UID) } : {}),
+    ...(store instanceof FirestoreDocumentStore ? buildAi(config, logger, store.database) : {}),
     ...(env.TELEGRAM_BOT_TOKEN ? { inspectNotificationSetup: () => inspectTelegramSetup(env.TELEGRAM_BOT_TOKEN!) } : {}),
     ...(store instanceof FirestoreDocumentStore && env.TELEGRAM_BOT_TOKEN && env.TELEGRAM_OWNER_CHAT_ID && env.NOTIFICATION_OWNER_UID ? {
       sendNotificationTest: () => sendControlledTelegramTest({ token: env.TELEGRAM_BOT_TOKEN!, chatId: env.TELEGRAM_OWNER_CHAT_ID!, ownerUid: env.NOTIFICATION_OWNER_UID!, db: (store as FirestoreDocumentStore).database })
