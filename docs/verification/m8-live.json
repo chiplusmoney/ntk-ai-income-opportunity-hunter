@@ -4,7 +4,7 @@
   "status": "LIVE_GATES_VERIFIED",
   "targetVerdict": "M8_LIVE_NTK_HUNTER_AI_CORE_INTEGRATION_VERIFIED",
   "verdict": "M8_LIVE_NTK_HUNTER_AI_CORE_INTEGRATION_VERIFIED",
-  "sourceCommit": "58fb9adc99c6b6058a8794a29a7ebc60645dcbbb",
+  "sourceCommit": "90e680d195ba5c39169fa12df93ae2c4819717df",
   "engineTarget": {
     "baseUrl": "https://ntkhaic.alwaysdata.net/v1",
     "route": "ntk-hunter-remote-free",
