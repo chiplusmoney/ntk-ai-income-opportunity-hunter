@@ -182,11 +182,16 @@ export function buildMessages(
   ];
 }
 
-/** Strips an accidental markdown fence before parsing; the schema check still applies. */
+/** Strips think tags and markdown fences before parsing; the schema check still applies. */
 export function extractJsonObject(raw: string): unknown {
-  let text = (raw ?? '').trim();
-  const fenced = /^```(?:json)?\s*([\s\S]*?)\s*```$/i.exec(text);
-  if (fenced?.[1]) text = fenced[1].trim();
+  if (!raw || typeof raw !== 'string') return null;
+  let text = raw.replace(/<think>[\s\S]*?<\/think>/gi, '').trim();
+  const matchFence = /```(?:json)?\s*([\s\S]*?)\s*```/i.exec(text);
+  if (matchFence?.[1]) {
+    try {
+      return JSON.parse(matchFence[1].trim());
+    } catch {}
+  }
   const first = text.indexOf('{');
   const last = text.lastIndexOf('}');
   if (first === -1 || last === -1 || last <= first) return null;
@@ -322,10 +327,10 @@ export function validatePayload(capability: Capability, raw: unknown): Validatio
   return { ok: problems.length === 0, value: problems.length === 0 ? value : null, problems };
 }
 
-/** Token budgets per capability, kept small because these are explanations, not essays. */
+/** Token budgets per capability, with sufficient headroom for reasoning models. */
 export const MAX_TOKENS: Record<Capability, number> = {
-  analysis: 700,
-  fit: 500,
-  draft: 700,
-  proof: 500
+  analysis: 1500,
+  fit: 1200,
+  draft: 1500,
+  proof: 1200
 };

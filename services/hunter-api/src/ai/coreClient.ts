@@ -99,9 +99,11 @@ function contentFromBody(body: unknown): string | null {
   if (!body || typeof body !== 'object') return null;
   const choices = (body as { choices?: unknown }).choices;
   if (!Array.isArray(choices) || choices.length === 0) return null;
-  const first = choices[0] as { message?: { content?: unknown } };
+  const first = choices[0] as { message?: { content?: unknown; reasoning_content?: unknown; reasoning?: unknown } };
   const content = first?.message?.content;
-  if (typeof content === 'string') return content;
+  if (typeof content === 'string' && content.trim()) return content;
+  const reasoning = first?.message?.reasoning_content ?? first?.message?.reasoning;
+  if (typeof reasoning === 'string' && reasoning.trim()) return reasoning;
   // Some providers return an array of parts; keep the text parts only.
   if (Array.isArray(content)) {
     const parts = content
@@ -179,9 +181,18 @@ export class CoreClient {
         const text = await response.text().catch(() => '');
         let body: unknown = null;
         try {
-          body = text ? JSON.parse(text) : null;
+          const cleaned = text.replace(/data:\s*\[DONE\]\s*$/i, '').trim();
+          body = cleaned ? JSON.parse(cleaned) : null;
         } catch {
-          body = null;
+          const firstBrace = text.indexOf('{');
+          const lastBrace = text.lastIndexOf('}');
+          if (firstBrace !== -1 && lastBrace > firstBrace) {
+            try {
+              body = JSON.parse(text.slice(firstBrace, lastBrace + 1));
+            } catch {
+              body = null;
+            }
+          }
         }
 
         if (response.ok) {
