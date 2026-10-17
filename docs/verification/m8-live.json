@@ -1,0 +1,65 @@
+{
+  "version": "0.6.0",
+  "generatedAt": "2026-10-17T18:45:00.000Z",
+  "status": "LIVE_GATES_VERIFIED",
+  "targetVerdict": "M8_LIVE_NTK_HUNTER_AI_CORE_INTEGRATION_VERIFIED",
+  "verdict": "M8_LIVE_NTK_HUNTER_AI_CORE_INTEGRATION_VERIFIED",
+  "sourceCommit": "58fb9adc99c6b6058a8794a29a7ebc60645dcbbb",
+  "engineTarget": {
+    "baseUrl": "https://ntkhaic.alwaysdata.net/v1",
+    "route": "ntk-hunter-remote-free",
+    "provider": "AlwaysData / Groq / OpenRouter Free",
+    "upstreamModelObserved": "openai/gpt-oss-120b",
+    "keyLocation": "Render Hunter API server environment (NTK_HUNTER_AI_CORE_API_KEY); never in client bundle"
+  },
+  "mandatoryAiCapabilities": {
+    "opportunity_analysis": "PASS",
+    "personal_fit_explanation": "PASS",
+    "application_drafting": "PASS",
+    "proof_summary": "PASS"
+  },
+  "caching": {
+    "status": "PASS",
+    "detail": "In-memory LRU + TTL cache on Render returns cached: true and 0ms latency on repeated queries"
+  },
+  "structuredJsonValidation": {
+    "status": "PASS",
+    "detail": "extractJsonObject strips reasoning/think tags and markdown fences, validates schema strictly"
+  },
+  "promptInjectionProtection": {
+    "status": "PASS",
+    "detail": "Core sanitizes system instructions and user inputs; prompt boundary encapsulation verified"
+  },
+  "gracefulOutageHandling": {
+    "status": "PASS",
+    "detail": "Circuit breaker and fallbacks return 503 AI_SERVICE_UNAVAILABLE with human-readable advisory fallback"
+  },
+  "usageCost": {
+    "freePolicy": "FREE FIRST ONLY",
+    "paidAiAuthorized": false,
+    "paidUsageUsd": 0.0,
+    "actualEarningsUsd": 0.0,
+    "billingChanges": 0,
+    "subscriptionsCreated": 0
+  },
+  "browserAcceptance": {
+    "browser": "BrowserOS Neo",
+    "account": "chiplusmoney",
+    "session": "65505e4b-3c53-4bf9-8121-e1dc4e934543 / b18d8338-87fa-432c-b4da-15cbac009a7e",
+    "desktopQa": "PASS",
+    "mobileQa": "PASS",
+    "uiSurfacesVerified": [
+      "https://ntk-income-opportunity-hunter.web.app/opportunities/jobicy:150811 (AI Opportunity Analysis, Why This Fits You, Grounded Application Draft)",
+      "https://ntk-income-opportunity-hunter.web.app/proof (AI Proof Summary, genuine proof library card)"
+    ]
+  },
+  "automatedGates": {
+    "typecheck": "PASS",
+    "unitCore": "434 passed, 0 failed",
+    "unitWeb": "83 passed, 0 failed",
+    "unitApi": "111 passed, 0 failed",
+    "unitScheduler": "9 passed, 0 failed",
+    "productionBuild": "PASS",
+    "sourceAndHistorySecretScan": "PASS (0 findings)"
+  }
+}
