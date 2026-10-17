@@ -1,7 +1,7 @@
 {
   "name": "@ntk/hunter-api",
   "private": true,
-  "version": "0.6.0",
+  "version": "1.0.0",
   "type": "module",
   "description": "Hunter API: authenticated run orchestration, deterministic verification via @ntk/hunter-core, Firestore server writer and optional FlagshipRouter AI analysis.",
   "main": "dist/index.js",

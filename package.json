@@ -1,7 +1,7 @@
 {
   "name": "ntk-ai-income-opportunity-hunter",
   "private": true,
-  "version": "0.6.0",
+  "version": "1.0.0",
   "description": "Autonomous, zero-capital-first income opportunity hunter: Cloudflare scheduler, Hunter API, deterministic core, Firestore and PWA.",
   "engines": {
     "node": ">=24.20.0 <25.0.0"

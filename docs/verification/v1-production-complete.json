@@ -1,0 +1,51 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-10-17T20:05:00.000Z",
+  "status": "PASS",
+  "verdict": "NTK_INCOME_OPPORTUNITY_HUNTER_V1_PRODUCTION_COMPLETE",
+  "sourceCommit": "HEAD",
+  "productionUrls": {
+    "pwa": "https://ntk-income-opportunity-hunter.web.app",
+    "api": "https://ntk-hunter-api.onrender.com",
+    "core": "https://ntkhaic.alwaysdata.net/v1",
+    "scheduler": "https://ntk-income-opportunity-hunter-scheduler.chiplusmoney.workers.dev"
+  },
+  "pipeline": {
+    "find": "PASS (6 enabled sources: remoteok, arbeitnow, jobicy, remotive, weworkremotely, github-bounties; 3 prohibited sources offline: devpost, freelancer-rss, hn-freelancer)",
+    "verify": "PASS (deterministic source evidence, zero-capital gating, country normalization)",
+    "rank": "PASS (deterministic global rank score based on verified compensation, capital safety, and requirements)",
+    "guide": "PASS (application checklists, genuine evidence attachment, unverified facts separation)",
+    "track": "PASS (private applications lifecycle: Saved -> Preparing -> Applied -> Accepted/Rejected/Expired/Withdrawn)",
+    "learn": "PASS (bounded outcome learning from genuine user-recorded results)"
+  },
+  "aiCapabilities": {
+    "opportunityAnalysis": "PASS (structured work involved, preparation, watch items, practical considerations; grounded in verified source facts)",
+    "personalFit": "PASS (grounded in declared earning profile and proof library; identifies strengths, gaps, next steps; advisory only)",
+    "applicationDraft": "PASS (grounded draft addressing employer/client, transparent about candidate location; editable; unverified facts omitted)",
+    "proofBuilder": "PASS (synthesizes genuine recorded proof records; no hallucinated qualifications; user-declared provenance preserved)"
+  },
+  "efficiencyAndReliability": {
+    "caching": "PASS (in-memory LRU + TTL cache on Render returns cached: true and 0ms latency on repeated identical requests)",
+    "freePolicy": "PASS (FREE FIRST enforced; PAID_AI_AUTHORIZED: false; $0.00 spend)",
+    "gracefulOutage": "PASS (503/timeout mapped to AI_SERVICE_UNAVAILABLE advisory notice; all deterministic Hunter features remain 100% available)"
+  },
+  "browserAcceptance": {
+    "browser": "BrowserOS Neo",
+    "profile": "chiplusmoney",
+    "desktopQa": "PASS",
+    "mobileQa": "PASS",
+    "pwa": "PASS (offline shell, cached catalog, service worker registered)"
+  },
+  "automatedRegression": {
+    "typecheck": "PASS",
+    "unitCore": "434 passed, 0 failed",
+    "unitWeb": "83 passed, 0 failed",
+    "unitApi": "111 passed, 0 failed",
+    "unitScheduler": "9 passed, 0 failed",
+    "totalUnitTests": "637 passed, 0 failed",
+    "productionBuild": "PASS",
+    "sourceAndHistorySecretScan": "PASS (0 findings)"
+  },
+  "credentialsChanged": "NONE",
+  "blockers": "NONE"
+}

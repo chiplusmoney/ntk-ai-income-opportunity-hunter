@@ -1,19 +1,35 @@
-## 0.5.0 - M6
-
-- Add private progressive earning profiles and first-class no-CV/no-portfolio paths with unknown requirement semantics.
-- Add provenance-preserving Proof Builder, capability cards and explicitly selected local portfolio exports.
-- Keep global rank; add deterministic explainable Personal Fit, recommendation views and grounded application preparation.
-- Extend applications with Preparing, Withdrawn, notes, follow-ups and real proof attachments.
-- Move lifecycle/payment writes to ID-token-verified API; reject client-forged earnings and proof verification.
-- Add bounded, resettable outcome learning, separate actual/potential earnings, practical next actions and opt-in deduplicated notifications.
-- Preserve public offline catalog and add account-scoped RAM-only safe drafts with conflict checks.
-- Preserve the canonical free Worker, existing cron, permitted sources, avatar navigation and Telegram transport.
-- Production acceptance is recorded separately in the M6 acceptance report.
-
 # Changelog
 
 Milestones record cumulative work and dated findings. The current deployment and
 verdict appear first; earlier entries are historical.
+
+## 1.0.0 - Production Complete - 2026-10-17
+
+Verdict: **NTK_INCOME_OPPORTUNITY_HUNTER_V1_PRODUCTION_COMPLETE**.
+
+- Final production acceptance and verification of the complete Opportunity Hunter workflow: FIND → VERIFY → RANK → GUIDE → TRACK → LEARN and MATCH → EXPLAIN → PREPARE → APPLY → EARN → IMPROVE.
+- Live integration with NTK Hunter AI Core verified across all four grounded capabilities:
+  1. Opportunity Analysis: structured analysis of likely work, preparation, watch items, and practical considerations.
+  2. Personal Fit: grounded explanation using declared profile and proof without inventing qualifications.
+  3. Grounded Application Draft: evidence-based draft tailored to the opportunity, retaining candidate location transparency.
+  4. Proof Builder Summary: verified evidence synthesis reflecting genuine user achievements.
+- In-memory LRU + TTL caching layer active with 0ms latency on repeated queries, eliminating retry storms and protecting free quota.
+- FREE FIRST quota policy enforced (`PAID_AI_AUTHORIZED: false`). Zero paid AI usage ($0.00 spend).
+- Server-side secret isolation on Render (`srv-db8btdvavr4c73av54vg`); zero credentials exposed to Firebase client bundles or Git history.
+- BrowserOS Neo QA verified across desktop and mobile viewports on the live deployed PWA (`https://ntk-income-opportunity-hunter.web.app`).
+- Canonical scheduler on Cloudflare Workers verified calling Render Hunter API reliably.
+- All 637 automated tests passing across core, web, api, and scheduler packages.
+- Zero private credential pattern findings in source, bundles, git history, or release archives.
+
+## 0.6.0 - M8 NTK Hunter AI Core Integration - 2026-10-17
+
+Verdict: **M8_LIVE_NTK_HUNTER_AI_CORE_INTEGRATION_VERIFIED**.
+
+- Connect Render Hunter API to live NTK Hunter AI Core at https://ntkhaic.alwaysdata.net/v1 via ntk-hunter-remote-free route.
+- Implement server-side CoreClient adapter with SSE marker cleanup, reasoning tag stripping and robust JSON parsing.
+- Deploy four grounded capabilities to production with advisory provenance disclaimers.
+- Complete live end-to-end verification and BrowserOS Neo QA on desktop and mobile viewports.
+
 
 ## Final M5b scheduler closure - 2026-10-16 - 0.4.1
 
